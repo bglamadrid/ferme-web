@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@import "buttons.css";
+
+body, div {
+    margin: 0px;
+    padding: 0px;
+}
+
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+a.button {
+    text-decoration: none;
+}
+.button {
+    text-align: center;
+    border: 2px grey solid;
+    color: black;
+    font-weight: bold;
+    background-color: white;
+}   
+.button.small{
+    font-size: 0.9rem;
+    width: 7em;
+    height: 2.5em;
+    padding: 0.45em 0.1em;
+}
+
+.inline {
+    display: inline;
+}
+
+.center-box {   
+    grid-area: a;
+    text-align: center;
+}
+
+.pagina {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 50vh;
+    grid-template-areas: "a" "a";
+    align-items: center;
+    justify-items: center;
+}
