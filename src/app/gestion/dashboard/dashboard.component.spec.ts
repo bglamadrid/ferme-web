@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionInicioComponent } from './inicio.component';
+import { GestionDashboardComponent } from './dashboard.component';
 
-describe('InicioComponent', () => {
-  let component: GestionInicioComponent;
-  let fixture: ComponentFixture<GestionInicioComponent>;
+describe('DashboardComponent', () => {
+  let component: GestionDashboardComponent;
+  let fixture: ComponentFixture<GestionDashboardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GestionInicioComponent ]
+      declarations: [ GestionDashboardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GestionInicioComponent);
+    fixture = TestBed.createComponent(GestionDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

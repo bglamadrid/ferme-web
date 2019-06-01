@@ -6,6 +6,10 @@ body, div {
     padding: 0px;
 }
 
+body {
+    background-color: lightskyblue !important;
+}
+
 * {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -31,6 +35,10 @@ a.button {
     display: inline;
 }
 
+.left {
+    text-align: left;
+}
+
 .center-box {   
     grid-area: a;
     text-align: center;
@@ -44,3 +52,5 @@ a.button {
     align-items: center;
     justify-items: center;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
