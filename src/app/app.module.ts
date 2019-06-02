@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http'
 import { LandingComponent } from './landing/landing.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSidenavModule, MatListModule } from '@angular/material';
+import { MatTableModule, MatSidenavModule, MatListModule, MatCardModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
@@ -28,7 +28,8 @@ const DEBUG_MODE: boolean = false;
     MatProgressSpinnerModule,
     MatTableModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [AppRoutingModule],
   bootstrap: [AppComponent]

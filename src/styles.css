@@ -6,10 +6,6 @@ body, div {
     padding: 0px;
 }
 
-body {
-    background-color: lightskyblue !important;
-}
-
 * {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
