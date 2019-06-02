@@ -4,8 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http'
 import { LandingComponent } from './landing/landing.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSidenavModule, MatListModule, MatCardModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule, MatSidenavModule, MatListModule, MatCardModule, MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
@@ -24,12 +24,13 @@ const DEBUG_MODE: boolean = false;
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     MatProgressSpinnerModule,
     MatTableModule,
     MatSidenavModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [AppRoutingModule],
   bootstrap: [AppComponent]

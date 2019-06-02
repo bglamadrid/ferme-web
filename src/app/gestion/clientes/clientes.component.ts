@@ -26,8 +26,8 @@ export class ClientesComponent implements OnInit {
 
   private cargarClientes(): Observable<Cliente[]> {
     let clientes: Observable<Cliente[]> = this.localSvc.listarClientes();
-    clientes.subscribe((clientes: Cliente[]) => {
-      this.clientes$ = of(clientes);
+    clientes.subscribe((payload: Cliente[]) => {
+      this.clientes$ = of(payload);
     }, err => {
       this.clientes$ = of([]);
     }, () => {

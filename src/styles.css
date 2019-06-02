@@ -10,23 +10,6 @@ body, div {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-a.button {
-    text-decoration: none;
-}
-.button {
-    text-align: center;
-    border: 2px grey solid;
-    color: black;
-    font-weight: bold;
-    background-color: white;
-}   
-.button.small{
-    font-size: 0.9rem;
-    width: 7em;
-    height: 2.5em;
-    padding: 0.45em 0.1em;
-}
-
 .inline {
     display: inline;
 }
@@ -40,6 +23,13 @@ a.button {
 }
 .full-height {
     height: 100%;
+}
+
+.overflow-x {
+    overflow-x: auto;
+}
+.overflow-y {
+    overflow-y: auto;
 }
 
 

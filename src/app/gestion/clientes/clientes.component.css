@@ -1,3 +1,10 @@
 .center-box {
-    background: #424242;
+    display: grid;
+    grid-template-rows: 1fr;
+    align-items: center;
+}
+
+.acciones {
+    display: grid;
+    grid-template-columns: 1fr;
 }

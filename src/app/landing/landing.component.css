@@ -6,7 +6,6 @@
     justify-items: center;
 }
 mat-card { 
-    background-color: white; 
     width: 20rem; 
     height: 20rem;
 }
@@ -32,29 +31,17 @@ mat-card-content {
 }
 
 mat-card-content > .contenedor {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center; 
     justify-content: center;
 }
 
-mat-card-content > .contenedor > a.button {
-    width: 12rem;
+mat-card-content > .contenedor > a {
+    width: 16rem;
     height: 4rem;
     font-size: 18pt;
     display: inline-flex;
     align-items: center; 
     justify-content: center;
-    border-radius: 0.3em;
-    border-width: 0.2em;
-}
-
-mat-card-content > .contenedor > a.jellybean.button {
-    border-color: #ca513e;
-}
-
-mat-card-content > .contenedor > a.green.button {
-    border-color: #0c9c68;
 }

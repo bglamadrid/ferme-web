@@ -1,0 +1,27 @@
+.contenedor {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.contenedor > .overflow-y {
+    flex-grow: 1;
+}
+
+.acciones {
+    display: grid;
+    height: 4em;
+    grid-template-columns: 1fr 1fr;
+    background: whitesmoke;
+}
+
+.accion {
+    display: flex;
+    align-items: center; 
+    padding: 0em 2em;
+}
+
+.accion > button {
+    width: 20em;
+    height: 3em;
+}

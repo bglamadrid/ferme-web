@@ -1,16 +1,14 @@
 <mat-sidenav-container>
-  <mat-sidenav opened mode="side">
-    <div>
-      <mat-list>
-        <a mat-list-item
-          *ngFor="let modulo of modulos"
-          [routerLink]="['/gestion', modulo.path]">
-          {{ modulo.texto }}
-        </a>
-      </mat-list>
-    </div>
+  <mat-sidenav opened mode="side" role="navigation">
+    <mat-nav-list role="navigation-links">
+      <a mat-list-item
+        *ngFor="let modulo of modulos"
+        [routerLink]="['/gestion', modulo.path]">
+        {{ modulo.texto }}
+      </a>
+    </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content role="main">
     <div class="pagina">
       <router-outlet></router-outlet>
     </div>
