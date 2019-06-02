@@ -4,35 +4,47 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http'
 import { LandingComponent } from './landing/landing.component';
-import { CompraDashboardComponent as CompraComponent } from './compra/dashboard/dashboard.component';
-import { GestionDashboardComponent as GestionComponent } from './gestion/dashboard/dashboard.component';
-import { LoginComponent } from './gestion/login/login.component';
-import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenav, MatTableModule } from '@angular/material';
-import { ClientesComponent } from './gestion/clientes/clientes.component';
+import { MatTableModule, MatSidenavModule, MatListModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GestionModule } from './gestion/gestion.module';
+import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
+import { Router } from '@angular/router';
 
+const DEBUG_MODE: boolean = false;
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
-    LoginComponent,
-    CompraComponent,
-    GestionComponent,
-    SidebarComponent,
-    ClientesComponent
+    CompraDashboardComponent
   ],
   imports: [
-    BrowserModule,
+    GestionModule,
     AppRoutingModule,
+    BrowserModule,
     HttpClientModule,
     NoopAnimationsModule,
     MatProgressSpinnerModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [AppRoutingModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+
+  constructor(router: Router) {
+    if (DEBUG_MODE) {
+      this.inspectRouterConfiguration(router);
+    }
+  }
+
+  // Diagnostic only
+  private inspectRouterConfiguration(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+    console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+  }
+}

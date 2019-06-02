@@ -1,0 +1,12 @@
+mat-sidenav {
+    width: 200px;
+}
+
+mat-sidenav-content {
+    display: grid;
+    grid-auto-rows: 100vh;
+    grid-template-areas: "a";
+}
+.pagina {   
+    grid-area: a;
+}

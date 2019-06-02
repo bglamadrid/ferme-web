@@ -2,6 +2,14 @@ body {
     background-color: lightskyblue
 }
 
+.pagina {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 50vh;
+    grid-template-areas: "a" "a";
+    align-items: center;
+    justify-items: center;
+}
 .center-box { 
     background-color: deepskyblue; 
     width: 20rem; 

@@ -1,0 +1,14 @@
+<table mat-table #tabla class="full-width">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef style="width: 50%"> Nombre </th>
+    <td mat-cell *matCellDef="let cliente" style="width: 50%" class="left"> {{cliente.nombreCompletoPersona}} </td>
+  </ng-container>
+  <ng-container matColumnDef="rut">
+    <th mat-header-cell *matHeaderCellDef style="width: 50%"> Rut </th>
+    <td mat-cell *matCellDef="let cliente" style="width: 50%" class="left"> {{cliente.rutPersona}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->

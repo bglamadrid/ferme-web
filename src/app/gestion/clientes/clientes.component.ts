@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable, of, from } from 'rxjs';
 import { Cliente } from 'src/models/Cliente';
 import { ClientesService } from './clientes.service';
+import { ClientesListadoComponent } from './listado/listado.component';
 
 @Component({
   selector: 'app-clientes',
@@ -11,21 +12,29 @@ import { ClientesService } from './clientes.service';
 export class ClientesComponent implements OnInit {
 
   public clientes$: Observable<Cliente[]>;
-  public displayedColumns: string[] = [ "nombre", "rut" ];
-
   public loading$: Observable<boolean> = of(true);
+
+  @ViewChild("listado") public listado: ClientesListadoComponent;
 
   constructor(
     private localSvc: ClientesService
   ) { }
 
   ngOnInit() {
-    this.localSvc.listarClientes().subscribe(
-      (clientes: Cliente[]) => {
-        this.clientes$ = of(clientes);
-        this.loading$ = of(false);
-      }
-    );
+    this.cargarClientes();
   }
 
+  private cargarClientes(): Observable<Cliente[]> {
+    let clientes: Observable<Cliente[]> = this.localSvc.listarClientes();
+    clientes.subscribe((clientes: Cliente[]) => {
+      this.clientes$ = of(clientes);
+    }, err => {
+      this.clientes$ = of([]);
+    }, () => {
+      this.loading$ = of(false);
+    });
+    return from(clientes);
+  }
+
+  
 }

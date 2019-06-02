@@ -1,9 +1,0 @@
-.center-box { 
-    background-color: deepskyblue; 
-    width: 80rem; 
-    height: 40rem;
-}
-
-.center-box * { 
-    text-align: center;
-}
