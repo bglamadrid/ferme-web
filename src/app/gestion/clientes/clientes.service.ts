@@ -25,7 +25,7 @@ export class ClientesService extends RootService {
     return this.http.post<number>(this.baseURI + "/guardar", cli);
   }
 
-  public borrarCliente(idCliente: number): Observable<void> {
-    return this.http.post<void>(this.baseURI + "/borrar", idCliente);
+  public borrarCliente(idCliente: number): Observable<boolean> {
+    return this.http.post<boolean>(this.baseURI + "/borrar", idCliente);
   }
 }

@@ -22,12 +22,10 @@ export class EmpleadosService extends RootService {
   }
 
   public guardarEmpleado(emp: Empleado): Observable<number> {
-    return this.http.post<number>(this.baseURI + "/guardar", emp, {
-      headers: new HttpHeaders({"Allow": "POST"})
-    });
+    return this.http.post<number>(this.baseURI + "/guardar", emp);
   }
 
-  public borrarEmpleado(idEmpleado: number): Observable<void> {
-    return this.http.post<void>(this.baseURI + "/borrar", idEmpleado);
+  public borrarEmpleado(idEmpleado: number): Observable<boolean> {
+    return this.http.post<boolean>(this.baseURI + "/borrar", idEmpleado);
   }
 }

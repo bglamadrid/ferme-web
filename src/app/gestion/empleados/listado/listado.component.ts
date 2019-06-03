@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { MatTable, MatDialog } from '@angular/material';
+import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
 import { of } from 'rxjs';
 import { Empleado } from 'src/models/Empleado';
 import { EmpleadoFormularioComponent, EmpleadoFormularioDialogData } from '../formulario/formulario.component';
+import { EmpleadosService } from '../empleados.service';
 
 @Component({
   selector: 'app-empleados-listado',
@@ -21,10 +22,23 @@ export class EmpleadosListadoComponent implements OnInit {
   @Output() public recargar: EventEmitter<void> = new EventEmitter();
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private localSvc: EmpleadosService
   ) { }
 
   ngOnInit() {
+  }
+
+  public onClickBorrarEmpleado(emp: Empleado) {
+    this.localSvc.borrarEmpleado(emp.idEmpleado).subscribe(
+      (exito: boolean) => {
+        if (exito) {
+          this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' eliminado.");
+          this.recargar.emit();
+        }
+      }
+    );
   }
 
   public onClickVerEmpleado(emp: Empleado) {

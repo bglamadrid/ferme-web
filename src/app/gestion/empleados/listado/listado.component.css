@@ -1,0 +1,12 @@
+.acciones {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 0px 0.25em;
+}
+
+.acciones > button {
+    height: 3em;
+}
