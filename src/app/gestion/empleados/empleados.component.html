@@ -1,8 +1,8 @@
-<div class="full-height center-box">
+<div class="full-height">
     <ng-container *ngIf="loading$ | async; then loading else empleadosTable"></ng-container>
 
     <ng-template #loading>
-      <mat-spinner class="full-width"></mat-spinner>
+      <app-centered-mat-spinner></app-centered-mat-spinner>
     </ng-template>
 
     <ng-template #empleadosTable>

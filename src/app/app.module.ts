@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
 import { Router } from '@angular/router';
+import { CenteredMatSpinnerComponent } from './common/centered-mat-spinner/centered.component';
 
 const DEBUG_MODE: boolean = false;
 

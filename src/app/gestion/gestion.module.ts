@@ -13,6 +13,7 @@ import { EmpleadosComponent } from './empleados/empleados.component';
 import { EmpleadoFormularioComponent } from './empleados/formulario/formulario.component';
 import { EmpleadosListadoComponent } from './empleados/listado/listado.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CenteredMatSpinnerComponent } from '../common/centered-mat-spinner/centered.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClientesListadoComponent,
     EmpleadosComponent,
     EmpleadoFormularioComponent,
+    CenteredMatSpinnerComponent,
     EmpleadosListadoComponent
   ],
   imports: [
