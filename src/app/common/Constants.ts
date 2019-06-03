@@ -1,0 +1,1 @@
+export const REACTIVE_FORMS_ISOLATE = { onlySelf: true, emitEvent: false };

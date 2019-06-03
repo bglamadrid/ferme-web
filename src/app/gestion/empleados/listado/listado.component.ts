@@ -10,14 +10,10 @@ import { EmpleadosService } from '../empleados.service';
   templateUrl: './listado.component.html',
   styleUrls: ['./listado.component.css']
 })
-export class EmpleadosListadoComponent implements OnInit {
+export class EmpleadosListadoComponent {
 
   @ViewChild("tabla") public tabla: MatTable<Empleado>;
   public displayedColumns: string[] = [ "nombre", "rut", "acciones" ];
-
-  @Input() public set Empleados(empleados: Empleado[]) {
-    this.tabla.dataSource = of(empleados);
-  }
 
   @Output() public recargar: EventEmitter<void> = new EventEmitter();
 
@@ -27,15 +23,14 @@ export class EmpleadosListadoComponent implements OnInit {
     private localSvc: EmpleadosService
   ) { }
 
-  ngOnInit() {
-  }
-
   public onClickBorrarEmpleado(emp: Empleado) {
     this.localSvc.borrarEmpleado(emp.idEmpleado).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' eliminado.");
           this.recargar.emit();
+        } else {
+          this.snackBar.open("Hubo un problema al borrar el empleado.");
         }
       }
     );
@@ -57,5 +52,9 @@ export class EmpleadosListadoComponent implements OnInit {
         }
       }
     );
+  }
+
+  @Input() public set Empleados(empleados: Empleado[]) {
+    this.tabla.dataSource = empleados? of(empleados) : of([]);
   }
 }

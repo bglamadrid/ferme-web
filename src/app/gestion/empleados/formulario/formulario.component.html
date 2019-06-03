@@ -1,8 +1,14 @@
 <section>
   <h2>Nuevo Empleado</h2>
 
-  <form [formGroup]="empleadoForm" 
-    style="grid-template-areas: 
+  <ng-template *ngIf="(showSpinner$ | async) || !(cargos$ | async)">
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="empleadoForm" [hidden]="!(cargos$ | async)"
+    style="grid-template-areas:   
       'a a a' 
       'b b c' 
       'd d e' 

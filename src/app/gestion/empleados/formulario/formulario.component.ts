@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { Empleado } from 'src/models/Empleado';
 import { GestionSharedService } from '../../gestion-shared.service';
 import { EmpleadosService } from '../empleados.service';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/common/Constants';
 
 export interface EmpleadoFormularioDialogData {
   empleado: Empleado;
@@ -22,6 +23,8 @@ export class EmpleadoFormularioComponent implements OnInit {
   private idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
+
+  public showSpinner$: Observable<boolean> = of(true);
 
   public empleadoForm: FormGroup;
 
@@ -43,28 +46,11 @@ export class EmpleadoFormularioComponent implements OnInit {
       fono2: [''],  
       fono3: ['']
     });
-    this.empleadoForm.disable();
 
     if (this.dialogData) {
       const emp: Empleado = this.dialogData.empleado;
-      if (emp) {
-        if (emp.idEmpleado) { this.idEmpleado = emp.idEmpleado; }
-        if (emp.idPersona) { this.idPersona = emp.idPersona; }
-        
-        this.nombre.setValue(emp.nombreCompletoPersona);
-        this.rut.setValue(emp.rutPersona);
-        this.cargo.setValue(emp.idCargo);
-
-        if (emp.direccionPersona) { this.direccion.setValue(emp.direccionPersona); }
-        if (emp.emailPersona) { this.email.setValue(emp.emailPersona); }
-        if (emp.fonoPersona1) { this.fono1.setValue(String(emp.fonoPersona1)); }
-        if (emp.fonoPersona2) { this.fono2.setValue(String(emp.fonoPersona2)); }
-        if (emp.fonoPersona3) { this.fono3.setValue(String(emp.fonoPersona3)); }
-
-      }
+      if (emp) { this.cargarEmpleado(emp); }
     }
-
-    this.empleadoForm.enable();
   }
 
   public get nombre() { return this.empleadoForm.get("nombre"); }
@@ -80,7 +66,46 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.cargos$ = this.sharedSvc.cargos();
   }
 
+  private cargarEmpleado(emp: Empleado): void {
+
+    this.empleadoForm.disable(NO_EVENT_CHAIN);
+    this.showSpinner$ = of(true);
+
+    if (emp.idEmpleado) {
+      this.idEmpleado = emp.idEmpleado; 
+    }
+    if (emp.idPersona) {
+      this.idPersona = emp.idPersona;
+    }
+
+    this.nombre.setValue(emp.nombreCompletoPersona, NO_EVENT_CHAIN);
+    this.rut.setValue(emp.rutPersona, NO_EVENT_CHAIN);
+    this.cargo.setValue(emp.idCargo, NO_EVENT_CHAIN);
+
+    if (emp.direccionPersona) {
+      this.direccion.setValue(emp.direccionPersona, NO_EVENT_CHAIN);
+    }
+    if (emp.emailPersona) {
+      this.email.setValue(emp.emailPersona, NO_EVENT_CHAIN);
+    }
+    if (emp.fonoPersona1) {
+      this.fono1.setValue(String(emp.fonoPersona1), NO_EVENT_CHAIN);
+    }
+    if (emp.fonoPersona2) {
+      this.fono2.setValue(String(emp.fonoPersona2), NO_EVENT_CHAIN);
+    }
+    if (emp.fonoPersona3) {
+      this.fono3.setValue(String(emp.fonoPersona3), NO_EVENT_CHAIN);
+    }
+
+    this.showSpinner$ = of(false);
+    this.empleadoForm.enable();
+  }
+
   private guardarEmpleado(emp: Empleado): void {
+    this.empleadoForm.disable(NO_EVENT_CHAIN);
+    this.showSpinner$ = of(true);
+    
     this.localSvc.guardarEmpleado(emp).subscribe(
       (id: number) => {
         if (id) {
@@ -93,6 +118,8 @@ export class EmpleadoFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar empleado.");
+        this.showSpinner$ = of(false);
+        this.empleadoForm.enable(NO_EVENT_CHAIN);
       }
     );
   }
@@ -116,6 +143,14 @@ export class EmpleadoFormularioComponent implements OnInit {
 
   public onClickCancelar(): void {
     this.self.close();
+  }
+
+  @Input() public set Empleado(emp: Empleado) {
+    if (emp) {
+      this.cargarEmpleado(emp);
+    } else {
+      this.empleadoForm.reset();
+    }
   }
 
 }
