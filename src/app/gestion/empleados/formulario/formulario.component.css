@@ -1,0 +1,25 @@
+section {
+    overflow-y: auto;
+    padding: 0.1em;
+}
+
+form {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1em;
+}
+
+form > * {
+    width: 100%;
+}
+
+input {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
