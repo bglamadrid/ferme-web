@@ -109,8 +109,12 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.localSvc.guardarEmpleado(emp).subscribe(
       (id: number) => {
         if (id) {
+          if (emp.idEmpleado) {
+            this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' actualizado/a exitosamente.");
+          } else {
+            this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' registrado/a exitosamente.");
+          }
           emp.idEmpleado = id;
-          this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' registrado/a exitosamente.");
           this.self.close(emp);
         } else {
           this.snackBar.open("Error al guardar empleado.");
