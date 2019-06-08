@@ -2,15 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http'
 import { LandingComponent } from './landing/landing.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSidenavModule, MatListModule, MatCardModule, MatButtonModule } from '@angular/material';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
 import { Router } from '@angular/router';
-import { CenteredMatSpinnerComponent } from './common/centered-mat-spinner/centered.component';
+import { CommonAssetsModule } from 'src/assets/common/common.module';
+import { MatSidenavModule } from '@angular/material';
 
 const DEBUG_MODE: boolean = false;
 
@@ -21,20 +18,17 @@ const DEBUG_MODE: boolean = false;
     CompraDashboardComponent
   ],
   imports: [
+    CommonAssetsModule,
     GestionModule,
     AppRoutingModule,
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    MatSidenavModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule
+    MatSidenavModule
   ],
-  providers: [AppRoutingModule],
-  bootstrap: [AppComponent]
+  providers: [
+    AppRoutingModule
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { 
 

@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
-import { RootService } from '../root.service';
+import { RootHttpService } from '../../http-services/root.service';
 import { Observable } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { HttpClient } from '@angular/common/http';
 import { Rubro } from 'src/models/Rubro';
+import { TipoProducto } from 'src/models/TipoProducto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GestionSharedService extends RootService {
+export class GestionSharedService extends RootHttpService {
 
 
   protected baseURI: string = this.baseURI + "/gestion";
 
   constructor(
-    private http: HttpClient
+    protected http: HttpClient
   ) { 
     super();
   }
@@ -25,5 +26,9 @@ export class GestionSharedService extends RootService {
 
   public rubros(): Observable<Rubro[]> {
     return this.http.get<Rubro[]>(this.baseURI+"/rubros");
+  }
+
+  public tiposProducto(): Observable<TipoProducto[]> {
+    return this.http.get<TipoProducto[]>(this.baseURI+"/tipos_producto");
   }
 }

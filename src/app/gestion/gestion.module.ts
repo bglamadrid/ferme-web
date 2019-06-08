@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { GestionRoutingModule } from './gestion-routing.module';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatTableModule, MatSidenavModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatFormFieldModule, MatSelectModule, MatInputModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatIconModule } from '@angular/material';
+import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
 import { ClientesComponent } from './clientes/clientes.component';
 import { ClientesFormularioComponent } from './clientes/formulario/formulario.component';
 import { ClientesListadoComponent } from './clientes/listado/listado.component';
@@ -12,8 +9,11 @@ import { GestionNavegadorComponent } from './gestion.component';
 import { EmpleadosComponent } from './empleados/empleados.component';
 import { EmpleadoFormularioComponent } from './empleados/formulario/formulario.component';
 import { EmpleadosListadoComponent } from './empleados/listado/listado.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CenteredMatSpinnerComponent } from '../common/centered-mat-spinner/centered.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ProductosComponent } from './productos/productos.component';
+import { ProductosListadoComponent } from './productos/listado/listado.component';
+import { ProductoFormularioComponent } from './productos/formulario/formulario.component';
+import { CommonAssetsModule } from 'src/assets/common/common.module';
 
 
 @NgModule({
@@ -25,29 +25,25 @@ import { CenteredMatSpinnerComponent } from '../common/centered-mat-spinner/cent
     ClientesListadoComponent,
     EmpleadosComponent,
     EmpleadoFormularioComponent,
-    CenteredMatSpinnerComponent,
-    EmpleadosListadoComponent
+    EmpleadosListadoComponent,
+    ProductosComponent,
+    ProductosListadoComponent,
+    ProductoFormularioComponent,
   ],
   imports: [
+    CommonAssetsModule,
     GestionRoutingModule,
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatTableModule,
+    FormsModule,
     MatSidenavModule,
-    MatListModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatFormFieldModule,
+    MatTableModule,
     MatInputModule,
-    MatIconModule
+    MatFormFieldModule,
+    MatSelectModule
   ],
   entryComponents: [
-    EmpleadoFormularioComponent
+    EmpleadoFormularioComponent,
+    ProductoFormularioComponent
   ], 
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}

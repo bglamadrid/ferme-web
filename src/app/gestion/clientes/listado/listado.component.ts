@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Cliente } from 'src/models/Cliente';
 import { of } from 'rxjs';
 import { MatTable } from '@angular/material';
@@ -11,9 +11,13 @@ import { MatTable } from '@angular/material';
 export class ClientesListadoComponent {
 
   @ViewChild("tabla") public tabla: MatTable<Cliente>;
-  public displayedColumns: string[] = [ "nombre", "rut" ];
+  public displayedColumns: string[];
 
-  constructor() { }
+  constructor(
+    
+  ) { 
+    this.displayedColumns = [ "nombre", "rut" ];
+  }
 
   @Input() public set Clientes(clientes: Cliente[]) {
     this.tabla.dataSource = clientes? of(clientes) : of([]);

@@ -1,0 +1,70 @@
+<section>
+  <h2>{{ idEmpleado? 'Actualizar' : 'Nuevo' }} Producto</h2>
+
+  <ng-template *ngIf="(showSpinner$ | async) || !(tipos$ | async)">
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="productoForm" [hidden]="!(tipos$ | async)"
+    style="grid-template-areas:   
+      'a a a b b b' 
+      'c c c c c c' 
+      'd d e e f f' 
+      'g g g g g g'">
+    <mat-form-field style="grid-area: a">
+      <input matInput placeholder="Código" 
+        [(ngModel)]="_codigoProducto" [ngModelOptions]="{standalone: true}"
+        disabled />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: b">
+      <input matInput placeholder="Nombre" 
+        formControlName="nombre" />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: c">
+      <mat-select placeholder="Tipo" 
+        formControlName="tipo">
+        <mat-option *ngFor="let tipo of (tipos$ | async)" 
+          [value]="tipo.idTipoProducto">
+          {{ tipo.nombreTipoProducto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: d">
+      <input matInput placeholder="Precio" 
+        formControlName="precio" />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: e">
+      <input matInput placeholder="Stock Actual" 
+        formControlName="stockActual" />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: f">
+      <input matInput placeholder="Stock crítico" 
+        formControlName="stockCritico" />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: g">
+      <textarea matInput placeholder="Descripción" 
+        formControlName="descripcion"></textarea>
+    </mat-form-field>
+  </form>
+    
+  <div class="acciones">
+    <button mat-raised-button color="primary" 
+      [disabled]="productoForm.invalid"
+      (click)="onClickAceptar()">
+      Aceptar
+    </button>
+
+    <button mat-raised-button 
+      (click)="onClickCancelar()">
+      Cancelar
+    </button>
+  </div>
+</section>

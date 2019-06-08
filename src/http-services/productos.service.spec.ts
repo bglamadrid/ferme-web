@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RootService } from './root.service';
+import { ProductosHttpService } from './productos.service';
 
-describe('RootService', () => {
+describe('ProductosService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: RootService = TestBed.get(RootService);
+    const service: ProductosHttpService = TestBed.get(ProductosHttpService);
     expect(service).toBeTruthy();
   });
 });

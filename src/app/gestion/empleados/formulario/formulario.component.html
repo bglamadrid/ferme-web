@@ -1,5 +1,5 @@
 <section>
-  <h2>Nuevo Empleado</h2>
+  <h2>{{ _idEmpleado? 'Actualizar' : 'Nuevo' }} Empleado</h2>
 
   <ng-template *ngIf="(showSpinner$ | async) || !(cargos$ | async)">
     <div class="spinner-container">
@@ -50,7 +50,7 @@
     </mat-form-field>
   </form>
     
-  <div class="actions">
+  <div class="acciones">
     <button mat-raised-button color="primary" 
       [disabled]="empleadoForm.invalid"
       (click)="onClickAceptar()">

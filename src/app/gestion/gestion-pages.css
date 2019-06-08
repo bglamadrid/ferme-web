@@ -1,0 +1,36 @@
+mat-spinner {
+    width: 100vw;
+    height: 100vh;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.contenedor > .overflow {
+    width: 100%;
+    max-width: 100%;
+    flex-grow: 1;
+}
+
+.acciones {
+    display: flex;
+    height: 4em;
+    width: 100%;
+    background: whitesmoke;
+}
+
+.accion {
+    display: flex;
+    align-items: center; 
+    padding: 0em 2em;
+}
+
+.accion > button {
+    width: 20em;
+    height: 3em;
+}

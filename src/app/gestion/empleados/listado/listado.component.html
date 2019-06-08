@@ -1,21 +1,27 @@
 <table mat-table #tabla class="full-width">
   <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef style="width: 45%"> Nombre </th>
-    <td mat-cell *matCellDef="let empleado" style="width: 45%" class="left"> {{empleado.nombreCompletoPersona}} </td>
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let empleado" class="left"> 
+      {{empleado.nombreCompletoPersona}}
+    </td>
   </ng-container>
   <ng-container matColumnDef="rut">
-    <th mat-header-cell *matHeaderCellDef style="width: 45%"> Rut </th>
-    <td mat-cell *matCellDef="let empleado" style="width: 45%" class="left"> {{empleado.rutPersona}} </td>
+    <th mat-header-cell *matHeaderCellDef> Rut </th>
+    <td mat-cell *matCellDef="let empleado" class="left"> 
+      {{empleado.rutPersona}}
+    </td>
   </ng-container>
   <ng-container matColumnDef="acciones">
-    <th mat-header-cell *matHeaderCellDef style="width: 10%"> </th>
-    <td mat-cell *matCellDef="let empleado" style="width: 10%">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let empleado">
       <div class="acciones">
-        <button mat-stroked-button style="width:50%"
+        <button mat-raised-button color="primary" class="details"
+          [disabled]="busy$ | async" 
           (click)="onClickVerEmpleado(empleado)">
           <mat-icon>more_horiz</mat-icon>
         </button>
-        <button mat-stroked-button color="warn" style="width:50%"
+        <button mat-raised-button color="warn" class="delete"
+          [disabled]="busy$ | async" 
           (click)="onClickBorrarEmpleado(empleado)">
           <mat-icon>delete</mat-icon>
         </button>

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { Empleado } from 'src/models/Empleado';
 import { EmpleadoFormularioComponent, EmpleadoFormularioDialogData } from '../formulario/formulario.component';
-import { EmpleadosService } from '../empleados.service';
+import { EmpleadosHttpService } from 'src/http-services/empleados.service';
 
 @Component({
   selector: 'app-empleados-listado',
@@ -12,48 +12,29 @@ import { EmpleadosService } from '../empleados.service';
 })
 export class EmpleadosListadoComponent {
 
-  @ViewChild("tabla") public tabla: MatTable<Empleado>;
-  public displayedColumns: string[] = [ "nombre", "rut", "acciones" ];
+  @Output() public editarEmpleado: EventEmitter<Empleado>;
+  @Output() public borrarEmpleado: EventEmitter<Empleado>;
 
-  @Output() public recargar: EventEmitter<void> = new EventEmitter();
+  @ViewChild("tabla") public tabla: MatTable<Empleado>;
+  public displayedColumns: string[];
 
   constructor(
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private localSvc: EmpleadosService
-  ) { }
 
-  public onClickBorrarEmpleado(emp: Empleado) {
-    this.localSvc.borrarEmpleado(emp.idEmpleado).subscribe(
-      (exito: boolean) => {
-        if (exito) {
-          this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' eliminado.");
-          this.recargar.emit();
-        } else {
-          this.snackBar.open("Hubo un problema al borrar el empleado.");
-        }
-      }
-    );
+  ) { 
+    this.displayedColumns = [ "nombre", "rut", "acciones" ];
+    this.editarEmpleado = new EventEmitter();
+    this.borrarEmpleado = new EventEmitter();
   }
 
   public onClickVerEmpleado(emp: Empleado) {
-    const dialogData: EmpleadoFormularioDialogData = {
-      empleado: emp
-    };
-
-    this.dialog.open(EmpleadoFormularioComponent, {
-      width: "40rem",
-      height: "40rem",
-      data: dialogData
-    }).afterClosed().subscribe(
-      (nuevo: Empleado) => {
-        if (nuevo) {
-          this.recargar.emit();
-        }
-      }
-    );
+    this.editarEmpleado.emit(emp);
   }
 
+  public onClickBorrarEmpleado(emp: Empleado) {
+    this.editarEmpleado.emit(emp);
+  }
+
+  @Input() public busy$: Observable<boolean>;
   @Input() public set Empleados(empleados: Empleado[]) {
     this.tabla.dataSource = empleados? of(empleados) : of([]);
   }

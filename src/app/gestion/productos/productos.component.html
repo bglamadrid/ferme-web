@@ -1,0 +1,23 @@
+<div class="full-height">
+  <ng-container *ngIf="loading$ | async; then loading else productosTable"></ng-container>
+
+  <ng-template #loading>
+    <app-centered-mat-spinner></app-centered-mat-spinner>
+  </ng-template>
+
+  <ng-template #productosTable>
+    <div class="full-height contenedor">
+      <div class="overflow">
+        <app-productos-listado #listado 
+          [Productos]="productos$ | async"
+          [busy$]="busy$"
+          (editarProducto)="onClickEditarProducto($event)"
+          (borrarProducto)="onClickBorrarProducto($event)">
+        </app-productos-listado>
+      </div>
+      <app-listado-acciones
+        (agregar)="onClickAgregarProducto()">
+      </app-listado-acciones>
+    </div>
+  </ng-template>
+</div>

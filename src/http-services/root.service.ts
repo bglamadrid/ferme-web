@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export abstract class RootService {
+export abstract class RootHttpService {
 
   // private webServiceProviderHostName: string = "localhost";
   // private webServiceProviderHostPort: number = 8082;

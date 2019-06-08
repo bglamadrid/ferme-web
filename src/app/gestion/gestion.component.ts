@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FERME_GESTION_ROUTES } from './gestion.routes';
     
@@ -17,15 +16,15 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
 
   public modulos: NavegadorModuloItem[];
 
-  private routerParamsSub: Subscription;
+  private _routerParamsSub: Subscription;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute
+    // private router: Router,
+    // private route: ActivatedRoute
   ) { 
-    this.routerParamsSub = this.route.params.subscribe((params) => {
-      console.log(this.route);
-    });
+    // this.routerParamsSub = this.route.params.subscribe((params) => {
+    //   console.log(this.route);
+    // });
   }
 
   ngOnInit() {
@@ -33,8 +32,8 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.routerParamsSub) {
-      this.routerParamsSub.unsubscribe();
+    if (this._routerParamsSub) {
+      this._routerParamsSub.unsubscribe();
     }
   }
 

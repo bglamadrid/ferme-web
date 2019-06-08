@@ -1,0 +1,28 @@
+table {
+    min-width: 100%;
+    width: fit-content;
+}
+
+th.mat-row {
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow-wrap: break-word;
+}
+
+.mat-column-acciones {
+    flex: 0 0 8em;
+    padding: 0px !important;
+    width: 6em;
+    max-width: 6em;
+}
+td > .acciones {
+    padding: 0.1em !important;
+    display: flex;
+    justify-content: space-evenly;
+    justify-items: center;
+}
+
+button {
+    padding: 0 0.2em;
+    min-width: 2.5em !important;
+}

@@ -1,24 +1,23 @@
 <div class="full-height">
-    <ng-container *ngIf="loading$ | async; then loading else empleadosTable"></ng-container>
+  <ng-container *ngIf="loading$ | async; then loading else empleadosTable"></ng-container>
 
-    <ng-template #loading>
-      <app-centered-mat-spinner></app-centered-mat-spinner>
-    </ng-template>
+  <ng-template #loading>
+    <app-centered-mat-spinner></app-centered-mat-spinner>
+  </ng-template>
 
-    <ng-template #empleadosTable>
-      <div class="full-height contenedor">
-        <div class="overflow-y">
-          <app-empleados-listado #listado 
-            [Empleados]="empleados$ | async"
-            (recargar)="onRecargar()">
-          </app-empleados-listado>
-        </div>
-        <div class="acciones">
-          <span class="accion" style="justify-content: flex-start"></span>
-          <span class="accion" style="justify-content: flex-end">
-            <button mat-raised-button (click)="onClickAgregarEmpleado()">Agregar</button>
-          </span>
-        </div>
+  <ng-template #empleadosTable>
+    <div class="full-height contenedor">
+      <div class="overflow">
+        <app-empleados-listado #listado 
+          [Empleados]="empleados$ | async"
+          [busy$]="busy$"
+          (editarEmpleado)="onClickEditarEmpleado($event)"
+          (borrarEmpleado)="onClickBorrarEmpleado($event)">
+        </app-empleados-listado>
       </div>
-    </ng-template>
+      <app-listado-acciones
+        (agregar)="onClickAgregarEmpleado()">
+      </app-listado-acciones>
+    </div>
+  </ng-template>
 </div>

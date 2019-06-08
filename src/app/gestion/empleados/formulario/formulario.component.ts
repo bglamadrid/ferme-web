@@ -5,26 +5,26 @@ import { Observable, of } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { Empleado } from 'src/models/Empleado';
 import { GestionSharedService } from '../../gestion-shared.service';
-import { EmpleadosService } from '../empleados.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/common/Constants';
+import { EmpleadosHttpService } from 'src/http-services/empleados.service';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/assets/common/Constants';
+
 
 export interface EmpleadoFormularioDialogData {
   empleado: Empleado;
 }
 
 @Component({
-  selector: 'app-formulario',
+  selector: 'app-empleados-formulario',
   templateUrl: './formulario.component.html',
-  styleUrls: ['./formulario.component.css']
+  styleUrls: ['../../gestion-formularios.css']
 })
 export class EmpleadoFormularioComponent implements OnInit {
 
-  private idEmpleado: number;
-  private idPersona: number;
+  private _idEmpleado: number;
+  private _idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
-
-  public showSpinner$: Observable<boolean> = of(true);
+  public showSpinner$: Observable<boolean>;
 
   public empleadoForm: FormGroup;
 
@@ -34,8 +34,10 @@ export class EmpleadoFormularioComponent implements OnInit {
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private sharedSvc: GestionSharedService,
-    private localSvc: EmpleadosService
+    private httpSvc: EmpleadosHttpService
   ) { 
+    this.showSpinner$ = of(true);
+
     this.empleadoForm = this.fb.group({
       nombre: ['', Validators.required],
       rut: ['', Validators.required],
@@ -72,10 +74,10 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.showSpinner$ = of(true);
 
     if (emp.idEmpleado) {
-      this.idEmpleado = emp.idEmpleado; 
+      this._idEmpleado = emp.idEmpleado; 
     }
     if (emp.idPersona) {
-      this.idPersona = emp.idPersona;
+      this._idPersona = emp.idPersona;
     }
 
     this.nombre.setValue(emp.nombreCompletoPersona, NO_EVENT_CHAIN);
@@ -106,7 +108,7 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.empleadoForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     
-    this.localSvc.guardarEmpleado(emp).subscribe(
+    this.httpSvc.guardarEmpleado(emp).subscribe(
       (id: number) => {
         if (id) {
           if (emp.idEmpleado) {
@@ -130,8 +132,8 @@ export class EmpleadoFormularioComponent implements OnInit {
 
   public onClickAceptar(): void {
     let nuevo: Empleado = {
-      idEmpleado: this.idEmpleado? this.idEmpleado : null,
-      idPersona: this.idPersona? this.idPersona: null,
+      idEmpleado: this._idEmpleado? this._idEmpleado : null,
+      idPersona: this._idPersona? this._idPersona: null,
       idCargo: this.cargo.value,
       nombreCompletoPersona: this.nombre.value,
       rutPersona: this.rut.value,

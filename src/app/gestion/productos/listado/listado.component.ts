@@ -1,0 +1,42 @@
+import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
+import { Producto } from 'src/models/Producto';
+import { ProductoFormularioDialogData, ProductoFormularioComponent } from '../formulario/formulario.component';
+import { of, Observable } from 'rxjs';
+import { ProductosHttpService } from 'src/http-services/productos.service';
+
+@Component({
+  selector: 'app-productos-listado',
+  templateUrl: './listado.component.html',
+  styleUrls: ['./listado.component.css']
+})
+export class ProductosListadoComponent  {
+
+  @Output() public editarProducto: EventEmitter<Producto>;
+  @Output() public borrarProducto: EventEmitter<Producto>;
+  
+  @ViewChild("tabla") public tabla: MatTable<Producto>;
+  public displayedColumns: string[];
+
+  constructor(
+    
+  ) { 
+    this.displayedColumns = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
+    this.editarProducto = new EventEmitter();
+    this.borrarProducto = new EventEmitter();
+  }
+
+  public onClickVerProducto(prod: Producto) {
+    this.editarProducto.emit(prod);
+  }
+
+  public onClickBorrarProducto(prod: Producto) {
+    this.borrarProducto.emit(prod);
+  }
+
+  @Input() public busy$: Observable<boolean>;
+  @Input() public set Productos(productos: Producto[]) {
+    this.tabla.dataSource = productos? of(productos) : of([]);
+  }
+
+}

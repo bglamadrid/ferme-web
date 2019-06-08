@@ -1,13 +1,17 @@
-<div class="full-height center-box">
-    <ng-container *ngIf="loading$ | async; then loading else clientesTable"></ng-container>
+<div class="full-height">
+  <ng-container *ngIf="loading$ | async; then loading else clientesTable"></ng-container>
 
-    <ng-template #loading>
-      <app-centered-mat-spinner></app-centered-mat-spinner>
-    </ng-template>
+  <ng-template #loading>
+    <app-centered-mat-spinner></app-centered-mat-spinner>
+  </ng-template>
 
-    <ng-template #clientesTable>
-      <div class="full-height overflow-y">
-        <app-clientes-listado #listado [Clientes]="clientes$ | async"></app-clientes-listado>
+  <ng-template #clientesTable>
+    <div class="full-height contenedor">
+      <div class="overflow">
+        <app-clientes-listado #listado 
+          [Clientes]="clientes$ | async">
+        </app-clientes-listado>
       </div>
-    </ng-template>
+    </div>
+  </ng-template>
 </div>

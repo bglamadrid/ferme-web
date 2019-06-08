@@ -10,6 +10,7 @@ mat-sidenav-content {
     display: grid;
     grid-auto-rows: 100vh;
     grid-template-areas: "a";
+    overflow: hidden;
 }
 .pagina {   
     grid-area: a;
