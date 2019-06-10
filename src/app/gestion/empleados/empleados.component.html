@@ -11,8 +11,8 @@
         <app-empleados-listado #listado 
           [Empleados]="empleados$ | async"
           [busy$]="busy$"
-          (editarEmpleado)="onClickEditarEmpleado($event)"
-          (borrarEmpleado)="onClickBorrarEmpleado($event)">
+          (editar)="onClickEditarEmpleado($event)"
+          (borrar)="onClickBorrarEmpleado($event)">
         </app-empleados-listado>
       </div>
       <app-listado-acciones

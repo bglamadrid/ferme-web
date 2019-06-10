@@ -11,11 +11,12 @@
     style="grid-template-areas:   
       'a a a b b b' 
       'c c c c c c' 
-      'd d e e f f' 
-      'g g g g g g'">
+      'd d d d d d' 
+      'e e f f g g' 
+      'h h h h h h'">
     <mat-form-field style="grid-area: a">
       <input matInput placeholder="Código" 
-        [(ngModel)]="_codigoProducto" [ngModelOptions]="{standalone: true}"
+        [ngModel]="_codigoProducto" [ngModelOptions]="{standalone: true}"
         disabled />
     </mat-form-field>
 
@@ -25,6 +26,16 @@
     </mat-form-field>
 
     <mat-form-field style="grid-area: c">
+      <mat-select placeholder="Familias" 
+        formControlName="familia">
+        <mat-option *ngFor="let familia of (familias$ | async)" 
+          [value]="familia.idFamiliaProducto">
+          {{ familia.descripcionFamiliaProducto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: d">
       <mat-select placeholder="Tipo" 
         formControlName="tipo">
         <mat-option *ngFor="let tipo of (tipos$ | async)" 
@@ -34,22 +45,22 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field style="grid-area: d">
+    <mat-form-field style="grid-area: e">
       <input matInput placeholder="Precio" 
         formControlName="precio" />
     </mat-form-field>
 
-    <mat-form-field style="grid-area: e">
+    <mat-form-field style="grid-area: f">
       <input matInput placeholder="Stock Actual" 
         formControlName="stockActual" />
     </mat-form-field>
 
-    <mat-form-field style="grid-area: f">
+    <mat-form-field style="grid-area: g">
       <input matInput placeholder="Stock crítico" 
         formControlName="stockCritico" />
     </mat-form-field>
 
-    <mat-form-field style="grid-area: g">
+    <mat-form-field style="grid-area: h">
       <textarea matInput placeholder="Descripción" 
         formControlName="descripcion"></textarea>
     </mat-form-field>

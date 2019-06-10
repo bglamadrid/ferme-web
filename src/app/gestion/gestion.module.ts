@@ -3,7 +3,7 @@ import { GestionRoutingModule } from './gestion-routing.module';
 import { LoginComponent } from './login/login.component';
 import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
 import { ClientesComponent } from './clientes/clientes.component';
-import { ClientesFormularioComponent } from './clientes/formulario/formulario.component';
+import { ClienteFormularioComponent } from './clientes/formulario/formulario.component';
 import { ClientesListadoComponent } from './clientes/listado/listado.component';
 import { GestionNavegadorComponent } from './gestion.component';
 import { EmpleadosComponent } from './empleados/empleados.component';
@@ -14,6 +14,9 @@ import { ProductosComponent } from './productos/productos.component';
 import { ProductosListadoComponent } from './productos/listado/listado.component';
 import { ProductoFormularioComponent } from './productos/formulario/formulario.component';
 import { CommonAssetsModule } from 'src/assets/common/common.module';
+import { ProveedoresComponent } from './proveedores/proveedores.component';
+import { ProveedoresListadoComponent } from './proveedores/listado/listado.component';
+import { ProveedorFormularioComponent } from './proveedores/formulario/formulario.component';
 
 
 @NgModule({
@@ -21,7 +24,7 @@ import { CommonAssetsModule } from 'src/assets/common/common.module';
     LoginComponent,
     GestionNavegadorComponent,
     ClientesComponent,
-    ClientesFormularioComponent,
+    ClienteFormularioComponent,
     ClientesListadoComponent,
     EmpleadosComponent,
     EmpleadoFormularioComponent,
@@ -29,6 +32,9 @@ import { CommonAssetsModule } from 'src/assets/common/common.module';
     ProductosComponent,
     ProductosListadoComponent,
     ProductoFormularioComponent,
+    ProveedoresComponent,
+    ProveedoresListadoComponent,
+    ProveedorFormularioComponent
   ],
   imports: [
     CommonAssetsModule,
@@ -43,7 +49,8 @@ import { CommonAssetsModule } from 'src/assets/common/common.module';
   ],
   entryComponents: [
     EmpleadoFormularioComponent,
-    ProductoFormularioComponent
+    ProductoFormularioComponent,
+    ProveedorFormularioComponent
   ], 
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}

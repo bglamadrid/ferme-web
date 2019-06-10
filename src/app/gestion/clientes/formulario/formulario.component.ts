@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './formulario.component.html',
   styleUrls: ['../../gestion-formularios.css']
 })
-export class ClientesFormularioComponent implements OnInit {
+export class ClienteFormularioComponent implements OnInit {
 
   constructor() { }
 

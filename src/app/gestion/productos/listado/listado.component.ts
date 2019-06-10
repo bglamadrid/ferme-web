@@ -12,8 +12,8 @@ import { ProductosHttpService } from 'src/http-services/productos.service';
 })
 export class ProductosListadoComponent  {
 
-  @Output() public editarProducto: EventEmitter<Producto>;
-  @Output() public borrarProducto: EventEmitter<Producto>;
+  @Output() public editar: EventEmitter<Producto>;
+  @Output() public borrar: EventEmitter<Producto>;
   
   @ViewChild("tabla") public tabla: MatTable<Producto>;
   public displayedColumns: string[];
@@ -22,16 +22,16 @@ export class ProductosListadoComponent  {
     
   ) { 
     this.displayedColumns = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
-    this.editarProducto = new EventEmitter();
-    this.borrarProducto = new EventEmitter();
+    this.editar = new EventEmitter();
+    this.borrar = new EventEmitter();
   }
 
   public onClickVerProducto(prod: Producto) {
-    this.editarProducto.emit(prod);
+    this.editar.emit(prod);
   }
 
   public onClickBorrarProducto(prod: Producto) {
-    this.borrarProducto.emit(prod);
+    this.borrar.emit(prod);
   }
 
   @Input() public busy$: Observable<boolean>;

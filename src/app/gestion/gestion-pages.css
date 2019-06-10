@@ -1,3 +1,7 @@
+* {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
 mat-spinner {
     width: 100vw;
     height: 100vh;

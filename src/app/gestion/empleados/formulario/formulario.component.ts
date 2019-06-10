@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable, of } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { Empleado } from 'src/models/Empleado';
-import { GestionSharedService } from '../../gestion-shared.service';
+import { GestionSharedHttpService } from '../../gestion-shared.service';
 import { EmpleadosHttpService } from 'src/http-services/empleados.service';
 import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/assets/common/Constants';
 
@@ -33,7 +33,7 @@ export class EmpleadoFormularioComponent implements OnInit {
     private self: MatDialogRef<EmpleadoFormularioComponent>,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private sharedSvc: GestionSharedService,
+    private sharedSvc: GestionSharedHttpService,
     private httpSvc: EmpleadosHttpService
   ) { 
     this.showSpinner$ = of(true);

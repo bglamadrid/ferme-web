@@ -11,8 +11,8 @@
         <app-productos-listado #listado 
           [Productos]="productos$ | async"
           [busy$]="busy$"
-          (editarProducto)="onClickEditarProducto($event)"
-          (borrarProducto)="onClickBorrarProducto($event)">
+          (editar)="onClickEditarProducto($event)"
+          (borrar)="onClickBorrarProducto($event)">
         </app-productos-listado>
       </div>
       <app-listado-acciones

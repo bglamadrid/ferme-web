@@ -8,4 +8,6 @@ export class Producto {
     public idTipoProducto: number;
     public codigoProducto?: string;
     public nombreTipoProducto?: string;
+    public idFamiliaProducto?: number;
+    public descripcionFamiliaProducto?: string;
 }

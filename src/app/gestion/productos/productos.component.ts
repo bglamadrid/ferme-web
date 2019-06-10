@@ -91,6 +91,7 @@ export class ProductosComponent implements OnInit {
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Producto '"+prod.nombreProducto+"' eliminado.");
+          this.cargarProductos();
         } else {
           this.snackBar.open("Hubo un problema al borrar el producto.");
         }
