@@ -13,7 +13,7 @@ mat-sidenav-container {
 .header {
     flex-grow: 0;
     background: maroon; 
-    height: 2em;
+    height: 4em;
 }
 
 mat-sidenav-container {
@@ -39,6 +39,6 @@ mat-sidenav-content {
     grid-template-areas: "a";
     overflow: hidden;
 }
-.pagina {   
+.pagina {
     grid-area: a;
 }
