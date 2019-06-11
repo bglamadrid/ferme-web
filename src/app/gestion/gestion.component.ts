@@ -5,6 +5,15 @@ import { FERME_GESTION_ROUTES } from './gestion.routes';
 export interface NavegadorModuloItem {
   path: string;
   texto: string;
+  icono: string;
+}
+
+export const MODULOS_ICONOS = {
+  clientes: "person",
+  empleados: "work",
+  productos: "layers",
+  proveedores: "rv_hookup",
+  ventas: "attach_money"
 }
 
 @Component({
@@ -41,7 +50,8 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
     let protoModulos: NavegadorModuloItem[] = FERME_GESTION_ROUTES.map((route) => {
       const protoModulo: NavegadorModuloItem = {
         path: route.path,
-        texto: undefined
+        texto: this.routePathToText(route.path),
+        icono: MODULOS_ICONOS[route.path]
       };
       return protoModulo;
     });
