@@ -1,30 +1,30 @@
 <table mat-table #tabla class="full-width">
-  <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let empleado" class="left"> 
-      {{empleado.nombreCompletoPersona}}
+  <ng-container matColumnDef="numero">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let venta" class="left"> 
+      {{venta.idVenta}}
     </td>
   </ng-container>
-  <ng-container matColumnDef="rut">
-    <th mat-header-cell *matHeaderCellDef> Rut </th>
-    <td mat-cell *matCellDef="let empleado" class="left"> 
-      {{empleado.rutPersona}}
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+    <td mat-cell *matCellDef="let venta" class="left"> 
+      {{venta.fechaVenta}}
     </td>
   </ng-container>
   <ng-container matColumnDef="acciones">
     <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell *matCellDef="let empleado">
+    <td mat-cell *matCellDef="let venta">
       <div class="acciones">
         <button mat-icon-button 
-          color="primary" class="details"
+          color="primary" class="details" 
           [disabled]="busy$ | async" 
-          (click)="onClickVerEmpleado(empleado)">
+          (click)="onClickVerVenta(venta)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button 
-          color="warn" class="delete"
+          color="warn" class="delete" 
           [disabled]="busy$ | async" 
-          (click)="onClickBorrarEmpleado(empleado)">
+          (click)="onClickBorrarVenta(venta)">
           <mat-icon>delete</mat-icon>
         </button>
       </div> 

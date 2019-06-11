@@ -14,7 +14,7 @@ export interface ProductoFormularioDialogData {
 }
 
 @Component({
-  selector: 'app-productos-formulario',
+  selector: 'app-producto-formulario',
   templateUrl: './formulario.component.html',
   styleUrls: ['../../gestion-formularios.css']
 })
@@ -66,6 +66,8 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
   public get stockActual() { return this.productoForm.get("stockActual"); }
   public get stockCritico() { return this.productoForm.get("stockCritico"); }
   public get descripcion() { return this.productoForm.get("descripcion"); }
+
+  public get esNuevo() { return !isNaN(this._idProducto); }
 
   ngOnInit() {
     this.familias$ = this.sharedSvc.familiasProducto();

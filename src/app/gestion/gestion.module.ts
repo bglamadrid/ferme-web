@@ -17,6 +17,10 @@ import { CommonAssetsModule } from 'src/assets/common/common.module';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { ProveedoresListadoComponent } from './proveedores/listado/listado.component';
 import { ProveedorFormularioComponent } from './proveedores/formulario/formulario.component';
+import { VentaFormularioComponent } from './ventas/formulario/formulario.component';
+import { VentasComponent } from './ventas/ventas.component';
+import { VentasListadoComponent } from './ventas/listado/listado.component';
+import { AgregarProductoVentaComponent } from './ventas/formulario/agregar-producto/agregar-producto.component';
 
 
 @NgModule({
@@ -34,7 +38,11 @@ import { ProveedorFormularioComponent } from './proveedores/formulario/formulari
     ProductoFormularioComponent,
     ProveedoresComponent,
     ProveedoresListadoComponent,
-    ProveedorFormularioComponent
+    ProveedorFormularioComponent,
+    VentasComponent,
+    VentasListadoComponent,
+    VentaFormularioComponent,
+    AgregarProductoVentaComponent
   ],
   imports: [
     CommonAssetsModule,
@@ -50,7 +58,9 @@ import { ProveedorFormularioComponent } from './proveedores/formulario/formulari
   entryComponents: [
     EmpleadoFormularioComponent,
     ProductoFormularioComponent,
-    ProveedorFormularioComponent
+    ProveedorFormularioComponent,
+    VentaFormularioComponent,
+    AgregarProductoVentaComponent
   ], 
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}

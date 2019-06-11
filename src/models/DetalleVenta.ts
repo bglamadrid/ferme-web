@@ -1,7 +1,9 @@
 export class DetalleVenta {
     public idDetalleVenta: number;
+    public idVenta: number;
+    public montoDetalleVenta: number;
     public idProducto: number;
     public unidadesProducto: number;
-    public montoDetalleVenta: number;
-    public idVenta: number;
+    public nombreProducto: string;
+    public precioProducto: number;
 }

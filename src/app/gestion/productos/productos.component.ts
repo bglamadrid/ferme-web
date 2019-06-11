@@ -52,7 +52,7 @@ export class ProductosComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(ProductoFormularioComponent, {
       width: "40rem",
-      height: "40rem"
+      height: "36rem"
     }).afterClosed().subscribe(
       (nuevo: Producto) => {
         if (nuevo) {
@@ -72,7 +72,7 @@ export class ProductosComponent implements OnInit {
 
     this.dialog.open(ProductoFormularioComponent, {
       width: "40rem",
-      height: "40rem",
+      height: "36rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: Producto) => {

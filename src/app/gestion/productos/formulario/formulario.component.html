@@ -1,5 +1,5 @@
 <section>
-  <h2>{{ idEmpleado? 'Actualizar' : 'Nuevo' }} Producto</h2>
+  <h2>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Producto</h2>
 
   <ng-template *ngIf="(showSpinner$ | async) || !(tipos$ | async)">
     <div class="spinner-container">
@@ -26,7 +26,7 @@
     </mat-form-field>
 
     <mat-form-field style="grid-area: c">
-      <mat-select placeholder="Familias" 
+      <mat-select placeholder="Familia de Producto" 
         formControlName="familia">
         <mat-option *ngFor="let familia of (familias$ | async)" 
           [value]="familia.idFamiliaProducto">
@@ -36,7 +36,7 @@
     </mat-form-field>
 
     <mat-form-field style="grid-area: d">
-      <mat-select placeholder="Tipo" 
+      <mat-select placeholder="Tipo de Producto" 
         formControlName="tipo">
         <mat-option *ngFor="let tipo of (tipos$ | async)" 
           [value]="tipo.idTipoProducto">

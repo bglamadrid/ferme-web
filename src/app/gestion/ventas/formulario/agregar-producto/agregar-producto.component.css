@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+}
+
+.mat-column-nombre {
+    flex: 1 0 18em;
+    padding: 0px !important;
+    min-width: 18em;
+    max-width: 20em;
+}
+
+.mat-column-precio {
+    flex: 1 0 6em;
+    padding: 0px !important;
+    min-width: 6em;
+}

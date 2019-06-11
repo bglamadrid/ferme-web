@@ -1,0 +1,128 @@
+<section class="overflow-y">
+  <h2>Agregar Productos</h2>
+
+  <form [formGroup]="productoForm" 
+    style="grid-template-areas:   
+      'a' 
+      'b' 
+      'c'
+      'd'
+      'e'">
+
+    <h3>Productos disponibles</h3>
+    <mat-form-field style="grid-area: a">
+      <mat-select placeholder="Familia de Producto" 
+        formControlName="familia">
+        <mat-option *ngFor="let fml of (familias$ | async)" 
+          [value]="fml.idFamiliaProducto">
+          {{ fml.descripcionFamiliaProducto }}
+        </mat-option>
+      </mat-select>
+      <button matSuffix mat-icon-button *ngIf="familia.value" 
+        aria-label="Limpiar" (click)="onClickLimpiarFamilia($event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: b">
+      <mat-select placeholder="Tipo de Producto" 
+        formControlName="tipo">
+        <mat-option *ngFor="let tp of (tipos$ | async)" 
+          [value]="tp.idTipoProducto">
+          {{ tp.nombreTipoProducto }}
+        </mat-option>
+      </mat-select>
+      <button matSuffix mat-icon-button *ngIf="tipo.value" 
+        aria-label="Limpiar" (click)="onClickLimpiarTipo($event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <ng-container *ngIf="!(productos$ | async); then loading; else tabla"></ng-container>
+    <ng-template #loading>
+      <app-centered-mat-spinner></app-centered-mat-spinner>
+    </ng-template>
+
+    <ng-template #tabla>
+      <mat-form-field style="grid-area: c">
+        <input matInput placeholder="Filtrar Productos" formControlName="filtro" />
+      </mat-form-field>
+
+      <div class="overflow-y" style="height: 10em">
+        <table mat-table #tablaProductos style="grid-area: d" [dataSource]="productos$ | async">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let producto" class="left"> 
+              {{producto.nombreProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <td mat-cell *matCellDef="let producto" class="left"> 
+              ${{producto.precioProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let producto">
+              <div class="acciones">
+                <button mat-icon-button color="primary" 
+                  (click)="onClickIncluirProducto(producto)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div> 
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </ng-template>
+  </form>
+    
+  <h3>Productos Seleccionados</h3>
+  <div class="overflow-y" style="height: 10em">
+    <table mat-table #tablaProductosAgregar style="grid-area: e">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let producto" class="left"> 
+          {{producto.nombreProducto}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef> Precio </th>
+        <td mat-cell *matCellDef="let producto" class="left"> 
+          ${{producto.precioProducto}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let i=index">
+          <div class="acciones">
+            <button mat-icon-button color="warn" 
+              (click)="onClickRetirarProducto(i)">
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div> 
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+    
+  <div class="acciones">
+    <button mat-raised-button color="primary" 
+      [disabled]="!(hayProductos$ | async)" 
+      (click)="onClickAceptar()">
+      Aceptar
+    </button>
+
+    <button mat-raised-button 
+      (click)="onClickCancelar()">
+      Cancelar
+    </button>
+  </div>
+</section>
