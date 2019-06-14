@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RootHttpService } from '../../http-services/root.service';
+import { RootHttpService } from './root.service';
 import { Observable } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { HttpClient, HttpParams } from '@angular/common/http';

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FERME_GESTION_ROUTES } from './gestion.routes';
+import { FERME_GESTION_ROUTES } from '../../routing/gestion.routes';
     
 export interface NavegadorModuloItem {
   path: string;
@@ -21,11 +21,9 @@ export const MODULOS_ICONOS = {
   templateUrl: './gestion.component.html',
   styleUrls: ['./gestion.component.css']
 })
-export class GestionNavegadorComponent implements OnInit, OnDestroy {
+export class GestionNavegadorComponent implements OnInit {
 
   public modulos: NavegadorModuloItem[];
-
-  private _routerParamsSub: Subscription;
 
   constructor(
     // private router: Router,
@@ -40,13 +38,7 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
     this.modulos = this.generarListadoModulos();
   }
 
-  ngOnDestroy() {
-    if (this._routerParamsSub) {
-      this._routerParamsSub.unsubscribe();
-    }
-  }
-
-  private generarListadoModulos() {
+  private generarListadoModulos(): NavegadorModuloItem[] {
     let protoModulos: NavegadorModuloItem[] = FERME_GESTION_ROUTES.map((route) => {
       const protoModulo: NavegadorModuloItem = {
         path: route.path,
@@ -56,9 +48,6 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
       return protoModulo;
     });
 
-    protoModulos.forEach((route) => {
-      route.texto = this.routePathToText(route.path);
-    });
     return protoModulos;
   }
 

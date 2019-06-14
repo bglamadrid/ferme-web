@@ -5,7 +5,7 @@ import { TipoProducto } from 'src/models/TipoProducto';
 import { MatDialogRef, MatTable } from '@angular/material';
 import { Producto } from 'src/models/Producto';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { GestionSharedHttpService } from 'src/app/gestion/gestion-shared.service';
+import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 import { ProductosHttpService } from 'src/http-services/productos.service';
 
 @Component({

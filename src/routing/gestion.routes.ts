@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { ClientesComponent } from './clientes/clientes.component';
-import { EmpleadosComponent } from './empleados/empleados.component';
-import { ProductosComponent } from './productos/productos.component';
-import { ProveedoresComponent } from './proveedores/proveedores.component';
-import { VentasComponent } from './ventas/ventas.component';
+import { ClientesComponent } from '../app/gestion/clientes/clientes.component';
+import { EmpleadosComponent } from '../app/gestion/empleados/empleados.component';
+import { ProductosComponent } from '../app/gestion/productos/productos.component';
+import { ProveedoresComponent } from '../app/gestion/proveedores/proveedores.component';
+import { VentasComponent } from '../app/gestion/ventas/ventas.component';
 
 export const FERME_GESTION_ROUTES: Routes = [
     { path: "clientes", component: ClientesComponent },

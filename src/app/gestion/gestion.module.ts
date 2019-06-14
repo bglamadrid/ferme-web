@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { GestionRoutingModule } from './gestion-routing.module';
+import { GestionRoutingModule } from '../../routing/gestion-routing.module';
 import { LoginComponent } from './login/login.component';
 import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
 import { ClientesComponent } from './clientes/clientes.component';
@@ -22,6 +22,10 @@ import { VentasComponent } from './ventas/ventas.component';
 import { VentasListadoComponent } from './ventas/listado/listado.component';
 import { AgregarProductoVentaComponent } from './ventas/formulario/agregar-producto/agregar-producto.component';
 
+
+const SNACKBAR_DEFAULTS = {
+  duration: 3000
+};
 
 @NgModule({
   declarations: [
@@ -63,7 +67,8 @@ import { AgregarProductoVentaComponent } from './ventas/formulario/agregar-produ
     AgregarProductoVentaComponent
   ], 
   providers: [
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}
+    GestionRoutingModule,
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS}
   ]
 })
 export class GestionModule { }

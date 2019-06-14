@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { LandingComponent } from './landing/landing.component';
-import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
+import { LandingComponent } from '../app/landing/landing.component';
+import { CompraDashboardComponent } from '../app/compra/dashboard/dashboard.component';
 
 export const FERME_ROUTES: Routes = [
     { path: "", redirectTo: "inicio", pathMatch: "full" },

@@ -3,7 +3,7 @@ import { Producto } from 'src/models/Producto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
-import { GestionSharedHttpService } from '../../gestion-shared.service';
+import { GestionSharedHttpService } from '../../../../http-services/gestion-shared.service';
 import { TipoProducto } from 'src/models/TipoProducto';
 import { ProductosHttpService } from 'src/http-services/productos.service';
 import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/assets/common/Constants';
