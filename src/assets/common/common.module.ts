@@ -5,7 +5,7 @@ import { ListadoAccionesComponent } from './listado-acciones/listado-acciones.co
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,9 @@ import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModu
     MatListModule,
     MatButtonModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule
   ], 
   exports: [
     CommonModule,
@@ -37,6 +39,8 @@ import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModu
     MatButtonModule,
     MatDialogModule,
     MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
     ListadoAccionesComponent,
     CenteredMatSpinnerComponent
   ]

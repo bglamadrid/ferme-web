@@ -1,0 +1,39 @@
+<div class="pagina">
+  <mat-card>
+    <mat-card-title>Ingresar</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="loginForm" [hidden]="!(cargos$ | async)"
+        style="grid-template-areas:   
+          'a' 
+          'b'">
+        <mat-form-field style="grid-area: a">
+          <input matInput placeholder="Nombre Completo" formControlName="nombre" />
+        </mat-form-field>
+
+        <mat-form-field style="grid-area: b">
+          <input matInput placeholder="Rut" formControlName="rut" />
+        </mat-form-field>
+      </form>
+
+      <ng-container *ngIf="(showSpinner$ | async); then #loading"></ng-container>
+      <ng-template #loading>
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner>
+        </div>
+      </ng-template>
+        
+      <div class="acciones">
+        <button mat-raised-button color="primary" 
+          [disabled]="loginForm.invalid"
+          (click)="onClickAceptar()">
+          Aceptar
+        </button>
+
+        <button mat-raised-button 
+          (click)="onClickCancelar()">
+          Cancelar
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
