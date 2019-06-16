@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "mock-server": "json-server --port 8082 --routes 'src/json-server/routes.json' 'src/json-server/db.json'"
   },
   "private": true,
   "dependencies": {
