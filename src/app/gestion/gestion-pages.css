@@ -15,26 +15,17 @@ mat-spinner {
     overflow: hidden;
 }
 
-.contenedor > .overflow {
+.contenedor > .pagina {
+    justify-self: flex-start;
+    flex-grow: 1;
     width: 100%;
     max-width: 100%;
-    flex-grow: 1;
 }
 
-.acciones {
-    display: flex;
+app-listado-acciones {
+    flex-grow: 0;
     height: 4em;
+    display: flex;
     width: 100%;
     background: whitesmoke;
-}
-
-.accion {
-    display: flex;
-    align-items: center; 
-    padding: 0em 2em;
-}
-
-.accion > button {
-    width: 20em;
-    height: 3em;
 }

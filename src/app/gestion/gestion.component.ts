@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { FERME_GESTION_ROUTES } from '../../routing/gestion.routes';
+import { AuthService } from 'src/services/auth.service';
+import { Usuario } from 'src/models/Usuario';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
     
 export interface NavegadorModuloItem {
   path: string;
@@ -24,14 +27,15 @@ export const MODULOS_ICONOS = {
 export class GestionNavegadorComponent implements OnInit {
 
   public modulos: NavegadorModuloItem[];
+  public mensajeBienvenida: string;
+
 
   constructor(
-    // private router: Router,
-    // private route: ActivatedRoute
+    private authSvc: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) { 
-    // this.routerParamsSub = this.route.params.subscribe((params) => {
-    //   console.log(this.route);
-    // });
+    this.mensajeBienvenida = "Usuario Invitado";
   }
 
   ngOnInit() {
@@ -57,6 +61,11 @@ export class GestionNavegadorComponent implements OnInit {
    */
   public routePathToText(path: string): string {
     return path.split("_").map((palabra) => { return palabra.charAt(0).toUpperCase()+palabra.substring(1); }).join(" ");
+  }
+
+  public onClickCerrarSesion(): void {
+    this.snackBar.open("Su sesión ha sido cerrada.");
+    this.router.navigate(["/"]);
   }
 
 }

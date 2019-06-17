@@ -1,5 +1,8 @@
-export class Usuario {
+import { Persona } from './Persona';
+
+export class Usuario extends Persona {
     public idUsuario: number;
     public nombreUsuario: string;
     public fechaCreacionUsuario: string;
+    public sesion?: string;
 }

@@ -22,12 +22,21 @@ export class ProductosHttpService extends RootHttpService {
   }
 
   public listarProductosByTipo(idTipo: number): Observable<Producto[]> {
-    const queryParams: HttpParams = new HttpParams().append("tipo", String(idTipo));
-    return this.http.get<Producto[]>(this.baseURI, { params: queryParams });
+    return this.listarProductosByFilters({ tipo: idTipo });
   }
 
   public listarProductosByFamilia(idFamilia: number): Observable<Producto[]> {
-    const queryParams: HttpParams = new HttpParams().append("familia", String(idFamilia));
+    return this.listarProductosByFilters({ familia: idFamilia });
+  }
+
+  public listarProductosByFilters(filtros: any): Observable<Producto[]> {
+    let queryParams: HttpParams = new HttpParams();
+    for (const key in filtros) {
+      if (filtros.hasOwnProperty(key)) {
+        const element = filtros[key];
+        queryParams = queryParams.append(key, String(element));
+      }
+    }
     return this.http.get<Producto[]>(this.baseURI, { params: queryParams });
   }
 

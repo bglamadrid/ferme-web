@@ -16,7 +16,7 @@ export interface EmpleadoFormularioDialogData {
 @Component({
   selector: 'app-empleados-formulario',
   templateUrl: './formulario.component.html',
-  styleUrls: ['../../gestion-formularios.css']
+  styleUrls: ['../../../../assets/formularios.css']
 })
 export class EmpleadoFormularioComponent implements OnInit {
 

@@ -10,12 +10,6 @@ mat-sidenav-container {
     width: 100%;
 }
 
-.header {
-    flex-grow: 0;
-    background: maroon; 
-    height: 4em;
-}
-
 mat-sidenav-container {
     flex-grow: 1;
 }
@@ -27,10 +21,10 @@ mat-sidenav {
 mat-nav-list {
     padding: 0;
 }
-mat-nav-list a {
+mat-nav-list * {
     color: white;
 }
-mat-nav-list a mat-icon {
+mat-nav-list mat-icon {
     margin-right: 1em;
 }
 
@@ -40,5 +34,41 @@ mat-sidenav-content {
     overflow: hidden;
 }
 .pagina {
-    grid-area: a;
+    display: flex;
+    flex-direction: column;
+}
+.cabecera {
+    flex-grow: 0;
+    height: 4em;
+    background: maroon;
+    display: flex;
+}
+.cabecera * {
+    color: white;
+}
+.cabecera > * {
+    padding: 0;
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+}
+.cabecera-contenido {
+    flex-grow: 1;
+    font-size: 1.5rem;
+}
+.cabecera-cerrar-sesion {
+    flex-grow: 0;
+    min-width: 5em;
+    width: 5em;
+    padding-top: 0;
+    height: 100%;
+}
+.cabecera-cerrar-sesion * {
+    font-size: 2.25rem;
+    margin: 0;
+}
+
+.contenido {
+    flex-grow: 1;
 }

@@ -15,13 +15,13 @@
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let empleado">
       <div class="acciones">
-        <button mat-icon-button 
+        <button mat-button mat-icon-button 
           color="primary" class="details"
           [disabled]="busy$ | async" 
           (click)="onClickVerEmpleado(empleado)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button 
+        <button mat-button mat-icon-button 
           color="warn" class="delete"
           [disabled]="busy$ | async" 
           (click)="onClickBorrarEmpleado(empleado)">

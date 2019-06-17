@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RootHttpService } from 'src/http-services/root.service';
 import { Venta } from 'src/models/Venta';
+import { DetalleVenta } from 'src/models/DetalleVenta';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class VentasHttpService extends RootHttpService {
 
   public listarVentas(): Observable<Venta[]> {
     return this.http.get<Venta[]>(this.baseURI);
+  }
+
+  public listarDetalles(venta: Venta): Observable<DetalleVenta[]> {
+    return this.http.post<DetalleVenta[]>(this.baseURI + "/detalles", venta);
   }
 
   public guardarVenta(prod: Venta): Observable<number> {

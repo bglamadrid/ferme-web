@@ -8,4 +8,8 @@ export class Venta {
     public detallesVenta: DetalleVenta[];
     public idEmpleado: number;
     public idCliente: number;
+    public nombreCompletoPersonaEmpleado?: string;
+    public rutPersonaEmpleado?: string;
+    public nombreCompletoPersonaCliente?: string;
+    public rutPersonaCliente?: string;
 }

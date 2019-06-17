@@ -1,5 +1,4 @@
 <div class="contenedor">
-  <div class="header"></div>
   <mat-sidenav-container>
     <mat-sidenav opened mode="side" role="navigation">
       <mat-nav-list role="navigation-links">
@@ -13,7 +12,18 @@
     </mat-sidenav>
     <mat-sidenav-content role="main">
       <div class="pagina">
-        <router-outlet></router-outlet>
+        <div class="cabecera">
+          <div class="cabecera-contenido">
+            {{ mensajeBienvenida }}
+          </div>
+          <button mat-button class="cabecera-cerrar-sesion"
+            (click)="onClickCerrarSesion()">
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </div>
+        <div class="contenido">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

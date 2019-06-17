@@ -9,9 +9,9 @@
 
   <form [formGroup]="ventaForm" [hidden]="!((empleados$ | async) && (clientes$ | async))"
     style="grid-template-areas:   
-      'a a a b b b' 
-      'c c c d d d' 
-      'e e e e e e'">
+      'a b' 
+      'c d' 
+      'e e'">
     <mat-form-field style="grid-area: a">
       <mat-select placeholder="Tipo de Venta" 
         formControlName="tipo">
@@ -48,67 +48,69 @@
       </mat-select>
     </mat-form-field>
 
-    <div class="productos" style="grid-area: e">
-      <div class="cabecera">
-        <h3>Productos de esta Venta </h3>
-        <button mat-raised-button color="primary"
-          (click)="onClickAgregarProductos()">
-          Agregar
-        </button>
-      </div>
-      <div class="overflow-y" style="height: 10em">
-        <table mat-table #tablaDetalles>
-          <ng-container matColumnDef="producto">
-            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-            <td mat-cell *matCellDef="let detalle" class="left"> 
-              {{detalle.nombreProducto}}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="precio">
-            <th mat-header-cell *matHeaderCellDef> Precio </th>
-            <td mat-cell *matCellDef="let detalle" class="left"> 
-              ${{detalle.precioProducto}}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef> Cantidad </th>
-            <td mat-cell *matCellDef="let i=index" class="left"> 
-              <div class="acciones">
-                <button mat-icon-button class="cantidad"
-                  [disabled]="busy$ | async" 
-                  (click)="onClickIncrementarCantidadProducto(i)">
-                  <mat-icon>add</mat-icon>
-                </button>
-                {{detalle.unidadesProducto}}
-                <button mat-icon-button class="cantidad"
-                  [disabled]="busy$ | async" 
-                  (click)="onClickReducirCantidadProducto(i)">
-                  <mat-icon>remove</mat-icon>
-                </button>
-              </div>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let detalle">
-              <div class="acciones">
-                <button mat-icon-button color="warn" class="delete"
-                  [disabled]="busy$ | async" 
-                  (click)="onClickBorrarDetalle(detalle)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div> 
-            </td>
-          </ng-container>
-        
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </div>
-    </div>
+    <mat-card style="grid-area: e">
+      <mat-card-content class="productos">
+        <div class="cabecera">
+          <h3>Productos de esta Venta</h3>
+          <button mat-raised-button color="primary"
+            (click)="onClickAgregarProductos()">
+            Agregar
+          </button>
+        </div>
+        <div class="tabla-detalles overflow-y" style="height: 15em">
+          <table mat-table #tablaDetalles [dataSource]="detallesVenta$ || async">
+            <ng-container matColumnDef="producto">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let detalle" class="left"> 
+                {{detalle.nombreProducto}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Precio </th>
+              <td mat-cell *matCellDef="let detalle" class="left"> 
+                ${{detalle.precioProducto}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+              <td mat-cell *matCellDef="let detalle; let i=index" class="left"> 
+                <div class="acciones">
+                  <button mat-button mat-icon-button class="cantidad"
+                    [disabled]="busy$ | async" 
+                    (click)="onClickIncrementarCantidadProductoDetalle(i)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                  {{detalle.unidadesProducto}}
+                  <button mat-button mat-icon-button class="cantidad"
+                    [disabled]="(busy$ | async) || (detalle.unidadesProducto < 2)" 
+                    (click)="onClickReducirCantidadProductoDetalle(i)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let i=index">
+                <div class="acciones">
+                  <button mat-button mat-icon-button color="warn" class="delete"
+                    [disabled]="busy$ | async" 
+                    (click)="onClickBorrarDetalle(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div> 
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </form>
     
-  <div class="acciones">
+  <div style="margin-top: 1em" class="acciones">
     <button mat-raised-button color="primary" 
       [disabled]="ventaForm.invalid"
       (click)="onClickAceptar()">

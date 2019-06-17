@@ -1,13 +1,17 @@
-table {
-    width: 100%;
+h2 {
+    margin-top: 0;
+}
+
+form {
+    grid-gap: 0.5em 1em;
 }
 
 .productos {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 1em;
+    grid-gap: 0;
     justify-content: center;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .productos > .cabecera {
@@ -16,6 +20,14 @@ table {
     align-items: baseline;
 }
 
+table {
+    width: 100%;
+}
+
+.mat-column-cantidad > .acciones {
+    align-items: center;
+    align-content: stretch;
+}
 .mat-column-acciones {
     flex: 0 0 8em;
     padding: 0px !important;
@@ -28,6 +40,7 @@ td > .acciones {
     display: flex;
     justify-content: space-between;
     justify-items: center;
+    align-items: stretch;
 }
 td > .acciones > button {
     padding: 0 0.2em;

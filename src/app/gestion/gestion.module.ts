@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { GestionRoutingModule } from '../../routing/gestion-routing.module';
-import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
 import { ClientesComponent } from './clientes/clientes.component';
 import { ClienteFormularioComponent } from './clientes/formulario/formulario.component';
 import { ClientesListadoComponent } from './clientes/listado/listado.component';
@@ -49,11 +49,10 @@ const SNACKBAR_DEFAULTS = {
   imports: [
     CommonAssetsModule,
     GestionRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
     MatSidenavModule,
     MatTableModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule
   ],
   entryComponents: [
     EmpleadoFormularioComponent,

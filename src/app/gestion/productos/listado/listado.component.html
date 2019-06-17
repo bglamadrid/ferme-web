@@ -39,13 +39,13 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let producto">
       <div class="acciones">
-        <button mat-icon-button 
+        <button mat-button mat-icon-button 
           color="primary" class="details"
           [disabled]="busy$ | async" 
           (click)="onClickVerProducto(producto)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button 
+        <button mat-button mat-icon-button 
           color="warn" class="delete" 
           [disabled]="busy$ | async" 
           (click)="onClickBorrarProducto(producto)">

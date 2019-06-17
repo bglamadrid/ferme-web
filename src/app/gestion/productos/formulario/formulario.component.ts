@@ -16,7 +16,7 @@ export interface ProductoFormularioDialogData {
 @Component({
   selector: 'app-producto-formulario',
   templateUrl: './formulario.component.html',
-  styleUrls: ['../../gestion-formularios.css']
+  styleUrls: ['../../../../assets/formularios.css']
 })
 export class ProductoFormularioComponent implements OnInit, OnDestroy {
 

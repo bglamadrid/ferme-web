@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,8 @@ import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModu
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -29,6 +32,8 @@ import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModu
   ], 
   exports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,

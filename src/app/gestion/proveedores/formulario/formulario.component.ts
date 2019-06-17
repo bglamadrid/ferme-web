@@ -15,7 +15,7 @@ export interface ProveedorFormularioDialogData {
 @Component({
   selector: 'app-proveedores-formulario',
   templateUrl: './formulario.component.html',
-  styleUrls: ['../../gestion-formularios.css']
+  styleUrls: ['../../../../assets/formularios.css']
 })
 export class ProveedorFormularioComponent implements OnInit {
 

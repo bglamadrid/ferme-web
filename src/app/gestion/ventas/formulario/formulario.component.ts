@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog } from '@angular/material';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Venta } from 'src/models/Venta';
 import { VentasHttpService } from 'src/http-services/ventas.service';
 import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/assets/common/Constants';
@@ -31,8 +31,8 @@ export const TIPOS_VENTA: TipoVenta[] = [
   selector: 'app-venta-formulario',
   templateUrl: './formulario.component.html',
   styleUrls: [
-    '../../gestion-formularios.css',
-    'formulario.component.css'
+    '../../../../assets/formularios.css',
+    './formulario.component.css'
   ]
 })
 export class VentaFormularioComponent implements OnInit {
@@ -50,8 +50,10 @@ export class VentaFormularioComponent implements OnInit {
   public displayedColumns: string[];
 
   public fechaVenta: string;
-  public detallesVenta: DetalleVenta[];
+  public detallesVenta$: Observable<DetalleVenta[]>;
   public subtotalVenta: number;
+
+  private _detallesVenta: DetalleVenta[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: VentaFormularioDialogData,
@@ -67,7 +69,8 @@ export class VentaFormularioComponent implements OnInit {
     this.tipos$ = of(TIPOS_VENTA);
 
     this.fechaVenta = (new Date()).toLocaleDateString();
-    this.detallesVenta = [];
+    this._detallesVenta = [];
+    this.detallesVenta$ = of([]);
     this.subtotalVenta = 0;
     this.displayedColumns = [ "producto", "precio", "cantidad", "acciones" ];
 
@@ -78,8 +81,8 @@ export class VentaFormularioComponent implements OnInit {
     });
 
     if (this.dialogData) {
-      const prov: Venta = this.dialogData.venta;
-      if (prov) { this.cargarVenta(prov); }
+      const vnt: Venta = this.dialogData.venta;
+      if (vnt) { this.cargarVenta(vnt); }
     }
   }
 
@@ -92,14 +95,14 @@ export class VentaFormularioComponent implements OnInit {
   ngOnInit() {
     this.clientes$ = this.clHttpSvc.listarClientes();
     this.empleados$ = this.empHttpSvc.listarEmpleados();
-
-    this.tablaDetalles.dataSource = of(this.detallesVenta);
   }
 
   private cargarVenta(vnt: Venta): void {
 
     this.ventaForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
+    console.log(vnt);
+    
 
     this._idVenta = vnt.idVenta;
 
@@ -111,11 +114,22 @@ export class VentaFormularioComponent implements OnInit {
     }
 
     this.fechaVenta = vnt.fechaVenta;
-    this.detallesVenta = vnt.detallesVenta;
     this.subtotalVenta = vnt.subtotalVenta;
 
-    this.showSpinner$ = of(false);
-    this.ventaForm.enable();
+    this.httpSvc.listarDetalles(vnt).subscribe(
+      (detalles: DetalleVenta[]) => {
+        this._detallesVenta = detalles;
+        this.detallesVenta$ = of(detalles);
+      }, 
+      err => {
+        console.log(err);
+        this.snackBar.open("Hubo un problema cargando los detalles de la venta.");
+      },
+      () => {
+        this.showSpinner$ = of(false);
+        this.ventaForm.enable();
+      }
+    )
   }
 
   private guardarVenta(vnt: Venta): void {
@@ -151,6 +165,8 @@ export class VentaFormularioComponent implements OnInit {
     })
       .beforeClosed().subscribe(
         (productos: Producto[]) => {
+          console.log(productos);
+          
           if (productos && productos.length > 0) {
             productos.forEach(
               (prod: Producto, i: number) => {
@@ -159,9 +175,12 @@ export class VentaFormularioComponent implements OnInit {
                 dtl.nombreProducto = prod.nombreProducto;
                 dtl.precioProducto = prod.precioProducto;
                 dtl.unidadesProducto = 1;
-                this.detallesVenta.push(dtl);
-                if (i === productos.length) {
-                  this.tablaDetalles.dataSource = of(this.detallesVenta);
+                console.log(dtl);
+                
+                this._detallesVenta.push(dtl);
+                if (i+1 === productos.length) {
+                  console.log(this._detallesVenta);
+                  this.detallesVenta$ = of(this._detallesVenta);
                 }
               }
             );
@@ -170,20 +189,25 @@ export class VentaFormularioComponent implements OnInit {
       );
   }
 
-  public onClickIncrementarCantidadProducto(index: number): void {
-    const detalle: DetalleVenta = this.detallesVenta[index];
+  public onClickIncrementarCantidadProductoDetalle(index: number): void {
+    const detalle: DetalleVenta = this._detallesVenta[index];
     if (detalle) {
       detalle.unidadesProducto++;
-      this.tablaDetalles.dataSource = of(this.detallesVenta);
+      this.detallesVenta$ = of(this._detallesVenta);
     }
   }
 
-  public onClickReducirCantidadProducto(index: number): void {
-    const detalle: DetalleVenta = this.detallesVenta[index];
+  public onClickReducirCantidadProductoDetalle(index: number): void {
+    const detalle: DetalleVenta = this._detallesVenta[index];
     if (detalle) {
       detalle.unidadesProducto--;
-      this.tablaDetalles.dataSource = of(this.detallesVenta);
+      this.detallesVenta$ = of(this._detallesVenta);
     }
+  }
+
+  public onClickBorrarDetalle(index: number) {
+    this._detallesVenta.splice(index, 1);
+    this.detallesVenta$ = of(this._detallesVenta);
   }
 
   public onClickAceptar(): void {
@@ -193,7 +217,7 @@ export class VentaFormularioComponent implements OnInit {
       fechaVenta: this.fechaVenta? this.fechaVenta: null,
       idCliente: this.cliente.value,
       idEmpleado: this.empleado.value,
-      detallesVenta: this.detallesVenta,
+      detallesVenta: this._detallesVenta,
       subtotalVenta: null
     };
 
