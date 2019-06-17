@@ -9,7 +9,9 @@ import { UsuariosHttpService } from 'src/http-services/usuarios.service';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  styleUrls: [
+    '../gestion-pages.css'
+  ]
 })
 export class UsuariosComponent implements OnInit {
 
@@ -90,6 +92,7 @@ export class UsuariosComponent implements OnInit {
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Usuario '"+usr.nombreCompletoPersona+"' eliminado.");
+          this.cargarUsuarios();
         } else {
           this.snackBar.open("Hubo un problema al borrar el empleado.");
         }

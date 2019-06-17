@@ -29,7 +29,7 @@ export class ProveedoresListadoComponent {
   }
 
   public onClickBorrarProveedor(prov: Proveedor) {
-    this.editar.emit(prov);
+    this.borrar.emit(prov);
   }
 
   @Input() public busy$: Observable<boolean>;

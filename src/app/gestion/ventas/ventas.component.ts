@@ -9,7 +9,9 @@ import { VentasHttpService } from 'src/http-services/ventas.service';
 @Component({
   selector: 'app-ventas',
   templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.css']
+  styleUrls: [
+    '../gestion-pages.css'
+  ]
 })
 export class VentasComponent implements OnInit {
 

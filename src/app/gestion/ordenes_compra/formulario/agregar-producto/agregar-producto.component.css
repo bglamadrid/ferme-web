@@ -1,0 +1,34 @@
+h2 {
+    margin-top: 0;
+}
+
+form {
+    grid-gap: 0;
+}
+
+h5 {
+    margin: 0 0 1em 1em;
+}
+
+.border {
+    border: 1px grey solid;
+}
+table {
+    width: 100%;
+}
+th, td {
+    padding-left: 1em
+}
+
+.mat-column-nombre {
+    flex: 1 0 18em;
+    padding: 0px;
+    min-width: 18em;
+    max-width: 20em;
+}
+
+.mat-column-precio {
+    flex: 1 0 6em;
+    padding: 0px;
+    min-width: 6em;
+}

@@ -9,7 +9,9 @@ import { EmpleadosHttpService } from 'src/http-services/empleados.service';
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
-  styleUrls: ['./empleados.component.css']
+  styleUrls: [
+    '../gestion-pages.css'
+  ]
 })
 export class EmpleadosComponent implements OnInit {
 
@@ -90,6 +92,7 @@ export class EmpleadosComponent implements OnInit {
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Empleado '"+emp.nombreCompletoPersona+"' eliminado.");
+          this.cargarEmpleados();
         } else {
           this.snackBar.open("Hubo un problema al borrar el empleado.");
         }

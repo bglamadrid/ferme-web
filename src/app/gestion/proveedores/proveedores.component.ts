@@ -9,7 +9,9 @@ import { ProveedoresHttpService } from 'src/http-services/proveedores.service';
 @Component({
   selector: 'app-proveedores',
   templateUrl: './proveedores.component.html',
-  styleUrls: ['./proveedores.component.css']
+  styleUrls: [
+    '../gestion-pages.css'
+  ]
 })
 export class ProveedoresComponent implements OnInit {
 

@@ -29,7 +29,7 @@ export class EmpleadosListadoComponent {
   }
 
   public onClickBorrarEmpleado(emp: Empleado) {
-    this.editar.emit(emp);
+    this.borrar.emit(emp);
   }
 
   @Input() public busy$: Observable<boolean>;

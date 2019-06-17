@@ -1,0 +1,48 @@
+h2 {
+    margin-top: 0;
+}
+
+form {
+    grid-gap: 0.5em 1em;
+}
+
+.productos {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.productos > .cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-column-cantidad > .acciones {
+    align-items: center;
+    align-content: stretch;
+}
+.mat-column-acciones {
+    flex: 0 0 8em;
+    padding: 0px !important;
+    width: 3em;
+    max-width: 3em;
+}
+
+td > .acciones {
+    padding: 0.1em !important;
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: stretch;
+}
+td > .acciones > button {
+    padding: 0 0.2em;
+    min-width: 2em !important;
+}
