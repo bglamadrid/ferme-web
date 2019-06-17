@@ -16,7 +16,8 @@ export const MODULOS_ICONOS = {
   empleados: "work",
   productos: "layers",
   proveedores: "rv_hookup",
-  ventas: "attach_money"
+  ventas: "attach_money",
+  usuarios: "card_membership"
 }
 
 @Component({
@@ -35,7 +36,7 @@ export class GestionNavegadorComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar
   ) { 
-    this.mensajeBienvenida = "Usuario Invitado";
+    this.mensajeBienvenida = "Conectado como: Invitado";
   }
 
   ngOnInit() {

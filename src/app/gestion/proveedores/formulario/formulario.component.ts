@@ -152,9 +152,9 @@ export class ProveedorFormularioComponent implements OnInit {
     this.self.close();
   }
 
-  @Input() public set Proveedor(emp: Proveedor) {
-    if (emp) {
-      this.cargarProveedor(emp);
+  @Input() public set Proveedor(prov: Proveedor) {
+    if (prov) {
+      this.cargarProveedor(prov);
     } else {
       this.proveedorForm.reset();
     }

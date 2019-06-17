@@ -1,0 +1,45 @@
+<section>
+  <h2>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Usuario</h2>
+
+  <ng-template *ngIf="(showSpinner$ | async) || !(personas$ | async)">
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="usuarioForm" [hidden]="!(personas$ | async)"
+    style="grid-template-areas:   
+      'a' 
+      'b' 
+      'c'">
+    <mat-form-field style="grid-area: a">
+      <input matInput placeholder="Nombre de Usuario" formControlName="nombre" />
+    </mat-form-field>
+    
+    <mat-form-field style="grid-area: b">
+      <input matInput placeholder="Clave de Usuario" formControlName="clave" type="password" />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: c">
+      <mat-select placeholder="Persona" formControlName="persona">
+        <mat-option *ngFor="let persona of (personas$ | async)" [value]="persona.idPersona">
+          {{ persona.nombreCompletoPersona + " (" + persona.rutPersona + ")" }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+    
+  <div class="acciones">
+    <button mat-raised-button color="primary" 
+      [disabled]="usuarioForm.invalid || (showSpinner$ | async)"
+      (click)="onClickAceptar()">
+      Aceptar
+    </button>
+
+    <button mat-raised-button 
+      [disabled]="showSpinner$ | async"
+      (click)="onClickCancelar()">
+      Cancelar
+    </button>
+  </div>
+</section>

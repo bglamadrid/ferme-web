@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Rubro } from 'src/models/Rubro';
 import { TipoProducto } from 'src/models/TipoProducto';
 import { FamiliaProducto } from 'src/models/FamiliaProducto';
+import { Persona } from 'src/models/Persona';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class GestionSharedHttpService extends RootHttpService {
 
   public rubros(): Observable<Rubro[]> {
     return this.http.get<Rubro[]>(this.baseURI+"/rubros");
+  }
+
+  public personas(): Observable<Persona[]> {
+    return this.http.get<Persona[]>(this.baseURI+"/personas");
   }
 
   public familiasProducto(): Observable<FamiliaProducto[]> {
