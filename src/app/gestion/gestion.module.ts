@@ -23,6 +23,9 @@ import { AgregarProductoVentaComponent } from './ventas/formulario/agregar-produ
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuariosListadoComponent } from './usuarios/listado/listado.component';
 import { UsuarioFormularioComponent } from './usuarios/formulario/formulario.component';
+import { OrdenesCompraComponent } from './ordenes_compra/ordenes_compra.component';
+import { OrdenesCompraListadoComponent } from './ordenes_compra/listado/listado.component';
+import { OrdenCompraFormularioComponent } from './ordenes_compra/formulario/formulario.component';
 
 
 const SNACKBAR_DEFAULTS = {
@@ -50,7 +53,10 @@ const SNACKBAR_DEFAULTS = {
     AgregarProductoVentaComponent,
     UsuariosComponent,
     UsuariosListadoComponent,
-    UsuarioFormularioComponent
+    UsuarioFormularioComponent,
+    OrdenesCompraComponent,
+    OrdenesCompraListadoComponent,
+    OrdenCompraFormularioComponent
   ],
   imports: [
     CommonAssetsModule,
@@ -66,7 +72,8 @@ const SNACKBAR_DEFAULTS = {
     ProveedorFormularioComponent,
     VentaFormularioComponent,
     AgregarProductoVentaComponent,
-    UsuarioFormularioComponent
+    UsuarioFormularioComponent,
+    OrdenCompraFormularioComponent
   ], 
   providers: [
     GestionRoutingModule,

@@ -19,7 +19,7 @@ export class OrdenesCompraListadoComponent {
   constructor(
 
   ) { 
-    this.displayedColumns = [ "numero", "fecha", "acciones" ];
+    this.displayedColumns = [ "numero", "fechaSolicitude", "fechaRecepcion", "acciones" ];
     this.editar = new EventEmitter();
     this.borrar = new EventEmitter();
   }

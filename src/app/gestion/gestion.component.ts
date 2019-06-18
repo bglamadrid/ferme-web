@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FERME_GESTION_ROUTES } from '../../routing/gestion.routes';
 import { AuthService } from 'src/services/auth.service';
-import { Usuario } from 'src/models/Usuario';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
     
@@ -14,10 +13,11 @@ export interface NavegadorModuloItem {
 export const MODULOS_ICONOS = {
   clientes: "person",
   empleados: "work",
-  productos: "layers",
+  productos: "store",
   proveedores: "rv_hookup",
   ventas: "attach_money",
-  usuarios: "card_membership"
+  ordenes_compra: "assignment",
+  usuarios: "perm_identity"
 }
 
 @Component({

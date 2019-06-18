@@ -10,7 +10,7 @@ import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
 })
 export class OrdenesCompraHttpService extends RootHttpService {
 
-  protected baseURI = this.baseURI + "/gestion/ordenesCompra";
+  protected baseURI = this.baseURI + "/gestion/ordenes_compra";
 
   constructor(
     protected http: HttpClient

@@ -1,5 +1,5 @@
 <section>
-  <h2>{{ esNueva? 'Nueva' : 'Actualizar datos de' }} Venta</h2>
+  <h2>{{ esNueva? 'Nueva' : 'Actualizar datos de' }} Orden de Compra</h2>
 
   <ng-template *ngIf="(showSpinner$ | async) || !((empleados$ | async) && (clientes$ | async))">
     <div class="spinner-container">
@@ -7,38 +7,28 @@
     </div>
   </ng-template>
 
-  <form [formGroup]="ventaForm" [hidden]="!((empleados$ | async) && (clientes$ | async))"
+  <form [formGroup]="ordenCompraForm" [hidden]="!((empleados$ | async) && (clientes$ | async))"
     style="grid-template-areas:   
       'a b' 
-      'c d' 
+      'c c' 
       'e e'">
     <mat-form-field style="grid-area: a">
-      <mat-select placeholder="Tipo de Venta" 
-        formControlName="tipo">
-        <mat-option *ngFor="let tipo of (tipos$ | async)" 
-          [value]="tipo.codigo">
-          {{ tipo.descripcion }}
+      <mat-select placeholder="Empleado" 
+        formControlName="empleado">
+        <mat-option *ngFor="let emp of (empleados$ | async)" 
+          [value]="emp.idEmpleado">
+          {{ emp.nombreCompletoPersona }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field style="grid-area: b">
-      <input matInput placeholder="Fecha" 
-        [ngModel]="fechaVenta" [ngModelOptions]="{ standalone: true }"
+      <input matInput placeholder="Fecha de Solicitud" 
+        [ngModel]="fechaOrdenCompra" [ngModelOptions]="{ standalone: true }"
         disabled />
     </mat-form-field>
 
     <mat-form-field style="grid-area: c">
-      <mat-select placeholder="Vendedor" 
-        formControlName="empleado">
-        <mat-option *ngFor="let empleado of (empleados$ | async)" 
-          [value]="empleado.idEmpleado">
-          {{ empleado.nombreCompletoPersona }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field style="grid-area: d">
       <mat-select placeholder="Cliente" 
         formControlName="cliente">
         <mat-option *ngFor="let cliente of (clientes$ | async)" 
@@ -112,7 +102,7 @@
     
   <div style="margin-top: 1em" class="acciones">
     <button mat-raised-button color="primary" 
-      [disabled]="ventaForm.invalid"
+      [disabled]="ordenCompraForm.invalid"
       (click)="onClickAceptar()">
       Aceptar
     </button>
