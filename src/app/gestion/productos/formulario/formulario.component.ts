@@ -67,7 +67,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
   public get stockCritico() { return this.productoForm.get("stockCritico"); }
   public get descripcion() { return this.productoForm.get("descripcion"); }
 
-  public get esNuevo() { return !isNaN(this._idProducto); }
+  public get esNuevo() { return isNaN(this._idProducto); }
 
   ngOnInit() {
     this.familias$ = this.sharedSvc.familiasProducto();

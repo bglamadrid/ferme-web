@@ -4,14 +4,14 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog } from 
 import { Observable, of, Subscription } from 'rxjs';
 import { OrdenCompra } from 'src/models/OrdenCompra';
 import { OrdenesCompraHttpService } from 'src/http-services/ordenes_compra.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/assets/common/Constants';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA, USUARIO_PERSONA_ID } from 'src/assets/common/Constants';
 import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
 import { Empleado } from 'src/models/Empleado';
-import { Cliente } from 'src/models/Cliente';
 import { EmpleadosHttpService } from 'src/http-services/empleados.service';
-import { ClientesHttpService } from 'src/http-services/clientes.service';
 import { Producto } from 'src/models/Producto';
-import { AgregarProductoOrdenCompraComponent } from './agregar-producto/agregar-producto.component';
+import { AgregarProductoVentaComponent } from '../../common/agregar-producto/agregar-producto.component';
+import { Proveedor } from "src/models/Proveedor";
+import { ProveedoresHttpService } from "src/http-services/proveedores.service";
 
 export interface OrdenCompraFormularioDialogData {
   ordenCompra: OrdenCompra;
@@ -38,18 +38,17 @@ export const TIPOS_VENTA: TipoOrdenCompra[] = [
 export class OrdenCompraFormularioComponent implements OnInit {
 
   private _idOrdenCompra: number;
+  private _idEmpleadoUsuario: number;
 
-
-  public tipos$: Observable<TipoOrdenCompra[]>;
   public empleados$: Observable<Empleado[]>;
-  public clientes$: Observable<Cliente[]>;
+  public proveedores$: Observable<Proveedor[]>;
   public showSpinner$: Observable<boolean>;
 
   public ordenCompraForm: FormGroup;
   @ViewChild("tablaDetalles") public tablaDetalles: MatTable<DetalleOrdenCompra>;
   public displayedColumns: string[];
 
-  public fechaOrdenCompra: string;
+  public fechaSolicitud: string;
   public detallesOrdenCompra$: Observable<DetalleOrdenCompra[]>;
   public subtotalOrdenCompra: number;
 
@@ -62,39 +61,43 @@ export class OrdenCompraFormularioComponent implements OnInit {
     private fb: FormBuilder,
     private httpSvc: OrdenesCompraHttpService,
     private empHttpSvc: EmpleadosHttpService,
-    private clHttpSvc: ClientesHttpService,
+    private prvHttpSvc: ProveedoresHttpService,
     private dialog: MatDialog
   ) { 
     this.showSpinner$ = of(true);
-    this.tipos$ = of(TIPOS_VENTA);
 
-    this.fechaOrdenCompra = (new Date()).toLocaleDateString();
+    this.fechaSolicitud = (new Date()).toLocaleDateString();
+
+    this.ordenCompraForm = this.fb.group({
+      empleado: [null, Validators.required],
+      proveedor: [null, Validators.required]
+    });
+
     this._detallesOrdenCompra = [];
     this.detallesOrdenCompra$ = of([]);
     this.subtotalOrdenCompra = 0;
     this.displayedColumns = [ "producto", "precio", "cantidad", "acciones" ];
 
-    this.ordenCompraForm = this.fb.group({
-      tipo: [null, Validators.required],
-      empleado: [null],
-      cliente: [null, Validators.required]
-    });
-
     if (this.dialogData) {
-      const vnt: OrdenCompra = this.dialogData.ordenCompra;
-      if (vnt) { this.cargarOrdenCompra(vnt); }
+      const oc: OrdenCompra = this.dialogData.ordenCompra;
+      if (oc) { this.cargarOrdenCompra(oc); }
+    } else {
+      this.empHttpSvc.obtenerEmpleadoIdDesdePersonaId(USUARIO_PERSONA_ID).subscribe(
+
+      )
     }
   }
 
-  public get tipo() { return this.ordenCompraForm.get("tipo"); }
   public get empleado() { return this.ordenCompraForm.get("empleado"); }
-  public get cliente() { return this.ordenCompraForm.get("cliente"); }
+  public get proveedor() { return this.ordenCompraForm.get("proveedor"); }
 
-  public get esNueva() { return !isNaN(this._idOrdenCompra); }
+  public get esNueva() { return isNaN(this._idOrdenCompra); }
+
+  public get hayProductosSinCantidad() { return this._detallesOrdenCompra.some(dtl => dtl.cantidadProducto<=0); }
 
   ngOnInit() {
-    this.clientes$ = this.clHttpSvc.listarClientes();
-    this.empleados$ = this.empHttpSvc.listarEmpleados();
+    this.prvHttpSvc.listarProveedores().subscribe(prvs => { this.proveedores$ = of(prvs); });
+    this.empHttpSvc.listarEmpleados().subscribe(emps => { this.empleados$ = of(emps); });
   }
 
   private cargarOrdenCompra(vnt: OrdenCompra): void {
@@ -153,9 +156,9 @@ export class OrdenCompraFormularioComponent implements OnInit {
   }
 
   public onClickAgregarProductos(): void {
-    this.dialog.open(AgregarProductoOrdenCompraComponent, { 
+    this.dialog.open(AgregarProductoVentaComponent, { 
       width: "37rem", 
-      height: "42rem"
+      height: "26rem"
     })
       .beforeClosed().subscribe(
         (productos: Producto[]) => {
@@ -166,9 +169,9 @@ export class OrdenCompraFormularioComponent implements OnInit {
               (prod: Producto, i: number) => {
                 let dtl: DetalleOrdenCompra = new DetalleOrdenCompra();
                 dtl.idProducto = prod.idProducto;
-                // dtl.nombreProducto = prod.nombreProducto;
-                // dtl.precioProducto = prod.precioProducto;
-                // dtl.unidadesProducto = 1;
+                dtl.nombreProducto = prod.nombreProducto;
+                dtl.precioProducto = prod.precioProducto;
+                dtl.cantidadProducto = 1;
                 console.log(dtl);
                 
                 this._detallesOrdenCompra.push(dtl);
@@ -186,7 +189,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
   public onClickIncrementarCantidadProductoDetalle(index: number): void {
     const detalle: DetalleOrdenCompra = this._detallesOrdenCompra[index];
     if (detalle) {
-      // detalle.unidadesProducto++;
+      detalle.cantidadProducto++;
       this.detallesOrdenCompra$ = of(this._detallesOrdenCompra);
     }
   }
@@ -194,7 +197,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
   public onClickReducirCantidadProductoDetalle(index: number): void {
     const detalle: DetalleOrdenCompra = this._detallesOrdenCompra[index];
     if (detalle) {
-      // detalle.unidadesProducto--;
+      detalle.cantidadProducto--;
       this.detallesOrdenCompra$ = of(this._detallesOrdenCompra);
     }
   }
@@ -205,17 +208,22 @@ export class OrdenCompraFormularioComponent implements OnInit {
   }
 
   public onClickAceptar(): void {
-    // let nuevo: OrdenCompra = {
-    //   idOrdenCompra: this._idOrdenCompra? this._idOrdenCompra : null,
-    //   tipoOrdenCompra: this.tipo.value,
-    //   fechaOrdenCompra: this.fechaOrdenCompra? this.fechaOrdenCompra: null,
-    //   idCliente: this.cliente.value,
-    //   idEmpleado: this.empleado.value,
-    //   detallesOrdenCompra: this._detallesOrdenCompra,
-    //   subtotalOrdenCompra: null
-    // };
+    if (this._detallesOrdenCompra.length === 0) {
+      this.snackBar.open("Se requieren productos para realizar una orden de compra.", undefined, { duration: 6000 });
+    } else if (this.hayProductosSinCantidad) {
+      this.snackBar.open("Está solicitando 0 o menos unidades de un producto. Corríjalo e intente nuevamente.", undefined, { duration: 8000 });
+    } else {
+      let nuevo: OrdenCompra = {
+        idOrdenCompra: this._idOrdenCompra? this._idOrdenCompra : null,
+        idEmpleado: this.empleado.value,
+        estadoOrdenCompra: null,
+        fechaSolicitudOrdenCompra: this.fechaSolicitud,
+        fechaRecepcionOrdenCompra: null,
+        detallesOrdenCompra: this._detallesOrdenCompra
+      };
 
-    // this.guardarOrdenCompra(nuevo);
+      this.guardarOrdenCompra(nuevo);
+    }
   }
 
   public onClickCancelar(): void {

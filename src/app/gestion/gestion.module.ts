@@ -19,7 +19,7 @@ import { ProveedorFormularioComponent } from './proveedores/formulario/formulari
 import { VentaFormularioComponent } from './ventas/formulario/formulario.component';
 import { VentasComponent } from './ventas/ventas.component';
 import { VentasListadoComponent } from './ventas/listado/listado.component';
-import { AgregarProductoVentaComponent } from './ventas/formulario/agregar-producto/agregar-producto.component';
+import { AgregarProductoVentaComponent } from './common/agregar-producto/agregar-producto.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuariosListadoComponent } from './usuarios/listado/listado.component';
 import { UsuarioFormularioComponent } from './usuarios/formulario/formulario.component';

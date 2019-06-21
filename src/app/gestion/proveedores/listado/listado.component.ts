@@ -6,7 +6,10 @@ import { Proveedor } from 'src/models/Proveedor';
 @Component({
   selector: 'app-proveedores-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class ProveedoresListadoComponent {
 

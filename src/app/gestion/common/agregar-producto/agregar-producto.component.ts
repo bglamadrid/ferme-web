@@ -1,23 +1,30 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Inject } from '@angular/core';
 import { FamiliaProducto } from 'src/models/FamiliaProducto';
 import { Observable, of, Subscription, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { TipoProducto } from 'src/models/TipoProducto';
-import { MatDialogRef, MatTable, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatTable, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Producto } from 'src/models/Producto';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 import { ProductosHttpService } from 'src/http-services/productos.service';
 
+export interface AgregarProductoDialogData {
+  proveedor: number;
+}
+
 @Component({
   selector: 'app-venta-agregar-producto',
   templateUrl: './agregar-producto.component.html',
   styleUrls: [
-    '../../../../../assets/formularios.css',
+    '../../../../assets/formularios.css',
     './agregar-producto.component.css'
   ]
 })
 export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
+
+  
+  private _idProveedor: number;
 
   public _filtro: string;
   
@@ -41,6 +48,7 @@ export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
   private _changeNombreSub: Subscription;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private dialogData: AgregarProductoDialogData,
     private self: MatDialogRef<AgregarProductoVentaComponent>,
     private sharedSvc: GestionSharedHttpService,
     private prodSvc: ProductosHttpService,

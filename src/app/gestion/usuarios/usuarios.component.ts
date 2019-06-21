@@ -10,7 +10,7 @@ import { UsuariosHttpService } from 'src/http-services/usuarios.service';
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class UsuariosComponent implements OnInit {

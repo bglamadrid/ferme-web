@@ -7,7 +7,7 @@
     </div>
   </ng-template>
 
-  <form [formGroup]="usuarioForm" [hidden]="!(personas$ | async)"
+  <form [formGroup]="usuarioForm" [hidden]="(showSpinner$ | async) || !(personas$ | async)"
     style="grid-template-areas:   
       'a' 
       'b' 

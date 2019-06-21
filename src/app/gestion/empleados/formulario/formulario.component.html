@@ -1,5 +1,5 @@
 <section>
-  <h2>{{ _idEmpleado? 'Actualizar' : 'Nuevo' }} Empleado</h2>
+  <h2>{{ esNuevo? 'Actualizar' : 'Nuevo' }} Empleado</h2>
 
   <ng-template *ngIf="(showSpinner$ | async) || !(cargos$ | async)">
     <div class="spinner-container">

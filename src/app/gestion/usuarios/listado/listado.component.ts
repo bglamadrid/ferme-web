@@ -6,7 +6,10 @@ import { Usuario } from 'src/models/Usuario';
 @Component({
   selector: 'app-usuarios-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class UsuariosListadoComponent {
 

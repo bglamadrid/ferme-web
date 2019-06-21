@@ -10,7 +10,7 @@ import { OrdenCompraFormularioComponent, OrdenCompraFormularioDialogData } from 
   selector: 'app-ordenes-compra',
   templateUrl: './ordenes_compra.component.html',
   styleUrls: [
-    '../gestion-pages.css',
+    '../../../assets/gestion-pages.css',
     './ordenes_compra.component.css'
   ]
 })
@@ -54,7 +54,7 @@ export class OrdenesCompraComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(OrdenCompraFormularioComponent, {
       width: "40rem",
-      height: "37rem"
+      height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: OrdenCompra) => {
         if (nuevo) {
@@ -74,7 +74,7 @@ export class OrdenesCompraComponent implements OnInit {
 
     this.dialog.open(OrdenCompraFormularioComponent, {
       width: "40rem",
-      height: "37rem",
+      height: "28rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: OrdenCompra) => {
@@ -93,6 +93,7 @@ export class OrdenesCompraComponent implements OnInit {
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Orden de compra eliminada.");
+          this.cargarOrdenesCompra();
         } else {
           this.snackBar.open("Hubo un problema al borrar la orden de compra.");
         }

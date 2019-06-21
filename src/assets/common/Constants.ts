@@ -1,3 +1,6 @@
+
+export const USUARIO_PERSONA_ID = 2;
+
 export const REACTIVE_FORMS_ISOLATE = { onlySelf: true, emitEvent: false };
 
 export const VENTA_TIPO_BOLETA: string = "B";

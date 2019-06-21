@@ -23,6 +23,10 @@ form {
 table {
     width: 100%;
 }
+table .cantidadInput {
+    width: 4em;
+    text-align: center;
+}
 
 .mat-column-cantidad > .acciones {
     align-items: center;

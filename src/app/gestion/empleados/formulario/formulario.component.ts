@@ -64,6 +64,8 @@ export class EmpleadoFormularioComponent implements OnInit {
   public get fono2() { return this.empleadoForm.get("fono2"); }
   public get fono3() { return this.empleadoForm.get("fono3"); }
 
+  public get esNueva() { return isNaN(this._idEmpleado); }
+
   ngOnInit() {
     this.cargos$ = this.sharedSvc.cargos();
   }

@@ -10,7 +10,7 @@ import { EmpleadosHttpService } from 'src/http-services/empleados.service';
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class EmpleadosComponent implements OnInit {
@@ -53,7 +53,7 @@ export class EmpleadosComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(EmpleadoFormularioComponent, {
       width: "40rem",
-      height: "30rem"
+      height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: Empleado) => {
         if (nuevo) {
@@ -73,7 +73,7 @@ export class EmpleadosComponent implements OnInit {
 
     this.dialog.open(EmpleadoFormularioComponent, {
       width: "40rem",
-      height: "30rem",
+      height: "28rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: Empleado) => {

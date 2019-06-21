@@ -9,11 +9,17 @@
 
   <form [formGroup]="ordenCompraForm" [hidden]="!((empleados$ | async) && (clientes$ | async))"
     style="grid-template-areas:   
-      'a b' 
-      'c c' 
-      'e e'">
+      'a b b b' 
+      'c c c c'
+      'd d d d'">
     <mat-form-field style="grid-area: a">
-      <mat-select placeholder="Empleado" 
+      <input matInput placeholder="Fecha de Solicitud" 
+        [ngModel]="fechaSolicitud" [ngModelOptions]="{ standalone: true }"
+        disabled />
+    </mat-form-field>
+
+    <mat-form-field style="grid-area: b">
+      <mat-select placeholder="Solicitante" 
         formControlName="empleado">
         <mat-option *ngFor="let emp of (empleados$ | async)" 
           [value]="emp.idEmpleado">
@@ -22,33 +28,28 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field style="grid-area: b">
-      <input matInput placeholder="Fecha de Solicitud" 
-        [ngModel]="fechaOrdenCompra" [ngModelOptions]="{ standalone: true }"
-        disabled />
-    </mat-form-field>
-
     <mat-form-field style="grid-area: c">
-      <mat-select placeholder="Cliente" 
-        formControlName="cliente">
-        <mat-option *ngFor="let cliente of (clientes$ | async)" 
-          [value]="cliente.idCliente">
-          {{ cliente.nombreCompletoPersona }}
+      <mat-select placeholder="Proveedor" 
+        formControlName="proveedor">
+        <mat-option *ngFor="let prov of (proveedores$ | async)" 
+          [value]="prov.idProveedor">
+          {{ prov.nombreCompletoPersona }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-card style="grid-area: e">
+    <mat-card style="grid-area: d">
       <mat-card-content class="productos">
         <div class="cabecera">
-          <h3>Productos de esta Venta</h3>
+          <h3>Productos Solicitados</h3>
           <button mat-raised-button color="primary"
+            [disabled]="!proveedor.value"
             (click)="onClickAgregarProductos()">
             Agregar
           </button>
         </div>
         <div class="tabla-detalles overflow-y" style="height: 15em">
-          <table mat-table #tablaDetalles [dataSource]="detallesVenta$ || async">
+          <table mat-table #tablaDetalles [dataSource]="detallesOrdenCompra$ || async">
             <ng-container matColumnDef="producto">
               <th mat-header-cell *matHeaderCellDef> Nombre </th>
               <td mat-cell *matCellDef="let detalle" class="left"> 
@@ -70,9 +71,11 @@
                     (click)="onClickIncrementarCantidadProductoDetalle(i)">
                     <mat-icon>add</mat-icon>
                   </button>
-                  {{detalle.unidadesProducto}}
+                  <input matInput class="cantidadInput" type="number" min="1"
+                    [(ngModel)]="detalle.cantidadProducto" 
+                    [ngModelOptions]="{ standalone: true }" />
                   <button mat-button mat-icon-button class="cantidad"
-                    [disabled]="(busy$ | async) || (detalle.unidadesProducto < 2)" 
+                    [disabled]="(busy$ | async) || (detalle.cantidadProducto < 2)" 
                     (click)="onClickReducirCantidadProductoDetalle(i)">
                     <mat-icon>remove</mat-icon>
                   </button>

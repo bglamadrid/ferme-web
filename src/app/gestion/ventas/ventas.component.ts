@@ -10,7 +10,7 @@ import { VentasHttpService } from 'src/http-services/ventas.service';
   selector: 'app-ventas',
   templateUrl: './ventas.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class VentasComponent implements OnInit {
@@ -53,7 +53,7 @@ export class VentasComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(VentaFormularioComponent, {
       width: "40rem",
-      height: "37rem"
+      height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: Venta) => {
         if (nuevo) {
@@ -73,7 +73,7 @@ export class VentasComponent implements OnInit {
 
     this.dialog.open(VentaFormularioComponent, {
       width: "40rem",
-      height: "37rem",
+      height: "28rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: Venta) => {

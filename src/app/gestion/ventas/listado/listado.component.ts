@@ -6,7 +6,10 @@ import { Venta } from 'src/models/Venta';
 @Component({
   selector: 'app-ventas-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class VentasListadoComponent {
 

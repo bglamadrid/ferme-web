@@ -6,7 +6,10 @@ import { MatTable } from '@angular/material';
 @Component({
   selector: 'app-clientes-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class ClientesListadoComponent {
 

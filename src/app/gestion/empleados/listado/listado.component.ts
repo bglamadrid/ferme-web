@@ -6,7 +6,10 @@ import { Empleado } from 'src/models/Empleado';
 @Component({
   selector: 'app-empleados-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class EmpleadosListadoComponent {
 

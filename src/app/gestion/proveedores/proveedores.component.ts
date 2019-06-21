@@ -10,7 +10,7 @@ import { ProveedoresHttpService } from 'src/http-services/proveedores.service';
   selector: 'app-proveedores',
   templateUrl: './proveedores.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class ProveedoresComponent implements OnInit {
@@ -53,7 +53,7 @@ export class ProveedoresComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(ProveedorFormularioComponent, {
       width: "40rem",
-      height: "30rem"
+      height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: Proveedor) => {
         if (nuevo) {
@@ -73,7 +73,7 @@ export class ProveedoresComponent implements OnInit {
 
     this.dialog.open(ProveedorFormularioComponent, {
       width: "40rem",
-      height: "30rem",
+      height: "28rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: Proveedor) => {

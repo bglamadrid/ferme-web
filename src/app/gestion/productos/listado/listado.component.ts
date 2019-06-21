@@ -8,7 +8,10 @@ import { ProductosHttpService } from 'src/http-services/productos.service';
 @Component({
   selector: 'app-productos-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class ProductosListadoComponent  {
 

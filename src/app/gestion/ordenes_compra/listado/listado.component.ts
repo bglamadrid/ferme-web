@@ -6,7 +6,10 @@ import { OrdenCompra } from 'src/models/OrdenCompra';
 @Component({
   selector: 'app-ordenes-compra-listado',
   templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.css']
+  styleUrls: [
+    '../../../../assets/gestion-listados.css',
+    './listado.component.css'
+  ]
 })
 export class OrdenesCompraListadoComponent {
 
@@ -19,7 +22,7 @@ export class OrdenesCompraListadoComponent {
   constructor(
 
   ) { 
-    this.displayedColumns = [ "numero", "fechaSolicitude", "fechaRecepcion", "acciones" ];
+    this.displayedColumns = [ "numero", "fechaSolicitud", "fechaRecepcion", "acciones" ];
     this.editar = new EventEmitter();
     this.borrar = new EventEmitter();
   }

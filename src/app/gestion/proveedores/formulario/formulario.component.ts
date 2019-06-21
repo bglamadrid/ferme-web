@@ -63,7 +63,7 @@ export class ProveedorFormularioComponent implements OnInit {
   public get fono2() { return this.proveedorForm.get("fono2"); }
   public get fono3() { return this.proveedorForm.get("fono3"); }
 
-  public get esNuevo() { return !isNaN(this._idProveedor); }
+  public get esNuevo() { return isNaN(this._idProveedor); }
 
   ngOnInit() {
     this.cargos$ = this.sharedSvc.cargos();

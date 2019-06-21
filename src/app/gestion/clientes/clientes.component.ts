@@ -8,7 +8,7 @@ import { ClientesHttpService } from 'src/http-services/clientes.service';
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class ClientesComponent implements OnInit {

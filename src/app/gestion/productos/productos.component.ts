@@ -10,7 +10,7 @@ import { ProductosHttpService } from 'src/http-services/productos.service';
   selector: 'app-productos',
   templateUrl: './productos.component.html',
   styleUrls: [
-    '../gestion-pages.css'
+    '../../../assets/gestion-pages.css'
   ]
 })
 export class ProductosComponent implements OnInit {
@@ -54,7 +54,7 @@ export class ProductosComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(ProductoFormularioComponent, {
       width: "40rem",
-      height: "36rem"
+      height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: Producto) => {
         if (nuevo) {
@@ -74,7 +74,7 @@ export class ProductosComponent implements OnInit {
 
     this.dialog.open(ProductoFormularioComponent, {
       width: "40rem",
-      height: "36rem",
+      height: "28rem",
       data: dialogData
     }).afterClosed().subscribe(
       (editado: Producto) => {

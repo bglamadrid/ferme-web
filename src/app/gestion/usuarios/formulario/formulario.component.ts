@@ -52,10 +52,10 @@ export class UsuarioFormularioComponent implements OnInit {
   public get clave() { return this.usuarioForm.get("clave"); }
   public get persona() { return this.usuarioForm.get("persona"); }
 
-  public get esNuevo() { return !isNaN(this._idUsuario); }
+  public get esNuevo() { return isNaN(this._idUsuario); }
 
   ngOnInit() {
-    this.personas$ = this.sharedSvc.personas();
+    this.sharedSvc.personas().subscribe(prs => { this.personas$ = of(prs); });
   }
 
   private cargarUsuario(usr: Usuario): void {

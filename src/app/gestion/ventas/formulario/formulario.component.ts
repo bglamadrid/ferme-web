@@ -10,7 +10,7 @@ import { Empleado } from 'src/models/Empleado';
 import { Cliente } from 'src/models/Cliente';
 import { EmpleadosHttpService } from 'src/http-services/empleados.service';
 import { ClientesHttpService } from 'src/http-services/clientes.service';
-import { AgregarProductoVentaComponent } from './agregar-producto/agregar-producto.component';
+import { AgregarProductoVentaComponent } from '../../common/agregar-producto/agregar-producto.component';
 import { Producto } from 'src/models/Producto';
 
 export interface VentaFormularioDialogData {
@@ -90,7 +90,7 @@ export class VentaFormularioComponent implements OnInit {
   public get empleado() { return this.ventaForm.get("empleado"); }
   public get cliente() { return this.ventaForm.get("cliente"); }
 
-  public get esNueva() { return !isNaN(this._idVenta); }
+  public get esNueva() { return isNaN(this._idVenta); }
 
   ngOnInit() {
     this.clientes$ = this.clHttpSvc.listarClientes();
@@ -161,7 +161,7 @@ export class VentaFormularioComponent implements OnInit {
   public onClickAgregarProductos(): void {
     this.dialog.open(AgregarProductoVentaComponent, { 
       width: "37rem", 
-      height: "42rem"
+      height: "26rem"
     })
       .beforeClosed().subscribe(
         (productos: Producto[]) => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RootHttpService } from 'src/http-services/root.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Empleado } from 'src/models/Empleado';
 
@@ -19,6 +19,11 @@ export class EmpleadosHttpService extends RootHttpService {
 
   public listarEmpleados(): Observable<Empleado[]> {
     return this.http.get<Empleado[]>(this.baseURI);
+  }
+
+  public obtenerEmpleadoIdDesdePersonaId(idPersona: number): Observable<Empleado[]> {
+    const queryParams: HttpParams = new HttpParams().append("personaId", idPersona.toString());
+    return this.http.get<Empleado[]>(this.baseURI, { params: queryParams });
   }
 
   public guardarEmpleado(emp: Empleado): Observable<number> {
