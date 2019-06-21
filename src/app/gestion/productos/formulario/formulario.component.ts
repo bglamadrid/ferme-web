@@ -97,7 +97,9 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
     this.precio.setValue(prod.precioProducto, NO_EVENT_CHAIN);
     this.stockActual.setValue(prod.stockActualProducto, NO_EVENT_CHAIN);
     this.stockCritico.setValue(String(prod.stockCriticoProducto), NO_EVENT_CHAIN);
-    this.descripcion.setValue(String(prod.descripcionProducto), NO_EVENT_CHAIN);
+    if (prod.descripcionProducto) {
+      this.descripcion.setValue(String(prod.descripcionProducto), NO_EVENT_CHAIN);
+    }
     this.onChangeFamilia();
 
     this.showSpinner$ = of(false);
