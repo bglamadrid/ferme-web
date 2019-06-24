@@ -1,6 +1,10 @@
 <div class="contenedor">
   <mat-sidenav-container>
     <mat-sidenav opened mode="side" role="navigation">
+      <div class="logo">
+        <img src="../../assets/logo.png" alt="FERME">
+        <h1>FERME</h1>
+      </div>
       <mat-nav-list role="navigation-links">
         <a mat-list-item
           *ngFor="let modulo of modulos"
@@ -23,6 +27,9 @@
         </div>
         <div class="contenido">
           <router-outlet></router-outlet>
+        </div>
+        <div class="pie">
+          <span>FERME 2019 - Todos los derechos reservados.</span>
         </div>
       </div>
     </mat-sidenav-content>
