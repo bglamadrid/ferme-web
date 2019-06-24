@@ -6,8 +6,8 @@ import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
 import { Router } from '@angular/router';
 import { CommonAssetsModule } from 'src/assets/common/common.module';
-import { MatSidenavModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from 'src/routing/auth.guard';
 
 const DEBUG_MODE: boolean = false;
 
@@ -20,11 +20,12 @@ const DEBUG_MODE: boolean = false;
   ],
   imports: [
     CommonAssetsModule,
-    GestionModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GestionModule
   ],
   providers: [
-    AppRoutingModule
+    AppRoutingModule,
+    AuthGuard
   ],
   bootstrap: [
     AppComponent

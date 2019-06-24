@@ -55,14 +55,4 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this._routerParamsSub) { this._routerParamsSub.unsubscribe(); }
     if (this._changeSesionSub) { this._changeSesionSub.unsubscribe(); }
   }
-
-  private rutinaAutorizacion(): void {
-    const modulo = this.route.snapshot.url[0].toString();
-    if (modulo !== "login") {
-      this.authSvc.validarSesion();
-      if (!this.authSvc.sesion) {
-        this.router.navigate(["login"]);
-      }
-    }
-  }
 }

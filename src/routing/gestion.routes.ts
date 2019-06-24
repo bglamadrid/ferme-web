@@ -6,6 +6,17 @@ import { ProveedoresComponent } from '../app/gestion/proveedores/proveedores.com
 import { VentasComponent } from '../app/gestion/ventas/ventas.component';
 import { UsuariosComponent } from 'src/app/gestion/usuarios/usuarios.component';
 import { OrdenesCompraComponent } from 'src/app/gestion/ordenes_compra/ordenes_compra.component';
+import { Cargos } from 'src/enums/CargosEnum';
+
+export const FERME_AUTHORIZED_CARGOS: { [key: string]: number[] } = {
+    'clientes': [Cargos.Administrador],
+    'empleados': [Cargos.Administrador],
+    'productos': [Cargos.Administrador, Cargos.Encargado],
+    'proveedores': [Cargos.Administrador, Cargos.Encargado],
+    'ventas': [Cargos.Administrador, Cargos.Vendedor],
+    'ordenes_compra': [Cargos.Administrador, Cargos.Encargado],
+    'usuarios': [Cargos.Administrador]
+};
 
 export const FERME_GESTION_ROUTES: Routes = [
     { path: "clientes", component: ClientesComponent },

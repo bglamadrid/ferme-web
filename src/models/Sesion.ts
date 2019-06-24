@@ -4,4 +4,5 @@ export class Sesion {
     public hashSesion: string;
     public idUsuario: number;
     public nombreUsuario: string;
+    public idCargo: number;
 }

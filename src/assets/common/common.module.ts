@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AuthGuard } from 'src/routing/auth.guard';
 
 @NgModule({
   declarations: [

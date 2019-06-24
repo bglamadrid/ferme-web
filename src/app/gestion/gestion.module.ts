@@ -76,7 +76,6 @@ const SNACKBAR_DEFAULTS = {
     OrdenCompraFormularioComponent
   ], 
   providers: [
-    GestionRoutingModule,
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS}
   ]
 })

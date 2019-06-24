@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FERME_GESTION_ROUTES } from '../../routing/gestion.routes';
+import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from '../../routing/gestion.routes';
 import { AuthService } from 'src/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { AuthHttpService } from 'src/http-services/auth.service';
+import { Sesion } from 'src/models/Sesion';
     
 export interface NavegadorModuloItem {
   path: string;
@@ -33,6 +35,7 @@ export class GestionNavegadorComponent implements OnInit {
 
   constructor(
     private authSvc: AuthService,
+    private auttHttpSvc: AuthHttpService,
     private router: Router,
     private snackBar: MatSnackBar
   ) { 
@@ -43,15 +46,34 @@ export class GestionNavegadorComponent implements OnInit {
     this.modulos = this.generarListadoModulos();
   }
 
+  public puedeVerModulo(nombreModulo: string): boolean {
+    
+    const sesionActual = this.authSvc.sesion;
+    const cargosAutorizados: number[] = FERME_AUTHORIZED_CARGOS[nombreModulo];
+    if (cargosAutorizados && sesionActual) {
+        const puede = cargosAutorizados.includes(sesionActual.idCargo);
+        console.log(nombreModulo +": "+puede);
+        return puede;
+    }
+    console.log(nombreModulo +": false");
+    return false;
+  }
+
   private generarListadoModulos(): NavegadorModuloItem[] {
-    let protoModulos: NavegadorModuloItem[] = FERME_GESTION_ROUTES.map((route) => {
-      const protoModulo: NavegadorModuloItem = {
-        path: route.path,
-        texto: this.routePathToText(route.path),
-        icono: MODULOS_ICONOS[route.path]
-      };
-      return protoModulo;
-    });
+    let protoModulos: NavegadorModuloItem[] = FERME_GESTION_ROUTES.filter(
+      (route) => {
+        return this.puedeVerModulo(route.path);
+      }
+    ).map(
+      (route) => {
+        const protoModulo: NavegadorModuloItem = {
+          path: route.path,
+          texto: this.routePathToText(route.path),
+          icono: MODULOS_ICONOS[route.path]
+        };
+        return protoModulo;
+      }
+    );
 
     return protoModulos;
   }
@@ -65,8 +87,16 @@ export class GestionNavegadorComponent implements OnInit {
   }
 
   public onClickCerrarSesion(): void {
-    this.snackBar.open("Su sesión ha sido cerrada.");
-    this.router.navigate(["/"]);
+    this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+      () => {
+        this.authSvc.sesion = null;
+        this.snackBar.open("Su sesión ha sido cerrada.");
+        this.router.navigateByUrl("/login");
+      },
+      err => {
+        this.snackBar.open("Hubo un error de comunicación con el servidor.");
+      }
+    );
   }
 
 }

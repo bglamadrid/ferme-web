@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Sesion } from 'src/models/Sesion';
 import { MatSnackBar } from '@angular/material';
+import { AuthHttpService } from 'src/http-services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _changeSesion$: Observable<Sesion>;
+  private _changeSesionSource = new Subject<Sesion>();
+  private _changeSesion$: Observable<Sesion> = this._changeSesionSource.asObservable();
 
-  constructor() { 
+  constructor(
+    private authHttpSvc: AuthHttpService
+  ) { 
     this._changeSesion$ = of(null);
     this.validarSesion();
   }
 
-  public get sesionCambia(): Observable<Sesion> { return this._changeSesion$; }
+  public get sesionCambiada(): Observable<Sesion> { return this._changeSesion$; }
   
   public get sesion(): Sesion {
     const ssnJSON: string = sessionStorage.getItem("sesion");
@@ -29,11 +33,11 @@ export class AuthService {
   public set sesion(ssn: Sesion) {
     if (!ssn) {
       sessionStorage.removeItem("sesion");
-      this._changeSesion$ = of(null);
-    } else if (this.isSesionValida(ssn)) {
+      this._changeSesionSource.next(null);
+    } else if (this.isSesionValida(ssn)) {      
       const ssnJSON: string = JSON.stringify(ssn);
       sessionStorage.setItem("sesion", ssnJSON);
-      this._changeSesion$ = of(ssn);
+      this._changeSesionSource.next(ssn);
     }
   }
 
@@ -47,14 +51,32 @@ export class AuthService {
   }
 
   public isSesionValida(ssn: Sesion): boolean {
-    return !!ssn.idSesion && !!ssn.hashSesion && !!ssn.idUsuario;
+    return !!ssn.hashSesion && !!ssn.idUsuario;
   }
 
   /**
    * Rutina de validación sencilla.
    */
-  public validarSesion() {
+  public validarSesion(): Observable<boolean> | boolean {
     const ssn = this.sesion;
-    this.sesion = ssn;
+    if (ssn) {
+      const obs: Observable<boolean> = this.authHttpSvc.validarSesion(ssn);
+      obs.subscribe(
+        (validada: boolean) => {
+          if (validada) {
+            this.sesion = ssn;
+          } else {
+            this.sesion = null;
+          }
+        },
+        err => {
+          this.sesion = null;
+        }
+      );
+      return obs;
+    } else {
+      this.sesion = ssn;
+      return false;
+    }
   }
 }

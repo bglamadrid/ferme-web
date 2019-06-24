@@ -9,7 +9,7 @@ import { Sesion } from 'src/models/Sesion';
 })
 export class AuthHttpService extends RootHttpService {
 
-  protected baseURI = this.baseURI + "/gestion/sesiones";
+  protected baseURI = this.baseURI + "/sesiones";
 
   constructor(
     private http: HttpClient

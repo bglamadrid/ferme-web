@@ -6,8 +6,7 @@
         <h1>FERME</h1>
       </div>
       <mat-nav-list role="navigation-links">
-        <a mat-list-item
-          *ngFor="let modulo of modulos"
+        <a mat-list-item *ngFor="let modulo of modulos"
           [routerLink]="['/gestion', modulo.path]">
           <mat-icon>{{ modulo.icono }}</mat-icon>
           {{ modulo.texto }}

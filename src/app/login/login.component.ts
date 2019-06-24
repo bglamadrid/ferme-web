@@ -5,6 +5,7 @@ import { AuthService } from 'src/services/auth.service';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Observable, of } from 'rxjs';
 import { Sesion } from 'src/models/Sesion';
+import { Router } from '@angular/router';
 
 export interface Login {
   usuario: string;
@@ -27,9 +28,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private snackBar: MatSnackBar,
-    private gestionSvc: AuthService,
-    private authSvc: AuthHttpService
+    private authSvc: AuthService,
+    private authHttpSvc: AuthHttpService
   ) { 
     this.showSpinner$ = of(false);
     this.loginForm = this.fb.group({
@@ -52,12 +54,15 @@ export class LoginComponent implements OnInit {
       clave: this.clave.value
     };
     
-    this.authSvc.abrirSesion(usr).subscribe(
-      (usr: Sesion) => {
-        if (!usr || !usr.hashSesion) {
+    this.authHttpSvc.abrirSesion(usr).subscribe(
+      (ssn: Sesion) => {
+        if (!ssn || !ssn.hashSesion) {
           this.snackBar.open("Credenciales inválidas.");
         } else {
-          let sesion: Sesion = new Sesion();
+          console.log(ssn);
+          
+          this.authSvc.sesion = ssn;
+          this.router.navigateByUrl("/gestion");
         }
         
       },
