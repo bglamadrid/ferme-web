@@ -31,6 +31,7 @@ export class GestionNavegadorComponent implements OnInit {
 
   public modulos: NavegadorModuloItem[];
   public mensajeBienvenida: string;
+  public sidenavOpened: boolean = true;
 
 
   constructor(
@@ -84,6 +85,10 @@ export class GestionNavegadorComponent implements OnInit {
    */
   public routePathToText(path: string): string {
     return path.split("_").map((palabra) => { return palabra.charAt(0).toUpperCase()+palabra.substring(1); }).join(" ");
+  }
+
+  public onClickToggleSidebar(): void {
+    this.sidenavOpened = !this.sidenavOpened;
   }
 
   public onClickCerrarSesion(): void {

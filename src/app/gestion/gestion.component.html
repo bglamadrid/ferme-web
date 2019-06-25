@@ -1,6 +1,6 @@
 <div class="contenedor">
   <mat-sidenav-container>
-    <mat-sidenav opened mode="side" role="navigation">
+    <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
       <div class="logo">
         <img src="../../assets/logo.png" alt="FERME">
         <h1>FERME</h1>
@@ -16,6 +16,13 @@
     <mat-sidenav-content role="main">
       <div class="pagina">
         <div class="cabecera">
+          <button mat-button class="cabecera-alternar-navegacion"
+            (click)="onClickToggleSidebar()">
+            <ng-container *ngIf="sidenavOpened; then ocultarNavegacion; else mostrarNavegacion"></ng-container>
+            <ng-template #ocultarNavegacion><mat-icon>view_quilt</mat-icon></ng-template>
+            <ng-template #mostrarNavegacion><mat-icon>view_stream</mat-icon></ng-template>
+            
+          </button>
           <div class="cabecera-contenido">  
             {{ mensajeBienvenida }}
           </div>

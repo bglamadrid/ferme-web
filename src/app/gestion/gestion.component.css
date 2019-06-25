@@ -69,7 +69,8 @@ mat-sidenav-content {
     font-size: 1.5rem;
     padding-left: 1em;
 }
-.cabecera-cerrar-sesion {
+.cabecera-cerrar-sesion,
+.cabecera-alternar-navegacion {
     border-radius: 0;
     flex-grow: 0;
     min-width: 5em;
@@ -79,7 +80,8 @@ mat-sidenav-content {
     height: 100%;
     padding: 0 0.75em 0.9em 0;
 }
-.cabecera-cerrar-sesion * {
+.cabecera-cerrar-sesion *,
+.cabecera-alternar-navegacion * {
     font-size: 2.25rem;
     margin: 0;
 }
