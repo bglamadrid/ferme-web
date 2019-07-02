@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-title>Ingresar</mat-card-title>
     <mat-card-content>
-      <form [formGroup]="loginForm"
+      <form [formGroup]="loginForm" novalidate
         style="grid-template-areas:   
           'a' 
           'b'">
@@ -13,9 +13,7 @@
         <mat-form-field style="grid-area: b">
           <input matInput placeholder="Contraseña" formControlName="clave" />
         </mat-form-field>
-      </form>
 
-      <section>
         <ng-container *ngIf="(showSpinner$ | async); then loading; else acciones"></ng-container>
         <ng-template #loading>
           <div class="spinner-container">
@@ -25,15 +23,16 @@
           
         <ng-template #acciones>
           <div class="acciones">
-            <button mat-raised-button color="primary" 
+            <button mat-raised-button color="primary"
+              type="submit" 
               [disabled]="loginForm.invalid"
               (click)="onClickAceptar()">
               Aceptar
             </button>
 
             <button mat-raised-button 
-              [disabled]="loginForm.pristine"
-              (click)="onClickAceptar()">
+              type="reset"
+              [disabled]="loginForm.pristine">
               Limpiar
             </button>
 
@@ -43,7 +42,7 @@
             </a>
           </div>
         </ng-template>
-      </section>
+      </form>
     </mat-card-content>
   </mat-card>
 </div>

@@ -50,7 +50,7 @@ export class ProductosComponent implements OnInit {
     return from(productos);
   }
 
-  public onClickAgregarProducto(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(ProductoFormularioComponent, {
       width: "40rem",
@@ -66,7 +66,7 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  public onClickEditarProducto(prod: Producto): void {
+  public onClickEditar(prod: Producto): void {
     this.busy$ = of(true);
     const dialogData: ProductoFormularioDialogData = {
       producto: prod
@@ -87,7 +87,7 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  public onClickBorrarProducto(prod: Producto) {
+  public onClickBorrar(prod: Producto) {
     this.busy$ = of(true);
     this.httpSvc.borrarProducto(prod.idProducto).subscribe(
       (exito: boolean) => {

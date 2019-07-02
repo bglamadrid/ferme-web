@@ -2,8 +2,9 @@ import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core
 import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
 import { Producto } from 'src/models/Producto';
 import { ProductoFormularioDialogData, ProductoFormularioComponent } from '../formulario/formulario.component';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { ProductosHttpService } from 'src/http-services/productos.service';
+import { ListadoGestionComponent } from '../../common/listado/listado.component';
 
 @Component({
   selector: 'app-productos-listado',
@@ -13,33 +14,40 @@ import { ProductosHttpService } from 'src/http-services/productos.service';
     './listado.component.css'
   ]
 })
-export class ProductosListadoComponent  {
+export class ProductosListadoComponent extends ListadoGestionComponent {
 
   @Output() public editar: EventEmitter<Producto>;
   @Output() public borrar: EventEmitter<Producto>;
   
   @ViewChild("tabla") public tabla: MatTable<Producto>;
-  public displayedColumns: string[];
+  protected _items: Producto[];
+  protected _itemsSource: Subject<Producto[]>;
+  public items$: Observable<Producto[]>;
 
   constructor(
     
   ) { 
+    super();
+    this.editar = new EventEmitter<Producto>();
+    this.borrar = new EventEmitter<Producto>();
+
+    this._itemsSource = new Subject<Producto[]>();
+    this.items$ = this._itemsSource.asObservable();
+
     this.displayedColumns = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
-    this.editar = new EventEmitter();
-    this.borrar = new EventEmitter();
+    this.tabla.dataSource = this.items$;
   }
 
-  public onClickVerProducto(prod: Producto) {
+  public onClickVer(prod: Producto) {
     this.editar.emit(prod);
   }
 
-  public onClickBorrarProducto(prod: Producto) {
+  public onClickBorrar(prod: Producto) {
     this.borrar.emit(prod);
   }
 
-  @Input() public busy$: Observable<boolean>;
-  @Input() public set Productos(productos: Producto[]) {
-    this.tabla.dataSource = productos? of(productos) : of([]);
+  @Input() public set Items(productos: Producto[]) {
+    this._itemsSource.next(productos);
   }
 
 }

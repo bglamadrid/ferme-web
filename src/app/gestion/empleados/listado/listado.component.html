@@ -18,13 +18,13 @@
         <button mat-button mat-icon-button 
           color="primary" class="details"
           [disabled]="busy$ | async" 
-          (click)="onClickVerEmpleado(empleado)">
+          (click)="onClick(empleado)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-button mat-icon-button 
           color="warn" class="delete"
           [disabled]="busy$ | async" 
-          (click)="onClickBorrarEmpleado(empleado)">
+          (click)="onClickBorrar(empleado)">
           <mat-icon>delete</mat-icon>
         </button>
       </div> 

@@ -49,7 +49,7 @@ export class UsuariosComponent implements OnInit {
     return from(usuarios);
   }
 
-  public onClickAgregarUsuario(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(UsuarioFormularioComponent, {
       width: "40rem",
@@ -65,7 +65,7 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  public onClickEditarUsuario(usr: Usuario): void {
+  public onClickEditar(usr: Usuario): void {
     this.busy$ = of(true);
     const dialogData: UsuarioFormularioDialogData = {
       usuario: usr
@@ -86,7 +86,7 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  public onClickBorrarUsuario(usr: Usuario) {
+  public onClickBorrar(usr: Usuario) {
     this.busy$ = of(true);
     this.httpSvc.borrarUsuario(usr.idUsuario).subscribe(
       (exito: boolean) => {

@@ -49,10 +49,10 @@ export class VentasComponent implements OnInit {
     return from(ventas);
   }
 
-  public onClickAgregarVenta(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(VentaFormularioComponent, {
-      width: "40rem",
+      width: "80rem",
       height: "28rem"
     }).afterClosed().subscribe(
       (nuevo: Venta) => {
@@ -65,7 +65,7 @@ export class VentasComponent implements OnInit {
     );
   }
 
-  public onClickEditarVenta(vnt: Venta): void {
+  public onClickEditar(vnt: Venta): void {
     this.busy$ = of(true);
     const dialogData: VentaFormularioDialogData = {
       venta: vnt
@@ -86,7 +86,7 @@ export class VentasComponent implements OnInit {
     );
   }
 
-  public onClickBorrarVenta(vnt: Venta) {
+  public onClickBorrar(vnt: Venta) {
     this.busy$ = of(true);
     this.httpSvc.borrarVenta(vnt.idVenta).subscribe(
       (exito: boolean) => {

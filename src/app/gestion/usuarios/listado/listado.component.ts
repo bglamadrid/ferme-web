@@ -1,7 +1,8 @@
 import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTable } from '@angular/material';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { Usuario } from 'src/models/Usuario';
+import { ListadoGestionComponent } from '../../common/listado/listado.component';
 
 @Component({
   selector: 'app-usuarios-listado',
@@ -11,32 +12,39 @@ import { Usuario } from 'src/models/Usuario';
     './listado.component.css'
   ]
 })
-export class UsuariosListadoComponent {
+export class UsuariosListadoComponent extends ListadoGestionComponent {
 
   @Output() public editar: EventEmitter<Usuario>;
   @Output() public borrar: EventEmitter<Usuario>;
 
   @ViewChild("tabla") public tabla: MatTable<Usuario>;
-  public displayedColumns: string[];
+  protected _items: Usuario[];
+  protected _itemsSource: Subject<Usuario[]>;
+  public items$: Observable<Usuario[]>;
 
   constructor(
 
   ) { 
+    super();
+    this.editar = new EventEmitter<Usuario>();
+    this.borrar = new EventEmitter<Usuario>();
+
+    this._itemsSource = new Subject<Usuario[]>();
+    this.items$ = this._itemsSource.asObservable();
+
     this.displayedColumns = [ "nombre", "fechaCreacion", "nombreCompleto", "rut", "acciones" ];
-    this.editar = new EventEmitter();
-    this.borrar = new EventEmitter();
+    this.tabla.dataSource = this.items$;
   }
 
-  public onClickVerUsuario(usr: Usuario) {
+  public onClickVer(usr: Usuario) {
     this.editar.emit(usr);
   }
 
-  public onClickBorrarUsuario(usr: Usuario) {
+  public onClickBorrar(usr: Usuario) {
     this.borrar.emit(usr);
   }
 
-  @Input() public busy$: Observable<boolean>;
-  @Input() public set Usuarios(usuarios: Usuario[]) {
-    this.tabla.dataSource = usuarios? of(usuarios) : of([]);
+  @Input() public set Items(usuarios: Usuario[]) {
+    this._itemsSource.next(usuarios);
   }
 }

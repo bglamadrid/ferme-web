@@ -1,5 +1,9 @@
 <div class="full-height">
-  <ng-container *ngIf="loading$ | async; then loading else ventasTable"></ng-container>
+  <ng-container 
+    *ngIf="loading$ | async; 
+    then loading; 
+    else ventasTable">
+  </ng-container>
 
   <ng-template #loading>
     <app-centered-mat-spinner></app-centered-mat-spinner>
@@ -9,14 +13,14 @@
     <div class="full-height contenedor">
       <div class="pagina overflow">
         <app-ventas-listado #listado 
-          [Ventas]="ventas$ | async"
-          [busy$]="busy$"
-          (editar)="onClickEditarVenta($event)"
-          (borrar)="onClickBorrarVenta($event)">
+          [Items]="ventas$ | async"
+          [Busy]="busy$ | async"
+          (editar)="onClickEditar($event)"
+          (borrar)="onClickBorrar($event)">
         </app-ventas-listado>
       </div>
       <app-listado-acciones
-        (agregar)="onClickAgregarVenta()">
+        (agregar)="onClickAgregar()">
       </app-listado-acciones>
     </div>
   </ng-template>

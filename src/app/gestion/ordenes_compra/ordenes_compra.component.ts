@@ -50,7 +50,7 @@ export class OrdenesCompraComponent implements OnInit {
     return from(ordenesCompra);
   }
 
-  public onClickAgregarOrdenCompra(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(OrdenCompraFormularioComponent, {
       width: "40rem",
@@ -66,7 +66,7 @@ export class OrdenesCompraComponent implements OnInit {
     );
   }
 
-  public onClickEditarOrdenCompra(vnt: OrdenCompra): void {
+  public onClickEditar(vnt: OrdenCompra): void {
     this.busy$ = of(true);
     const dialogData: OrdenCompraFormularioDialogData = {
       ordenCompra: vnt
@@ -87,7 +87,7 @@ export class OrdenesCompraComponent implements OnInit {
     );
   }
 
-  public onClickBorrarOrdenCompra(vnt: OrdenCompra) {
+  public onClickBorrar(vnt: OrdenCompra) {
     this.busy$ = of(true);
     this.httpSvc.borrarOrdenCompra(vnt.idOrdenCompra).subscribe(
       (exito: boolean) => {

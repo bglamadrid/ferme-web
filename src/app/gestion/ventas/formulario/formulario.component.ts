@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog } from '@angular/material';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, Subject } from 'rxjs';
 import { Venta } from 'src/models/Venta';
 import { VentasHttpService } from 'src/http-services/ventas.service';
 import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/assets/common/Constants';
@@ -43,6 +43,7 @@ export class VentaFormularioComponent implements OnInit {
   public tipos$: Observable<TipoVenta[]>;
   public empleados$: Observable<Empleado[]>;
   public clientes$: Observable<Cliente[]>;
+  private showSpinnerSource: Subject<boolean>;
   public showSpinner$: Observable<boolean>;
 
   public ventaForm: FormGroup;
@@ -65,7 +66,9 @@ export class VentaFormularioComponent implements OnInit {
     private clHttpSvc: ClientesHttpService,
     private dialog: MatDialog
   ) { 
-    this.showSpinner$ = of(true);
+    this.showSpinnerSource = new Subject<boolean>();
+    this.showSpinner$ = this.showSpinnerSource.asObservable();
+    this.showSpinnerSource.next(true);
     this.tipos$ = of(TIPOS_VENTA);
 
     this.fechaVenta = (new Date()).toLocaleDateString();
@@ -100,9 +103,7 @@ export class VentaFormularioComponent implements OnInit {
   private cargarVenta(vnt: Venta): void {
 
     this.ventaForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
-    console.log(vnt);
-    
+    this.showSpinnerSource.next(true);
 
     this._idVenta = vnt.idVenta;
 
@@ -126,7 +127,7 @@ export class VentaFormularioComponent implements OnInit {
         this.snackBar.open("Hubo un problema cargando los detalles de la venta.");
       },
       () => {
-        this.showSpinner$ = of(false);
+        this.showSpinnerSource.next(false);
         this.ventaForm.enable();
       }
     )
@@ -134,7 +135,7 @@ export class VentaFormularioComponent implements OnInit {
 
   private guardarVenta(vnt: Venta): void {
     this.ventaForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.showSpinnerSource.next(true);
     
     this.httpSvc.guardarVenta(vnt).subscribe(
       (id: number) => {
@@ -152,7 +153,7 @@ export class VentaFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar venta.");
-        this.showSpinner$ = of(false);
+        this.showSpinnerSource.next(false);
         this.ventaForm.enable(NO_EVENT_CHAIN);
       }
     );

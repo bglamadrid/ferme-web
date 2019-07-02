@@ -49,7 +49,7 @@ export class ProveedoresComponent implements OnInit {
     return from(proveedores);
   }
 
-  public onClickAgregarProveedor(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(ProveedorFormularioComponent, {
       width: "40rem",
@@ -65,7 +65,7 @@ export class ProveedoresComponent implements OnInit {
     );
   }
 
-  public onClickEditarProveedor(prov: Proveedor): void {
+  public onClickEditar(prov: Proveedor): void {
     this.busy$ = of(true);
     const dialogData: ProveedorFormularioDialogData = {
       proveedor: prov
@@ -86,7 +86,7 @@ export class ProveedoresComponent implements OnInit {
     );
   }
 
-  public onClickBorrarProveedor(prov: Proveedor) {
+  public onClickBorrar(prov: Proveedor) {
     this.busy$ = of(true);
     this.httpSvc.borrarProveedor(prov.idProveedor).subscribe(
       (exito: boolean) => {

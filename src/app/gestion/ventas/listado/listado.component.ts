@@ -1,7 +1,8 @@
 import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTable } from '@angular/material';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { Venta } from 'src/models/Venta';
+import { ListadoGestionComponent } from '../../common/listado/listado.component';
 
 @Component({
   selector: 'app-ventas-listado',
@@ -11,32 +12,39 @@ import { Venta } from 'src/models/Venta';
     './listado.component.css'
   ]
 })
-export class VentasListadoComponent {
+export class VentasListadoComponent extends ListadoGestionComponent {
 
   @Output() public editar: EventEmitter<Venta>;
   @Output() public borrar: EventEmitter<Venta>;
 
   @ViewChild("tabla") public tabla: MatTable<Venta>;
-  public displayedColumns: string[];
+  protected _items: Venta[];
+  protected _itemsSource: Subject<Venta[]>;
+  public items$: Observable<Venta[]>;
 
   constructor(
 
   ) { 
+    super();
+    this.editar = new EventEmitter<Venta>();
+    this.borrar = new EventEmitter<Venta>();
+
+    this._itemsSource = new Subject<Venta[]>();
+    this.items$ = this._itemsSource.asObservable();
+
     this.displayedColumns = [ "numero", "fecha", "acciones" ];
-    this.editar = new EventEmitter();
-    this.borrar = new EventEmitter();
+    this.tabla.dataSource = this.items$;
   }
 
-  public onClickVerVenta(prov: Venta) {
-    this.editar.emit(prov);
+  public onClickVer(vnt: Venta) {
+    this.editar.emit(vnt);
   }
 
-  public onClickBorrarVenta(prov: Venta) {
-    this.editar.emit(prov);
+  public onClickBorrar(vnt: Venta) {
+    this.borrar.emit(vnt);
   }
 
-  @Input() public busy$: Observable<boolean>;
-  @Input() public set Ventas(ventas: Venta[]) {
-    this.tabla.dataSource = ventas? of(ventas) : of([]);
+  @Input() public set Items(ventas: Venta[]) {
+    this._itemsSource.next(ventas);
   }
 }

@@ -10,7 +10,8 @@ import { EmpleadosHttpService } from 'src/http-services/empleados.service';
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
   styleUrls: [
-    '../../../assets/gestion-pages.css'
+    '../../../assets/gestion-pages.css',
+    './empleados.component.css'
   ]
 })
 export class EmpleadosComponent implements OnInit {
@@ -49,7 +50,7 @@ export class EmpleadosComponent implements OnInit {
     return from(empleados);
   }
 
-  public onClickAgregarEmpleado(): void {
+  public onClickAgregar(): void {
     this.busy$ = of(true);
     this.dialog.open(EmpleadoFormularioComponent, {
       width: "40rem",
@@ -65,7 +66,7 @@ export class EmpleadosComponent implements OnInit {
     );
   }
 
-  public onClickEditarEmpleado(emp: Empleado): void {
+  public onClickEditar(emp: Empleado): void {
     this.busy$ = of(true);
     const dialogData: EmpleadoFormularioDialogData = {
       empleado: emp
@@ -86,7 +87,7 @@ export class EmpleadosComponent implements OnInit {
     );
   }
 
-  public onClickBorrarEmpleado(emp: Empleado) {
+  public onClickBorrar(emp: Empleado) {
     this.busy$ = of(true);
     this.httpSvc.borrarEmpleado(emp.idEmpleado).subscribe(
       (exito: boolean) => {
