@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FERME_GESTION_ROUTES } from './gestion.routes';
-import { GestionNavegadorComponent } from '../app/gestion/gestion.component';
+import { GestionNavegadorComponent } from '../app/gestion/navegador/gestion.component';
 import { AuthGuard } from './auth.guard';
 
 

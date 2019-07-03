@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { RootHttpService } from './root.service';
 import { Observable } from 'rxjs';
-import { Cargo } from 'src/models/Cargo';
+import { Cargo } from 'src/modelo/Cargo';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Rubro } from 'src/models/Rubro';
-import { TipoProducto } from 'src/models/TipoProducto';
-import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { Persona } from 'src/models/Persona';
+import { Rubro } from 'src/modelo/Rubro';
+import { TipoProducto } from 'src/modelo/TipoProducto';
+import { FamiliaProducto } from 'src/modelo/FamiliaProducto';
+import { Persona } from 'src/modelo/Persona';
 
 @Injectable({
   providedIn: 'root'

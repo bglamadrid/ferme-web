@@ -1,0 +1,43 @@
+<div class="contenedor">
+  <mat-sidenav-container>
+    <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
+      <div class="logo">
+        <img src="../../recursos/logo.png" alt="FERME">
+        <h1>FERME</h1>
+      </div>
+      <mat-nav-list role="navigation-links">
+        <a mat-list-item *ngFor="let modulo of modulos"
+          [routerLink]="['/gestion', modulo.path]">
+          <mat-icon>{{ modulo.icono }}</mat-icon>
+          {{ modulo.texto }}
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content role="main">
+      <div class="pagina">
+        <div class="cabecera">
+          <button mat-button class="cabecera-alternar-navegacion"
+            (click)="onClickToggleSidebar()">
+            <ng-container *ngIf="sidenavOpened; then ocultarNavegacion; else mostrarNavegacion"></ng-container>
+            <ng-template #ocultarNavegacion><mat-icon>view_quilt</mat-icon></ng-template>
+            <ng-template #mostrarNavegacion><mat-icon>view_stream</mat-icon></ng-template>
+            
+          </button>
+          <div class="cabecera-contenido">  
+            {{ mensajeBienvenida }}
+          </div>
+          <button mat-button class="cabecera-cerrar-sesion"
+            (click)="onClickCerrarSesion()">
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </div>
+        <div class="contenido">
+          <router-outlet></router-outlet>
+        </div>
+        <div class="pie">
+          <span>FERME 2019 - Todos los derechos reservados.</span>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

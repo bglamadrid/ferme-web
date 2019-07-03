@@ -28,20 +28,9 @@ mat-card-content {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
-}
+} 
 
-mat-card-content > .contenedor {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center;
-}
-
-mat-card-content > .contenedor > a {
-    width: 16rem;
-    height: 4rem;
-    font-size: 18pt;
-    display: inline-flex;
-    align-items: center; 
-    justify-content: center;
+form {
+    display: grid;
+    grid-gap: 1em;
 }

@@ -1,31 +1,31 @@
 import { NgModule } from '@angular/core';
+import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
 import { GestionRoutingModule } from '../../routing/gestion-routing.module';
-import { MatSidenavModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatTableModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
-import { ClientesComponent } from './clientes/clientes.component';
-import { ClienteFormularioComponent } from './clientes/formulario/formulario.component';
-import { ClientesListadoComponent } from './clientes/listado/listado.component';
-import { GestionNavegadorComponent } from './gestion.component';
-import { EmpleadosComponent } from './empleados/empleados.component';
-import { EmpleadoFormularioComponent } from './empleados/formulario/formulario.component';
-import { EmpleadosListadoComponent } from './empleados/listado/listado.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ProductosComponent } from './productos/productos.component';
-import { ProductosListadoComponent } from './productos/listado/listado.component';
-import { ProductoFormularioComponent } from './productos/formulario/formulario.component';
-import { CommonAssetsModule } from 'src/assets/common/common.module';
-import { ProveedoresComponent } from './proveedores/proveedores.component';
-import { ProveedoresListadoComponent } from './proveedores/listado/listado.component';
-import { ProveedorFormularioComponent } from './proveedores/formulario/formulario.component';
-import { VentaFormularioComponent } from './ventas/formulario/formulario.component';
-import { VentasComponent } from './ventas/ventas.component';
-import { VentasListadoComponent } from './ventas/listado/listado.component';
-import { AgregarProductoVentaComponent } from './common/agregar-producto/agregar-producto.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
-import { UsuariosListadoComponent } from './usuarios/listado/listado.component';
-import { UsuarioFormularioComponent } from './usuarios/formulario/formulario.component';
-import { OrdenesCompraComponent } from './ordenes_compra/ordenes_compra.component';
-import { OrdenesCompraListadoComponent } from './ordenes_compra/listado/listado.component';
-import { OrdenCompraFormularioComponent } from './ordenes_compra/formulario/formulario.component';
+import { ClientesComponent } from './mantenedores/clientes/clientes.component';
+import { ClienteFormularioComponent } from './mantenedores/clientes/formulario/formulario.component';
+import { ClientesListadoComponent } from './mantenedores/clientes/listado/listado.component';
+import { EmpleadosComponent } from './mantenedores/empleados/empleados.component';
+import { EmpleadoFormularioComponent } from './mantenedores/empleados/formulario/formulario.component';
+import { EmpleadosListadoComponent } from './mantenedores/empleados/listado/listado.component';
+import { ProductosComponent } from './mantenedores/productos/productos.component';
+import { GestionNavegadorComponent } from './navegador/gestion.component';
+import { ProductosListadoComponent } from './mantenedores/productos/listado/listado.component';
+import { ProductoFormularioComponent } from './mantenedores/productos/formulario/formulario.component';
+import { ProveedoresComponent } from './mantenedores/proveedores/proveedores.component';
+import { ProveedoresListadoComponent } from './mantenedores/proveedores/listado/listado.component';
+import { ProveedorFormularioComponent } from './mantenedores/proveedores/formulario/formulario.component';
+import { VentasComponent } from './mantenedores/ventas/ventas.component';
+import { VentasListadoComponent } from './mantenedores/ventas/listado/listado.component';
+import { VentaFormularioComponent } from './mantenedores/ventas/formulario/formulario.component';
+import { AgregarProductoVentaComponent } from './dialogos/agregar-producto/agregar-producto.component';
+import { UsuariosComponent } from './mantenedores/usuarios/usuarios.component';
+import { UsuariosListadoComponent } from './mantenedores/usuarios/listado/listado.component';
+import { UsuarioFormularioComponent } from './mantenedores/usuarios/formulario/formulario.component';
+import { OrdenesCompraComponent } from './mantenedores/ordenes_compra/ordenes_compra.component';
+import { OrdenesCompraListadoComponent } from './mantenedores/ordenes_compra/listado/listado.component';
+import { OrdenCompraFormularioComponent } from './mantenedores/ordenes_compra/formulario/formulario.component';
+import { CommonAssetsModule } from 'src/app/compartido/common.module';
+
 
 
 const SNACKBAR_DEFAULTS = {

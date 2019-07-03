@@ -1,10 +1,10 @@
-import { Usuario } from "src/models/Usuario";
+import { Usuario } from "src/modelo/Usuario";
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { ActivatedRouteSnapshot, UrlTree, UrlSegment, Router, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/modelo/Sesion';
 import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from './gestion.routes';
 
 @Injectable()

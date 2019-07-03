@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { ClientesComponent } from '../app/gestion/clientes/clientes.component';
-import { EmpleadosComponent } from '../app/gestion/empleados/empleados.component';
-import { ProductosComponent } from '../app/gestion/productos/productos.component';
-import { ProveedoresComponent } from '../app/gestion/proveedores/proveedores.component';
-import { VentasComponent } from '../app/gestion/ventas/ventas.component';
-import { UsuariosComponent } from 'src/app/gestion/usuarios/usuarios.component';
-import { OrdenesCompraComponent } from 'src/app/gestion/ordenes_compra/ordenes_compra.component';
 import { Cargos } from 'src/enums/CargosEnum';
+import { ClientesComponent } from 'src/app/gestion/mantenedores/clientes/clientes.component';
+import { EmpleadosComponent } from 'src/app/gestion/mantenedores/empleados/empleados.component';
+import { ProductosComponent } from 'src/app/gestion/mantenedores/productos/productos.component';
+import { ProveedoresComponent } from 'src/app/gestion/mantenedores/proveedores/proveedores.component';
+import { VentasComponent } from 'src/app/gestion/mantenedores/ventas/ventas.component';
+import { OrdenesCompraComponent } from 'src/app/gestion/mantenedores/ordenes_compra/ordenes_compra.component';
+import { UsuariosComponent } from 'src/app/gestion/mantenedores/usuarios/usuarios.component';
 
 export const FERME_AUTHORIZED_CARGOS: { [key: string]: number[] } = {
     'clientes': [Cargos.Administrador],

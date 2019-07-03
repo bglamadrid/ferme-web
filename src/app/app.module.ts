@@ -5,7 +5,7 @@ import { LandingComponent } from './landing/landing.component';
 import { GestionModule } from './gestion/gestion.module';
 import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
 import { Router } from '@angular/router';
-import { CommonAssetsModule } from 'src/assets/common/common.module';
+import { CommonAssetsModule } from './compartido/common.module';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from 'src/routing/auth.guard';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/modelo/Sesion';
 import { MatSnackBar } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
 

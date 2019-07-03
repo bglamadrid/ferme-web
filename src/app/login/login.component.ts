@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { AuthService } from 'src/services/auth.service';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Observable, of } from 'rxjs';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/modelo/Sesion';
 import { Router } from '@angular/router';
 
 export interface Login {
@@ -15,10 +15,7 @@ export interface Login {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: [
-    '../../assets/formularios.css',
-    '../../assets/single-card-page.css'
-  ]
+  styleUrls: [ './login.component.css' ]
 })
 export class LoginComponent implements OnInit {
 
