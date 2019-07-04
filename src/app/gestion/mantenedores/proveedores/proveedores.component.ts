@@ -53,7 +53,7 @@ export class ProveedoresComponent implements OnInit {
     this.busy$ = of(true);
     this.dialog.open(ProveedorFormularioComponent, {
       width: "40rem",
-      height: "28rem"
+      height: "29rem"
     }).afterClosed().subscribe(
       (nuevo: Proveedor) => {
         if (nuevo) {

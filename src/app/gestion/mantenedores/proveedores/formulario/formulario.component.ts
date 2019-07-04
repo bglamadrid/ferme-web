@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Cargo } from 'src/modelo/Cargo';
 import { Proveedor } from 'src/modelo/Proveedor';
 import { ProveedoresHttpService } from 'src/http-services/proveedores.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/Constants';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/constantes';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 
 export interface ProveedorFormularioDialogData {

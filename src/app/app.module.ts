@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from '../routing/app-routing.module';
+import { Router } from '@angular/router';
+
+import { AppRoutingModule } from 'src/routing/app-routing.module';
+import { AuthGuard } from 'src/routing/auth.guard';
+
+import { CommonAssetsModule } from './compartido/common.module';
+import { GestionModule } from './gestion/gestion.module';
+
+
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
-import { GestionModule } from './gestion/gestion.module';
-import { CompraDashboardComponent } from './compra/dashboard/dashboard.component';
-import { Router } from '@angular/router';
-import { CommonAssetsModule } from './compartido/common.module';
 import { LoginComponent } from './login/login.component';
-import { AuthGuard } from 'src/routing/auth.guard';
 
 const DEBUG_MODE: boolean = false;
 
@@ -15,8 +18,7 @@ const DEBUG_MODE: boolean = false;
   declarations: [
     AppComponent,
     LandingComponent,
-    LoginComponent,
-    CompraDashboardComponent
+    LoginComponent
   ],
   imports: [
     CommonAssetsModule,

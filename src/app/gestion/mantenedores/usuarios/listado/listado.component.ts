@@ -1,6 +1,6 @@
-import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatTable } from '@angular/material';
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Usuario } from 'src/modelo/Usuario';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
@@ -12,14 +12,14 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
     './listado.component.css'
   ]
 })
-export class UsuariosListadoComponent extends ListadoGestionComponent {
+export class UsuariosListadoComponent extends ListadoGestionComponent implements OnInit {
 
   @Output() public editar: EventEmitter<Usuario>;
   @Output() public borrar: EventEmitter<Usuario>;
 
   @ViewChild("tabla") public tabla: MatTable<Usuario>;
   protected _items: Usuario[];
-  protected _itemsSource: Subject<Usuario[]>;
+  protected _itemsSource: BehaviorSubject<Usuario[]>;
   public items$: Observable<Usuario[]>;
 
   constructor(
@@ -29,10 +29,14 @@ export class UsuariosListadoComponent extends ListadoGestionComponent {
     this.editar = new EventEmitter<Usuario>();
     this.borrar = new EventEmitter<Usuario>();
 
-    this._itemsSource = new Subject<Usuario[]>();
+    this._itemsSource = new BehaviorSubject<Usuario[]>([]);
     this.items$ = this._itemsSource.asObservable();
 
     this.displayedColumns = [ "nombre", "fechaCreacion", "nombreCompleto", "rut", "acciones" ];
+    this.tabla.dataSource = this.items$;
+  }
+
+  ngOnInit() {
     this.tabla.dataSource = this.items$;
   }
 

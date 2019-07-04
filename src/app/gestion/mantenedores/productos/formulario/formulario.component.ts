@@ -5,7 +5,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { TipoProducto } from 'src/modelo/TipoProducto';
 import { ProductosHttpService } from 'src/http-services/productos.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/Constants';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/constantes';
 import { FamiliaProducto } from 'src/modelo/FamiliaProducto';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 

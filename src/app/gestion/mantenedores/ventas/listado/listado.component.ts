@@ -1,6 +1,6 @@
-import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatTable } from '@angular/material';
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Venta } from 'src/modelo/Venta';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
@@ -12,14 +12,14 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
     './listado.component.css'
   ]
 })
-export class VentasListadoComponent extends ListadoGestionComponent {
+export class VentasListadoComponent extends ListadoGestionComponent implements OnInit {
 
   @Output() public editar: EventEmitter<Venta>;
   @Output() public borrar: EventEmitter<Venta>;
 
   @ViewChild("tabla") public tabla: MatTable<Venta>;
   protected _items: Venta[];
-  protected _itemsSource: Subject<Venta[]>;
+  protected _itemsSource: BehaviorSubject<Venta[]>;
   public items$: Observable<Venta[]>;
 
   constructor(
@@ -29,10 +29,14 @@ export class VentasListadoComponent extends ListadoGestionComponent {
     this.editar = new EventEmitter<Venta>();
     this.borrar = new EventEmitter<Venta>();
 
-    this._itemsSource = new Subject<Venta[]>();
+    this._itemsSource = new BehaviorSubject<Venta[]>([]);
     this.items$ = this._itemsSource.asObservable();
 
     this.displayedColumns = [ "numero", "fecha", "acciones" ];
+    this.tabla.dataSource = this.items$;
+  }
+
+  ngOnInit() {
     this.tabla.dataSource = this.items$;
   }
 

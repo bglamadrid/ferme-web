@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog } from 
 import { Observable, of, Subscription, Subject } from 'rxjs';
 import { Venta } from 'src/modelo/Venta';
 import { VentasHttpService } from 'src/http-services/ventas.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/compartido/Constants';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/compartido/constantes';
 import { DetalleVenta } from 'src/modelo/DetalleVenta';
 import { Empleado } from 'src/modelo/Empleado';
 import { Cliente } from 'src/modelo/Cliente';

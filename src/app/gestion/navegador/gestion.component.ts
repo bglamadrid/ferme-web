@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from '../../../routing/gestion.routes';
 import { AuthService } from 'src/services/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Event } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Sesion } from 'src/modelo/Sesion';
+import { Subscription } from 'rxjs';
     
 export interface NavegadorModuloItem {
   path: string;
   texto: string;
   icono: string;
+  activo: boolean;
 }
 
 export const MODULOS_ICONOS = {
@@ -29,10 +31,12 @@ export const MODULOS_ICONOS = {
 })
 export class GestionNavegadorComponent implements OnInit {
 
+  private _moduloNombre: string;
   public modulos: NavegadorModuloItem[];
   public mensajeBienvenida: string;
   public sidenavOpened: boolean = true;
 
+  private _onRouteSub: Subscription;
 
   constructor(
     private authSvc: AuthService,
@@ -40,11 +44,20 @@ export class GestionNavegadorComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar
   ) { 
-    this.mensajeBienvenida = "Conectado como: Invitado";
+    this._moduloNombre = "Inicio";
   }
+
+  public get usuarioNombre(): string { return this.authSvc.sesion.nombreUsuario; }
+  public get moduloNombre(): string { return this._moduloNombre; }
 
   ngOnInit() {
     this.modulos = this.generarListadoModulos();
+  }
+
+  public onClickNavegar(item: NavegadorModuloItem) {
+    this.modulos.forEach(m => m.activo = false);
+    this._moduloNombre = item.texto;
+    item.activo = true;
   }
 
   public puedeVerModulo(nombreModulo: string): boolean {
@@ -53,10 +66,8 @@ export class GestionNavegadorComponent implements OnInit {
     const cargosAutorizados: number[] = FERME_AUTHORIZED_CARGOS[nombreModulo];
     if (cargosAutorizados && sesionActual) {
         const puede = cargosAutorizados.includes(sesionActual.idCargo);
-        console.log(nombreModulo +": "+puede);
         return puede;
     }
-    console.log(nombreModulo +": false");
     return false;
   }
 
@@ -70,7 +81,8 @@ export class GestionNavegadorComponent implements OnInit {
         const protoModulo: NavegadorModuloItem = {
           path: route.path,
           texto: this.routePathToText(route.path),
-          icono: MODULOS_ICONOS[route.path]
+          icono: MODULOS_ICONOS[route.path],
+          activo: false
         };
         return protoModulo;
       }
@@ -87,8 +99,9 @@ export class GestionNavegadorComponent implements OnInit {
     return path.split("_").map((palabra) => { return palabra.charAt(0).toUpperCase()+palabra.substring(1); }).join(" ");
   }
 
-  public onClickToggleSidebar(): void {
-    this.sidenavOpened = !this.sidenavOpened;
+  public onRouteActivate(route: any) {
+    console.log(route);
+    
   }
 
   public onClickCerrarSesion(): void {

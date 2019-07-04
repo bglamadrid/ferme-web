@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
-import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
-import { GestionRoutingModule } from '../../routing/gestion-routing.module';
+import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material';
+
+import { CommonAssetsModule } from 'src/app/compartido/common.module';
+import { GestionRoutingModule } from 'src/routing/gestion-routing.module';
+
+import { AgregarProductoVentaComponent } from './dialogos/agregar-producto/agregar-producto.component';
+
 import { ClientesComponent } from './mantenedores/clientes/clientes.component';
 import { ClienteFormularioComponent } from './mantenedores/clientes/formulario/formulario.component';
 import { ClientesListadoComponent } from './mantenedores/clientes/listado/listado.component';
@@ -17,19 +22,17 @@ import { ProveedorFormularioComponent } from './mantenedores/proveedores/formula
 import { VentasComponent } from './mantenedores/ventas/ventas.component';
 import { VentasListadoComponent } from './mantenedores/ventas/listado/listado.component';
 import { VentaFormularioComponent } from './mantenedores/ventas/formulario/formulario.component';
-import { AgregarProductoVentaComponent } from './dialogos/agregar-producto/agregar-producto.component';
 import { UsuariosComponent } from './mantenedores/usuarios/usuarios.component';
 import { UsuariosListadoComponent } from './mantenedores/usuarios/listado/listado.component';
 import { UsuarioFormularioComponent } from './mantenedores/usuarios/formulario/formulario.component';
 import { OrdenesCompraComponent } from './mantenedores/ordenes_compra/ordenes_compra.component';
 import { OrdenesCompraListadoComponent } from './mantenedores/ordenes_compra/listado/listado.component';
 import { OrdenCompraFormularioComponent } from './mantenedores/ordenes_compra/formulario/formulario.component';
-import { CommonAssetsModule } from 'src/app/compartido/common.module';
 
 
 
-const SNACKBAR_DEFAULTS = {
-  duration: 3000
+const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
+  duration: 5000
 };
 
 @NgModule({

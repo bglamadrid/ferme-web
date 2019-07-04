@@ -1,8 +1,8 @@
-import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
 import { Producto } from 'src/modelo/Producto';
 import { ProductoFormularioDialogData, ProductoFormularioComponent } from '../formulario/formulario.component';
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { ProductosHttpService } from 'src/http-services/productos.service';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
@@ -14,14 +14,14 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
     './listado.component.css'
   ]
 })
-export class ProductosListadoComponent extends ListadoGestionComponent {
+export class ProductosListadoComponent extends ListadoGestionComponent implements OnInit {
 
   @Output() public editar: EventEmitter<Producto>;
   @Output() public borrar: EventEmitter<Producto>;
   
   @ViewChild("tabla") public tabla: MatTable<Producto>;
   protected _items: Producto[];
-  protected _itemsSource: Subject<Producto[]>;
+  protected _itemsSource: BehaviorSubject<Producto[]>;
   public items$: Observable<Producto[]>;
 
   constructor(
@@ -31,10 +31,13 @@ export class ProductosListadoComponent extends ListadoGestionComponent {
     this.editar = new EventEmitter<Producto>();
     this.borrar = new EventEmitter<Producto>();
 
-    this._itemsSource = new Subject<Producto[]>();
+    this._itemsSource = new BehaviorSubject<Producto[]>([]);
     this.items$ = this._itemsSource.asObservable();
 
     this.displayedColumns = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
+  }
+
+  ngOnInit() {
     this.tabla.dataSource = this.items$;
   }
 

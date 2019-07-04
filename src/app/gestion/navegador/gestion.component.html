@@ -2,11 +2,12 @@
   <mat-sidenav-container>
     <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
       <div class="logo">
-        <img src="../../recursos/logo.png" alt="FERME">
+        <img src="../../../logo.png" alt="FERME">
         <h1>FERME</h1>
       </div>
       <mat-nav-list role="navigation-links">
         <a mat-list-item *ngFor="let modulo of modulos"
+          (click)="onClickNavegar(modulo)"
           [routerLink]="['/gestion', modulo.path]">
           <mat-icon>{{ modulo.icono }}</mat-icon>
           {{ modulo.texto }}
@@ -16,23 +17,28 @@
     <mat-sidenav-content role="main">
       <div class="pagina">
         <div class="cabecera">
-          <button mat-button class="cabecera-alternar-navegacion"
-            (click)="onClickToggleSidebar()">
+          <button mat-button color="warn"
+            class="cabecera-alternar-navegacion"
+            title="Alternar menú lateral"
+            (click)="sidenavOpened = !sidenavOpened">
             <ng-container *ngIf="sidenavOpened; then ocultarNavegacion; else mostrarNavegacion"></ng-container>
             <ng-template #ocultarNavegacion><mat-icon>view_quilt</mat-icon></ng-template>
             <ng-template #mostrarNavegacion><mat-icon>view_stream</mat-icon></ng-template>
             
           </button>
           <div class="cabecera-contenido">  
-            {{ mensajeBienvenida }}
+            <span>{{ moduloNombre }}</span>
+            <span>{{ usuarioNombre }}</span>
           </div>
-          <button mat-button class="cabecera-cerrar-sesion"
+          <button mat-button color="warn" 
+            class="cabecera-cerrar-sesion"
+            title="Salir"
             (click)="onClickCerrarSesion()">
             <mat-icon>exit_to_app</mat-icon>
           </button>
         </div>
         <div class="contenido">
-          <router-outlet></router-outlet>
+          <router-outlet (activate)="onRouteActivate($event)"></router-outlet>
         </div>
         <div class="pie">
           <span>FERME 2019 - Todos los derechos reservados.</span>

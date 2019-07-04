@@ -53,7 +53,7 @@
       <ng-container *ngIf="!(productos$ | async); then loading; else tabla"></ng-container>
       <ng-template #loading>
         <div style="margin-top: 1em">
-          <app-centered-mat-spinner></app-centered-mat-spinner>
+          <mat-spinner-centrado></mat-spinner-centrado>
         </div>
       </ng-template>
 

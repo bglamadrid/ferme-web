@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable, of } from 'rxjs';
 import { Usuario } from 'src/modelo/Usuario';
 import { UsuariosHttpService } from 'src/http-services/usuarios.service';
-import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/Constants';
+import { REACTIVE_FORMS_ISOLATE as NO_EVENT_CHAIN } from 'src/app/compartido/constantes';
 import { Persona } from 'src/modelo/Persona';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 

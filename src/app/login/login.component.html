@@ -5,24 +5,35 @@
       <form [formGroup]="loginForm" novalidate
         style="grid-template-areas:   
           'a' 
-          'b'">
+          'b'
+          'c'">
         <mat-form-field style="grid-area: a">
-          <input matInput placeholder="Nombre de Usuario" formControlName="usuario" />
+          <input matInput type="text" placeholder="Nombre de Usuario" formControlName="usuario" />
         </mat-form-field>
 
-        <mat-form-field style="grid-area: b">
-          <input matInput placeholder="Contraseña" formControlName="clave" />
-        </mat-form-field>
+        <div style="grid-area: b" class="clave-fg">
+          <mat-form-field>
+            <input matInput [type]="claveInputType" placeholder="Contraseña" formControlName="clave" />
+          </mat-form-field>
+          <button mat-icon-button 
+            type="button"
+            (click)="esconderClave = !esconderClave">
+            <mat-icon>{{ iconoBotonMostrarClave }}</mat-icon>
+          </button>
+        </div>
 
-        <ng-container *ngIf="(showSpinner$ | async); then loading; else acciones"></ng-container>
+        <ng-container 
+          *ngIf="(showSpinner$ | async); 
+            then loading; 
+            else acciones">
+        </ng-container>
         <ng-template #loading>
-          <div class="spinner-container">
-            <mat-spinner></mat-spinner>
+          <div style="grid-area: c">
+            <mat-spinner-centrado></mat-spinner-centrado>
           </div>
         </ng-template>
-          
         <ng-template #acciones>
-          <div class="acciones">
+          <div style="grid-area: c" class="acciones">
             <button mat-raised-button color="primary"
               type="submit" 
               [disabled]="loginForm.invalid"

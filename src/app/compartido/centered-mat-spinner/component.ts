@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-centered-mat-spinner',
+  selector: 'mat-spinner-centrado',
   template: `<div><mat-spinner></mat-spinner></div>`,
   styles: [
     `div {
@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
     }`
   ]
 })
-export class CenteredMatSpinnerComponent {
+export class MatProgressSpinnerCentradoComponent {
 
   constructor() { }
 

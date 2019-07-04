@@ -2,7 +2,7 @@
   <ng-container *ngIf="loading$ | async; then loading else clientesTable"></ng-container>
 
   <ng-template #loading>
-    <app-centered-mat-spinner></app-centered-mat-spinner>
+    <mat-spinner-centrado></mat-spinner-centrado>
   </ng-template>
 
   <ng-template #clientesTable>
