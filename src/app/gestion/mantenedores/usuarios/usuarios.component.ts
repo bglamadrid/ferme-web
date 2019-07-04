@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of, from, Subject } from 'rxjs';
 import { Usuario } from 'src/modelo/Usuario';
 import { UsuariosListadoComponent } from './listado/listado.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -15,8 +15,14 @@ import { UsuariosHttpService } from 'src/http-services/usuarios.service';
 })
 export class UsuariosComponent implements OnInit {
 
+  protected _usuarios: Usuario[];
+  protected _usuariosSource: Subject<Usuario[]>;
   public usuarios$: Observable<Usuario[]>;
+
+  protected _loadingSource: Subject<boolean>;
   public loading$: Observable<boolean>;
+
+  protected _busySource: Subject<boolean>;
   public busy$: Observable<boolean>;
 
   @ViewChild("listado") public listado: UsuariosListadoComponent;
@@ -26,8 +32,15 @@ export class UsuariosComponent implements OnInit {
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) { 
-    this.loading$ = of(true);
-    this.busy$ = of(true);
+    this._usuarios = [];
+    this._usuariosSource = new Subject<Usuario[]>();
+    this.usuarios$ = this._usuariosSource.asObservable();
+
+    this._loadingSource = new Subject<boolean>();
+    this.loading$ = this._loadingSource.asObservable();
+
+    this._busySource = new Subject<boolean>();
+    this.busy$ = this._busySource.asObservable();
   }
 
   ngOnInit() {
@@ -35,22 +48,24 @@ export class UsuariosComponent implements OnInit {
   }
 
   protected cargarUsuarios(): Observable<Usuario[]> {
-    this.loading$ = of(true);
+    this._loadingSource.next(true);
     let usuarios: Observable<Usuario[]> = this.httpSvc.listarUsuarios();
     usuarios.subscribe((payload: Usuario[]) => {
-      this.usuarios$ = of(payload);
+      this._usuarios = payload;
+      this._usuariosSource.next(payload);
     }, err => {
       console.log(err);
-      this.usuarios$ = of([]);
+      this._usuarios = [];
+      this._usuariosSource.next([]);
     }, () => {
-      this.loading$ = of(false);
-      this.busy$ = of(false);
+      this._loadingSource.next(false);
+      this._busySource.next(false);
     });
     return from(usuarios);
   }
 
   public onClickAgregar(): void {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     this.dialog.open(UsuarioFormularioComponent, {
       width: "40rem",
       height: "25rem"
@@ -61,12 +76,12 @@ export class UsuariosComponent implements OnInit {
         }
       },
       err => { console.log(err); },
-      () => { this.busy$ = of(false); }
+      () => { this._busySource.next(false); }
     );
   }
 
   public onClickEditar(usr: Usuario): void {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     const dialogData: UsuarioFormularioDialogData = {
       usuario: usr
     };
@@ -82,12 +97,12 @@ export class UsuariosComponent implements OnInit {
         }
       },
       err => { console.log(err); },
-      () => { this.busy$ = of(false); }
+      () => { this._busySource.next(false); }
     );
   }
 
   public onClickBorrar(usr: Usuario) {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     this.httpSvc.borrarUsuario(usr.idUsuario).subscribe(
       (exito: boolean) => {
         if (exito) {
@@ -101,7 +116,7 @@ export class UsuariosComponent implements OnInit {
         this.snackBar.open("Hubo un problema de comunicación con el servidor. Por favor, inténtelo nuevamente.");
         console.log(err);
        },
-       () => { this.busy$ = of(false); }
+       () => { this._busySource.next(false); }
     );
   }
 

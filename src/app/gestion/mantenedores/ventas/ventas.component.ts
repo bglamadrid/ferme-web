@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of, from, Subject } from 'rxjs';
 import { Venta } from 'src/modelo/Venta';
 import { VentasListadoComponent } from './listado/listado.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -15,8 +15,14 @@ import { VentasHttpService } from 'src/http-services/ventas.service';
 })
 export class VentasComponent implements OnInit {
 
+  public _ventas: Venta[];
+  protected _ventasSource: Subject<Venta[]>;
   public ventas$: Observable<Venta[]>;
+
+  protected _loadingSource: Subject<boolean>;
   public loading$: Observable<boolean>;
+
+  protected _busySource: Subject<boolean>;
   public busy$: Observable<boolean>;
 
   @ViewChild("listado") public listado: VentasListadoComponent;
@@ -26,8 +32,15 @@ export class VentasComponent implements OnInit {
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) { 
-    this.loading$ = of(true);
-    this.busy$ = of(true);
+    this._ventas = [];
+    this._ventasSource = new Subject<Venta[]>();
+    this.ventas$ = this._ventasSource.asObservable();
+
+    this._loadingSource = new Subject<boolean>();
+    this.loading$ = this._loadingSource.asObservable();
+
+    this._busySource = new Subject<boolean>();
+    this.busy$ = this._busySource.asObservable();
   }
 
   ngOnInit() {

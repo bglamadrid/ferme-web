@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of, from, Subject } from 'rxjs';
 import { Proveedor } from 'src/modelo/Proveedor';
 import { ProveedoresListadoComponent } from './listado/listado.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -15,8 +15,14 @@ import { ProveedoresHttpService } from 'src/http-services/proveedores.service';
 })
 export class ProveedoresComponent implements OnInit {
 
+  protected _proveedores: Proveedor[];
+  protected _proveedoresSource: Subject<Proveedor[]>;
   public proveedores$: Observable<Proveedor[]>;
+
+  protected _loadingSource: Subject<boolean>;
   public loading$: Observable<boolean>;
+
+  protected _busySource: Subject<boolean>;
   public busy$: Observable<boolean>;
 
   @ViewChild("listado") public listado: ProveedoresListadoComponent;
@@ -26,8 +32,15 @@ export class ProveedoresComponent implements OnInit {
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) { 
-    this.loading$ = of(true);
-    this.busy$ = of(true);
+    this._proveedores = [];
+    this._proveedoresSource = new Subject<Proveedor[]>();
+    this.proveedores$ = this._proveedoresSource.asObservable();
+    
+    this._loadingSource = new Subject<boolean>();
+    this.loading$ = this._loadingSource.asObservable();
+
+    this._busySource = new Subject<boolean>();
+    this.busy$ = this._busySource.asObservable();
   }
 
   ngOnInit() {
@@ -35,22 +48,24 @@ export class ProveedoresComponent implements OnInit {
   }
 
   protected cargarProveedores(): Observable<Proveedor[]> {
-    this.loading$ = of(true);
+    this._loadingSource.next(true);
     let proveedores: Observable<Proveedor[]> = this.httpSvc.listarProveedores();
     proveedores.subscribe((payload: Proveedor[]) => {
-      this.proveedores$ = of(payload);
+      this._proveedores = payload;
+      this._proveedoresSource.next(payload);
     }, err => {
       console.log(err);
-      this.proveedores$ = of([]);
+      this._proveedores = [];
+      this._proveedoresSource.next([]);
     }, () => {
-      this.loading$ = of(false);
-      this.busy$ = of(false);
+      this._loadingSource.next(false);
+      this._busySource.next(false);
     });
     return from(proveedores);
   }
 
   public onClickAgregar(): void {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     this.dialog.open(ProveedorFormularioComponent, {
       width: "40rem",
       height: "29rem"
@@ -61,12 +76,12 @@ export class ProveedoresComponent implements OnInit {
         }
       },
       err => { console.log(err); },
-      () => { this.busy$ = of(false); }
+      () => { this._busySource.next(false); }
     );
   }
 
   public onClickEditar(prov: Proveedor): void {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     const dialogData: ProveedorFormularioDialogData = {
       proveedor: prov
     };
@@ -82,12 +97,12 @@ export class ProveedoresComponent implements OnInit {
         }
       },
       err => { console.log(err); },
-      () => { this.busy$ = of(false); }
+      () => { this._busySource.next(false); }
     );
   }
 
   public onClickBorrar(prov: Proveedor) {
-    this.busy$ = of(true);
+    this._busySource.next(true);
     this.httpSvc.borrarProveedor(prov.idProveedor).subscribe(
       (exito: boolean) => {
         if (exito) {
@@ -100,7 +115,7 @@ export class ProveedoresComponent implements OnInit {
         this.snackBar.open("Hubo un problema de comunicación con el servidor. Por favor, inténtelo nuevamente.");
         console.log(err);
        },
-       () => { this.busy$ = of(false); }
+       () => { this._busySource.next(false); }
     );
   }
 

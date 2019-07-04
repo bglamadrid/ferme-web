@@ -33,7 +33,6 @@ export class UsuariosListadoComponent extends ListadoGestionComponent implements
     this.items$ = this._itemsSource.asObservable();
 
     this.displayedColumns = [ "nombre", "fechaCreacion", "nombreCompleto", "rut", "acciones" ];
-    this.tabla.dataSource = this.items$;
   }
 
   ngOnInit() {

@@ -33,8 +33,7 @@ export class EmpleadosComponent implements OnInit {
   constructor(
     protected httpSvc: EmpleadosHttpService,
     protected dialog: MatDialog,
-    protected snackBar: MatSnackBar,
-    protected route: ActivatedRoute
+    protected snackBar: MatSnackBar
   ) { 
     this._empleados = [];
     this._empleadosSource = new Subject<Empleado[]>();
