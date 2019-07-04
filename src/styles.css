@@ -34,6 +34,10 @@ body, div {
     overflow-y: auto;
 }
 
+.no-padding {
+    padding: 0;
+}
+
 .bg-ng-primary {
     background-color: #3f51b5;
     color: white;

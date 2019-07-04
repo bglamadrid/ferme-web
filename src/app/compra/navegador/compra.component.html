@@ -1,22 +1,54 @@
 <div class="pagina">
   <div class="cabecera">
     <div class="logo">
-      <img src="../../../logo.png" alt="FERME">
+      <img src="logo.png" alt="FERME">
       <h1>FERME</h1>
     </div>
-    <div class="cabecera-contenido">  
-      <span>{{ moduloNombre }}</span>
-      <span>{{ usuarioNombre }}</span>
+    <div class="cabecera-acciones">
+      <a mat-button color="warn" 
+        title="Catálogo"
+        [routerLink]="['/compra', 'catalogo']">
+        <mat-icon>dashboard</mat-icon>
+      </a>
+      <a mat-button color="warn" 
+        title="Resumen"
+        [routerLink]="['/compra', 'resumen']">
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
     </div>
-    <button mat-button color="warn" 
-      class="cabecera-cerrar-sesion"
-      title="Salir"
-      (click)="onClickCerrarSesion()">
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
+    <div class="cabecera-espacio"></div>
+    <div class="cabecera-acciones">
+      <ng-container
+        *ngIf="estaAutenticado;
+          then cerrarSesion;
+          else abrirSesion">
+      </ng-container>
+      <ng-template #cerrarSesion>
+        <button mat-button color="warn" 
+          title="Cerrar Sesión"
+          (click)="onClickCerrarSesion()">
+          <span>{{ usuarioNombre }}</span>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </ng-template>
+      <ng-template #abrirSesion>
+        <button mat-button color="warn" 
+          title="Iniciar Sesión"
+          (click)="onClickAbrirSesion()">
+          <span>{{ usuarioNombre }}</span>
+          <mat-icon>person_outline</mat-icon>
+        </button>
+      </ng-template>
+
+      <button mat-button color="warn" 
+        title="Salir"
+        (click)="onClickSalir()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </div>
   </div>
   <div class="contenido">
-    <router-outlet (activate)="onRouteActivate($event)"></router-outlet>
+    <router-outlet></router-outlet>
   </div>
   <div class="pie">
     <span>FERME 2019 - Todos los derechos reservados.</span>

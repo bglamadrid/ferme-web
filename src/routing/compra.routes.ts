@@ -1,12 +1,6 @@
 import { Routes } from '@angular/router';
-import { Cargos } from 'src/enums/CargosEnum';
-import { ClientesComponent } from 'src/app/gestion/mantenedores/clientes/clientes.component';
-import { EmpleadosComponent } from 'src/app/gestion/mantenedores/empleados/empleados.component';
-import { ProductosComponent } from 'src/app/gestion/mantenedores/productos/productos.component';
-import { ProveedoresComponent } from 'src/app/gestion/mantenedores/proveedores/proveedores.component';
-import { VentasComponent } from 'src/app/gestion/mantenedores/ventas/ventas.component';
-import { OrdenesCompraComponent } from 'src/app/gestion/mantenedores/ordenes_compra/ordenes_compra.component';
-import { UsuariosComponent } from 'src/app/gestion/mantenedores/usuarios/usuarios.component';
+import { CatalogoComponent } from 'src/app/compra/catalogo/catalogo.component';
+import { ResumenComponent } from 'src/app/compra/resumen/resumen.component';
 
 // export const FERME_AUTHORIZED_CARGOS: { [key: string]: number[] } = {
 //     'clientes': [Cargos.Administrador],
@@ -19,6 +13,7 @@ import { UsuariosComponent } from 'src/app/gestion/mantenedores/usuarios/usuario
 // };
 
 export const FERME_COMPRA_ROUTES: Routes = [
-    { path: "catalogo", component: ClientesComponent },
-    { path: "resumen", component: ClientesComponent },
+    { path: "", redirectTo: "catalogo", pathMatch: "full" },
+    { path: "catalogo", component: CatalogoComponent },
+    { path: "resumen", component: ResumenComponent },
 ];

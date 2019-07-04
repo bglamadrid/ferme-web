@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
+import { Observable, of, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+
 import { AuthService } from 'src/services/auth.service';
 import { AuthHttpService } from 'src/http-services/auth.service';
-import { Observable, of, Subject } from 'rxjs';
 import { Sesion } from 'src/modelo/Sesion';
-import { Router } from '@angular/router';
 
 export interface Login {
   usuario: string;
@@ -63,9 +64,7 @@ export class LoginComponent implements OnInit {
       (ssn: Sesion) => {
         if (!ssn || !ssn.hashSesion) {
           this.snackBar.open("Credenciales inválidas.");
-        } else {
-          console.log(ssn);
-          
+        } else {          
           this.authSvc.sesion = ssn;
           this.router.navigateByUrl("/gestion");
         }

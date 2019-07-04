@@ -6,6 +6,7 @@ import { CompraRoutingModule } from 'src/routing/compra-routing.module';
 import { CatalogoComponent } from './catalogo/catalogo.component';
 import { ResumenComponent } from './resumen/resumen.component';
 import { CompraNavegadorComponent } from './navegador/compra.component';
+import { CompraLoginDialogComponent } from './dialogos/login/login.component';
 
 const SNACKBAR_DEFAULTS = {
   duration: 3000
@@ -15,7 +16,8 @@ const SNACKBAR_DEFAULTS = {
   declarations: [
     CompraNavegadorComponent,
     CatalogoComponent,
-    ResumenComponent
+    ResumenComponent,
+    CompraLoginDialogComponent
   ],
   imports: [
     CommonAssetsModule,
@@ -26,6 +28,7 @@ const SNACKBAR_DEFAULTS = {
     MatExpansionModule
   ],
   entryComponents: [
+    CompraLoginDialogComponent
   ], 
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS}
