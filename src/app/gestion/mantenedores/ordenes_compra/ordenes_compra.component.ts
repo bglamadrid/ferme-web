@@ -23,9 +23,9 @@ export class OrdenesCompraComponent implements OnInit {
   @ViewChild("listado") public listado: OrdenesCompraListadoComponent;
 
   constructor(
-    private httpSvc: OrdenesCompraHttpService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    protected httpSvc: OrdenesCompraHttpService,
+    protected dialog: MatDialog,
+    protected snackBar: MatSnackBar
   ) { 
     this.loading$ = of(true);
     this.busy$ = of(true);
@@ -35,7 +35,7 @@ export class OrdenesCompraComponent implements OnInit {
     this.cargarOrdenesCompra();
   }
 
-  private cargarOrdenesCompra(): Observable<OrdenCompra[]> {
+  protected cargarOrdenesCompra(): Observable<OrdenCompra[]> {
     this.loading$ = of(true);
     let ordenesCompra: Observable<OrdenCompra[]> = this.httpSvc.listarOrdenesCompra();
     ordenesCompra.subscribe((payload: OrdenCompra[]) => {

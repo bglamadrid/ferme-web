@@ -19,8 +19,8 @@ export interface ProveedorFormularioDialogData {
 })
 export class ProveedorFormularioComponent implements OnInit {
 
-  private _idProveedor: number;
-  private _idPersona: number;
+  protected _idProveedor: number;
+  protected _idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
   public showSpinner$: Observable<boolean>;
@@ -28,12 +28,12 @@ export class ProveedorFormularioComponent implements OnInit {
   public proveedorForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: ProveedorFormularioDialogData,
-    private self: MatDialogRef<ProveedorFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private sharedSvc: GestionSharedHttpService,
-    private httpSvc: ProveedoresHttpService
+    @Inject(MAT_DIALOG_DATA) protected dialogData: ProveedorFormularioDialogData,
+    protected self: MatDialogRef<ProveedorFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected sharedSvc: GestionSharedHttpService,
+    protected httpSvc: ProveedoresHttpService
   ) { 
     this.showSpinner$ = of(true);
 
@@ -69,7 +69,7 @@ export class ProveedorFormularioComponent implements OnInit {
     this.cargos$ = this.sharedSvc.cargos();
   }
 
-  private cargarProveedor(prov: Proveedor): void {
+  protected cargarProveedor(prov: Proveedor): void {
 
     this.proveedorForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
@@ -105,7 +105,7 @@ export class ProveedorFormularioComponent implements OnInit {
     this.proveedorForm.enable();
   }
 
-  private guardarProveedor(prov: Proveedor): void {
+  protected guardarProveedor(prov: Proveedor): void {
     this.proveedorForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     

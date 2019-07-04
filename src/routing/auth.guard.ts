@@ -12,8 +12,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     public path: ActivatedRouteSnapshot[];
     public route: ActivatedRouteSnapshot;
     constructor(
-        private router: Router,
-        private authSvc: AuthService
+        protected router: Router,
+        protected authSvc: AuthService
     ) {
 
     }

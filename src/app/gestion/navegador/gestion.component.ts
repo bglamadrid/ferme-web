@@ -31,19 +31,18 @@ export const MODULOS_ICONOS = {
 })
 export class GestionNavegadorComponent implements OnInit {
 
-  private _moduloNombre: string;
+  protected _moduloNombre: string;
   public modulos: NavegadorModuloItem[];
   public sidenavOpened: boolean = true;
 
-  private _onRouteSub: Subscription;
-
   constructor(
-    private authSvc: AuthService,
-    private auttHttpSvc: AuthHttpService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    protected authSvc: AuthService,
+    protected auttHttpSvc: AuthHttpService,
+    protected router: Router,
+    protected snackBar: MatSnackBar,
+    protected route : ActivatedRoute
   ) { 
-    this._moduloNombre = "Inicio";
+    this._moduloNombre = "Inicio";    
   }
 
   public get usuarioNombre(): string { return this.authSvc.sesion.nombreUsuario; }
@@ -51,6 +50,13 @@ export class GestionNavegadorComponent implements OnInit {
 
   ngOnInit() {
     this.modulos = this.generarListadoModulos();
+    
+    const rutaActual = this.route.firstChild;
+    if (rutaActual) {
+      const moduloRuta: string = rutaActual.routeConfig.path;
+      const modulo: NavegadorModuloItem = this.modulos.find(m => m.path === moduloRuta);
+      this.onClickNavegar(modulo);
+    }
   }
 
   public onClickNavegar(item: NavegadorModuloItem) {
@@ -70,7 +76,7 @@ export class GestionNavegadorComponent implements OnInit {
     return false;
   }
 
-  private generarListadoModulos(): NavegadorModuloItem[] {
+  protected generarListadoModulos(): NavegadorModuloItem[] {
     let protoModulos: NavegadorModuloItem[] = FERME_GESTION_ROUTES.filter(
       (route) => {
         return this.puedeVerModulo(route.path);

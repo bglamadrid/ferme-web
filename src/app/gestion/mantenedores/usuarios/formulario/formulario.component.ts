@@ -19,7 +19,7 @@ export interface UsuarioFormularioDialogData {
 })
 export class UsuarioFormularioComponent implements OnInit {
 
-  private _idUsuario: number;
+  protected _idUsuario: number;
 
   public personas$: Observable<Persona[]>;
   public showSpinner$: Observable<boolean>;
@@ -27,12 +27,12 @@ export class UsuarioFormularioComponent implements OnInit {
   public usuarioForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: UsuarioFormularioDialogData,
-    private self: MatDialogRef<UsuarioFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private sharedSvc: GestionSharedHttpService,
-    private httpSvc: UsuariosHttpService
+    @Inject(MAT_DIALOG_DATA) protected dialogData: UsuarioFormularioDialogData,
+    protected self: MatDialogRef<UsuarioFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected sharedSvc: GestionSharedHttpService,
+    protected httpSvc: UsuariosHttpService
   ) { 
     this.showSpinner$ = of(false);
 
@@ -58,7 +58,7 @@ export class UsuarioFormularioComponent implements OnInit {
     this.sharedSvc.personas().subscribe(prs => { this.personas$ = of(prs); });
   }
 
-  private cargarUsuario(usr: Usuario): void {
+  protected cargarUsuario(usr: Usuario): void {
 
     this.usuarioForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
@@ -75,7 +75,7 @@ export class UsuarioFormularioComponent implements OnInit {
     this.usuarioForm.enable();
   }
 
-  private guardarUsuario(usr: Usuario): void {
+  protected guardarUsuario(usr: Usuario): void {
     this.usuarioForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     

@@ -12,7 +12,7 @@ export class AuthHttpService extends RootHttpService {
   protected baseURI = this.baseURI + "/sesiones";
 
   constructor(
-    private http: HttpClient
+    protected http: HttpClient
   ) { 
     super();
   }

@@ -18,23 +18,23 @@ import { SNACKBAR_WARNING } from 'src/app/compartido/constantes';
 })
 export class EmpleadosComponent implements OnInit {
 
-  private _empleados: Empleado[];
-  private _empleadosSource: Subject<Empleado[]>;
+  protected _empleados: Empleado[];
+  protected _empleadosSource: Subject<Empleado[]>;
   public empleados$: Observable<Empleado[]>;
 
-  private _loadingSource: Subject<boolean>;
+  protected _loadingSource: Subject<boolean>;
   public loading$: Observable<boolean>;
 
-  private _busySource: Subject<boolean>;
+  protected _busySource: Subject<boolean>;
   public busy$: Observable<boolean>;
 
   @ViewChild("listado") public listado: EmpleadosListadoComponent;
 
   constructor(
-    private httpSvc: EmpleadosHttpService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private route: ActivatedRoute
+    protected httpSvc: EmpleadosHttpService,
+    protected dialog: MatDialog,
+    protected snackBar: MatSnackBar,
+    protected route: ActivatedRoute
   ) { 
     this._empleados = [];
     this._empleadosSource = new Subject<Empleado[]>();
@@ -52,7 +52,7 @@ export class EmpleadosComponent implements OnInit {
     
   }
 
-  private cargarEmpleados(): Observable<Empleado[]> {
+  protected cargarEmpleados(): Observable<Empleado[]> {
     this._loadingSource.next(true);
     let empleados: Observable<Empleado[]> = this.httpSvc.listarEmpleados();
     empleados.subscribe((payload: Empleado[]) => {

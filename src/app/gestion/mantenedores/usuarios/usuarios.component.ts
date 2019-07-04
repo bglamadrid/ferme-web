@@ -22,9 +22,9 @@ export class UsuariosComponent implements OnInit {
   @ViewChild("listado") public listado: UsuariosListadoComponent;
   
   constructor(
-    private httpSvc: UsuariosHttpService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    protected httpSvc: UsuariosHttpService,
+    protected dialog: MatDialog,
+    protected snackBar: MatSnackBar
   ) { 
     this.loading$ = of(true);
     this.busy$ = of(true);
@@ -34,7 +34,7 @@ export class UsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
-  private cargarUsuarios(): Observable<Usuario[]> {
+  protected cargarUsuarios(): Observable<Usuario[]> {
     this.loading$ = of(true);
     let usuarios: Observable<Usuario[]> = this.httpSvc.listarUsuarios();
     usuarios.subscribe((payload: Usuario[]) => {

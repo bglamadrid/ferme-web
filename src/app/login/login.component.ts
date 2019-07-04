@@ -20,16 +20,16 @@ export interface Login {
 export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
-  private _showSpinnerSource: Subject<boolean>;
+  protected _showSpinnerSource: Subject<boolean>;
   public showSpinner$: Observable<boolean>;
   public esconderClave: boolean;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private authSvc: AuthService,
-    private authHttpSvc: AuthHttpService
+    protected fb: FormBuilder,
+    protected router: Router,
+    protected snackBar: MatSnackBar,
+    protected authSvc: AuthService,
+    protected authHttpSvc: AuthHttpService
   ) { 
     this._showSpinnerSource = new Subject<boolean>();
     this.showSpinner$ = this._showSpinnerSource.asObservable();

@@ -37,13 +37,13 @@ export const TIPOS_VENTA: TipoVenta[] = [
 })
 export class VentaFormularioComponent implements OnInit {
 
-  private _idVenta: number;
+  protected _idVenta: number;
 
 
   public tipos$: Observable<TipoVenta[]>;
   public empleados$: Observable<Empleado[]>;
   public clientes$: Observable<Cliente[]>;
-  private showSpinnerSource: Subject<boolean>;
+  protected showSpinnerSource: Subject<boolean>;
   public showSpinner$: Observable<boolean>;
 
   public ventaForm: FormGroup;
@@ -54,17 +54,17 @@ export class VentaFormularioComponent implements OnInit {
   public detallesVenta$: Observable<DetalleVenta[]>;
   public subtotalVenta: number;
 
-  private _detallesVenta: DetalleVenta[];
+  protected _detallesVenta: DetalleVenta[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: VentaFormularioDialogData,
-    private self: MatDialogRef<VentaFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private httpSvc: VentasHttpService,
-    private empHttpSvc: EmpleadosHttpService,
-    private clHttpSvc: ClientesHttpService,
-    private dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) protected dialogData: VentaFormularioDialogData,
+    protected self: MatDialogRef<VentaFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected httpSvc: VentasHttpService,
+    protected empHttpSvc: EmpleadosHttpService,
+    protected clHttpSvc: ClientesHttpService,
+    protected dialog: MatDialog
   ) { 
     this.showSpinnerSource = new Subject<boolean>();
     this.showSpinner$ = this.showSpinnerSource.asObservable();
@@ -100,7 +100,7 @@ export class VentaFormularioComponent implements OnInit {
     this.empleados$ = this.empHttpSvc.listarEmpleados();
   }
 
-  private cargarVenta(vnt: Venta): void {
+  protected cargarVenta(vnt: Venta): void {
 
     this.ventaForm.disable(NO_EVENT_CHAIN);
     this.showSpinnerSource.next(true);
@@ -133,7 +133,7 @@ export class VentaFormularioComponent implements OnInit {
     )
   }
 
-  private guardarVenta(vnt: Venta): void {
+  protected guardarVenta(vnt: Venta): void {
     this.ventaForm.disable(NO_EVENT_CHAIN);
     this.showSpinnerSource.next(true);
     

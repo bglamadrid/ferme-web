@@ -24,7 +24,7 @@ export interface AgregarProductoDialogData {
 export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
 
   
-  private _idProveedor: number;
+  protected _idProveedor: number;
 
   public _filtro: string;
   
@@ -40,20 +40,20 @@ export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
   @ViewChild("tablaProductosAgregar") public tablaProductosAgregar: MatTable<Producto>;
   public displayedColumns: string[];
 
-  private nombreBuscar$: Subject<string>;
+  protected nombreBuscar$: Subject<string>;
 
-  private _productosAgregar: Producto[];
-  private _changeFiltrosSub: Subscription;
-  private _changeTipoSub: Subscription;
-  private _changeNombreSub: Subscription;
+  protected _productosAgregar: Producto[];
+  protected _changeFiltrosSub: Subscription;
+  protected _changeTipoSub: Subscription;
+  protected _changeNombreSub: Subscription;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: AgregarProductoDialogData,
-    private self: MatDialogRef<AgregarProductoVentaComponent>,
-    private sharedSvc: GestionSharedHttpService,
-    private prodSvc: ProductosHttpService,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
+    protected self: MatDialogRef<AgregarProductoVentaComponent>,
+    protected sharedSvc: GestionSharedHttpService,
+    protected prodSvc: ProductosHttpService,
+    protected fb: FormBuilder,
+    protected snackBar: MatSnackBar
   ) { 
     this._productosAgregar = [];
     this.displayedColumns = [ "nombre", "precio", "acciones" ];
@@ -97,13 +97,13 @@ export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
     if (this._changeNombreSub) { this._changeTipoSub.unsubscribe(); }
   }
 
-  private resetTipo(): void {
+  protected resetTipo(): void {
     this.tipos$ = of([]);
     this.tipo.reset();
     this.tipo.disable();
   }
 
-  private buscar(): void {
+  protected buscar(): void {
     this.productoForm.updateValueAndValidity();
     let filtros = {};
     

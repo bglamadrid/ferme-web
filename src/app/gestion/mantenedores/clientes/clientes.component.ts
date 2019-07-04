@@ -13,17 +13,17 @@ import { ClientesHttpService } from 'src/http-services/clientes.service';
 })
 export class ClientesComponent implements OnInit {
 
-  private _clientes: Cliente[];
-  private _clientesSource: Subject<Cliente[]>;
+  protected _clientes: Cliente[];
+  protected _clientesSource: Subject<Cliente[]>;
   public clientes$: Observable<Cliente[]>;
 
-  private _loadingSource: Subject<boolean>;
+  protected _loadingSource: Subject<boolean>;
   public loading$: Observable<boolean>;
 
   @ViewChild("listado") public listado: ClientesListadoComponent;
 
   constructor(
-    private httpSvc: ClientesHttpService
+    protected httpSvc: ClientesHttpService
   ) { 
     this._clientes = [];
     this._clientesSource = new Subject<Cliente[]>();
@@ -37,7 +37,7 @@ export class ClientesComponent implements OnInit {
     this.cargarClientes();
   }
 
-  private cargarClientes(): Observable<Cliente[]> {
+  protected cargarClientes(): Observable<Cliente[]> {
     this._loadingSource.next(true);
     const clientes: Observable<Cliente[]> = this.httpSvc.listarClientes();
     clientes.subscribe((payload: Cliente[]) => {

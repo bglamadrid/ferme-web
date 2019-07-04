@@ -1,0 +1,24 @@
+<div class="pagina">
+  <div class="cabecera">
+    <div class="logo">
+      <img src="../../../logo.png" alt="FERME">
+      <h1>FERME</h1>
+    </div>
+    <div class="cabecera-contenido">  
+      <span>{{ moduloNombre }}</span>
+      <span>{{ usuarioNombre }}</span>
+    </div>
+    <button mat-button color="warn" 
+      class="cabecera-cerrar-sesion"
+      title="Salir"
+      (click)="onClickCerrarSesion()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </div>
+  <div class="contenido">
+    <router-outlet (activate)="onRouteActivate($event)"></router-outlet>
+  </div>
+  <div class="pie">
+    <span>FERME 2019 - Todos los derechos reservados.</span>
+  </div>
+</div>

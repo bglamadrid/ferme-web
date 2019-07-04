@@ -12,7 +12,7 @@ export class UsuariosHttpService extends RootHttpService {
   protected baseURI = this.baseURI + "/gestion/usuarios";
 
   constructor(
-    private http: HttpClient
+    protected http: HttpClient
   ) { 
     super();
   }

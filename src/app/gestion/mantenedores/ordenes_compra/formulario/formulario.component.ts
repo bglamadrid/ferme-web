@@ -37,8 +37,8 @@ export const TIPOS_VENTA: TipoOrdenCompra[] = [
 })
 export class OrdenCompraFormularioComponent implements OnInit {
 
-  private _idOrdenCompra: number;
-  private _idEmpleadoUsuario: number;
+  protected _idOrdenCompra: number;
+  protected _idEmpleadoUsuario: number;
 
   public empleados$: Observable<Empleado[]>;
   public proveedores$: Observable<Proveedor[]>;
@@ -52,17 +52,17 @@ export class OrdenCompraFormularioComponent implements OnInit {
   public detallesOrdenCompra$: Observable<DetalleOrdenCompra[]>;
   public subtotalOrdenCompra: number;
 
-  private _detallesOrdenCompra: DetalleOrdenCompra[];
+  protected _detallesOrdenCompra: DetalleOrdenCompra[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: OrdenCompraFormularioDialogData,
-    private self: MatDialogRef<OrdenCompraFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private httpSvc: OrdenesCompraHttpService,
-    private empHttpSvc: EmpleadosHttpService,
-    private prvHttpSvc: ProveedoresHttpService,
-    private dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) protected dialogData: OrdenCompraFormularioDialogData,
+    protected self: MatDialogRef<OrdenCompraFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected httpSvc: OrdenesCompraHttpService,
+    protected empHttpSvc: EmpleadosHttpService,
+    protected prvHttpSvc: ProveedoresHttpService,
+    protected dialog: MatDialog
   ) { 
     this.showSpinner$ = of(true);
 
@@ -100,7 +100,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
     this.empHttpSvc.listarEmpleados().subscribe(emps => { this.empleados$ = of(emps); });
   }
 
-  private cargarOrdenCompra(vnt: OrdenCompra): void {
+  protected cargarOrdenCompra(vnt: OrdenCompra): void {
 
     this.ordenCompraForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
@@ -129,7 +129,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
     )
   }
 
-  private guardarOrdenCompra(vnt: OrdenCompra): void {
+  protected guardarOrdenCompra(vnt: OrdenCompra): void {
     this.ordenCompraForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     

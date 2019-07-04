@@ -33,7 +33,6 @@ export class VentasListadoComponent extends ListadoGestionComponent implements O
     this.items$ = this._itemsSource.asObservable();
 
     this.displayedColumns = [ "numero", "fecha", "acciones" ];
-    this.tabla.dataSource = this.items$;
   }
 
   ngOnInit() {

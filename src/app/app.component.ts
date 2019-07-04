@@ -13,15 +13,15 @@ import { MatSnackBar } from '@angular/material';
 })
 export class AppComponent implements OnInit, OnDestroy { 
 
-  private _usuario: Usuario;
-  private _changeSesionSub: Subscription;
-  private _routerParamsSub: Subscription;
+  protected _usuario: Usuario;
+  protected _changeSesionSub: Subscription;
+  protected _routerParamsSub: Subscription;
 
   constructor(
-    private authSvc: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    protected authSvc: AuthService,
+    protected router: Router,
+    protected route: ActivatedRoute,
+    protected snackBar: MatSnackBar
   ) { 
   }
   

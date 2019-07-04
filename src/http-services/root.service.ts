@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export abstract class RootHttpService {
 
-  // private webServiceProviderHostName: string = "localhost";
-  // private webServiceProviderHostPort: number = 8082;
+  // protected webServiceProviderHostName: string = "localhost";
+  // protected webServiceProviderHostPort: number = 8082;
   // protected baseURI: string = "http://"+this.webServiceProviderHostName+":"+String(this.webServiceProviderHostPort)+"/api";
   protected baseURI: string = "/api";
 

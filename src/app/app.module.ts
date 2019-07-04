@@ -11,8 +11,9 @@ import { GestionModule } from './gestion/gestion.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
+import { CompraModule } from './compra/compra.module';
 
-const DEBUG_MODE: boolean = false;
+const DEBUG_MODE: boolean = true;
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ const DEBUG_MODE: boolean = false;
   imports: [
     CommonAssetsModule,
     AppRoutingModule,
-    GestionModule
+    GestionModule,
+    CompraModule
   ],
   providers: [
     AppRoutingModule,
@@ -42,7 +44,7 @@ export class AppModule {
   }
 
   // Diagnostic only
-  private inspectRouterConfiguration(router: Router) {
+  protected inspectRouterConfiguration(router: Router) {
     // Use a custom replacer to display function names in the route configs
     const replacer = (key: any, value: any) => (typeof value === 'function') ? value.name : value;
     console.log('Routes: ', JSON.stringify(router.config, replacer, 2));

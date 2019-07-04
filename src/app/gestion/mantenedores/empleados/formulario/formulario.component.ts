@@ -20,8 +20,8 @@ export interface EmpleadoFormularioDialogData {
 })
 export class EmpleadoFormularioComponent implements OnInit {
 
-  private _idEmpleado: number;
-  private _idPersona: number;
+  protected _idEmpleado: number;
+  protected _idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
   public showSpinner$: Observable<boolean>;
@@ -29,12 +29,12 @@ export class EmpleadoFormularioComponent implements OnInit {
   public empleadoForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: EmpleadoFormularioDialogData,
-    private self: MatDialogRef<EmpleadoFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private sharedSvc: GestionSharedHttpService,
-    private httpSvc: EmpleadosHttpService
+    @Inject(MAT_DIALOG_DATA) protected dialogData: EmpleadoFormularioDialogData,
+    protected self: MatDialogRef<EmpleadoFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected sharedSvc: GestionSharedHttpService,
+    protected httpSvc: EmpleadosHttpService
   ) { 
     this.showSpinner$ = of(true);
 
@@ -70,7 +70,7 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.cargos$ = this.sharedSvc.cargos();
   }
 
-  private cargarEmpleado(emp: Empleado): void {
+  protected cargarEmpleado(emp: Empleado): void {
 
     this.empleadoForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
@@ -106,7 +106,7 @@ export class EmpleadoFormularioComponent implements OnInit {
     this.empleadoForm.enable();
   }
 
-  private guardarEmpleado(emp: Empleado): void {
+  protected guardarEmpleado(emp: Empleado): void {
     this.empleadoForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     

@@ -22,9 +22,9 @@ export class ProveedoresComponent implements OnInit {
   @ViewChild("listado") public listado: ProveedoresListadoComponent;
 
   constructor(
-    private httpSvc: ProveedoresHttpService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    protected httpSvc: ProveedoresHttpService,
+    protected dialog: MatDialog,
+    protected snackBar: MatSnackBar
   ) { 
     this.loading$ = of(true);
     this.busy$ = of(true);
@@ -34,7 +34,7 @@ export class ProveedoresComponent implements OnInit {
     this.cargarProveedores();
   }
 
-  private cargarProveedores(): Observable<Proveedor[]> {
+  protected cargarProveedores(): Observable<Proveedor[]> {
     this.loading$ = of(true);
     let proveedores: Observable<Proveedor[]> = this.httpSvc.listarProveedores();
     proveedores.subscribe((payload: Proveedor[]) => {

@@ -9,11 +9,11 @@ import { AuthHttpService } from 'src/http-services/auth.service';
 })
 export class AuthService {
 
-  private _changeSesionSource = new Subject<Sesion>();
-  private _changeSesion$: Observable<Sesion> = this._changeSesionSource.asObservable();
+  protected _changeSesionSource = new Subject<Sesion>();
+  protected _changeSesion$: Observable<Sesion> = this._changeSesionSource.asObservable();
 
   constructor(
-    private authHttpSvc: AuthHttpService
+    protected authHttpSvc: AuthHttpService
   ) { 
     this._changeSesion$ = of(null);
     this.validarSesion();
@@ -41,7 +41,7 @@ export class AuthService {
     }
   }
 
-  private JSONToSesion(json: string): Sesion {
+  protected JSONToSesion(json: string): Sesion {
     const userActualParse: Sesion = JSON.parse(json);
     if (userActualParse) {
       return userActualParse;

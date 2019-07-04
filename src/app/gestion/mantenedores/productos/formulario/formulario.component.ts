@@ -28,16 +28,16 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
 
   public productoForm: FormGroup;
 
-  private _idProducto: number;
-  private _changeFamiliaSub: Subscription;
+  protected _idProducto: number;
+  protected _changeFamiliaSub: Subscription;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: ProductoFormularioDialogData,
-    private self: MatDialogRef<ProductoFormularioComponent>,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-    private sharedSvc: GestionSharedHttpService,
-    private httpSvc: ProductosHttpService
+    @Inject(MAT_DIALOG_DATA) protected dialogData: ProductoFormularioDialogData,
+    protected self: MatDialogRef<ProductoFormularioComponent>,
+    protected snackBar: MatSnackBar,
+    protected fb: FormBuilder,
+    protected sharedSvc: GestionSharedHttpService,
+    protected httpSvc: ProductosHttpService
   ) { 
     this.productoForm = this.fb.group({
       nombre: [null, Validators.required],
@@ -78,7 +78,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
     if (this._changeFamiliaSub) { this._changeFamiliaSub.unsubscribe(); }
   }
 
-  private cargarProducto(prod: Producto): void {
+  protected cargarProducto(prod: Producto): void {
 
     this.productoForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
@@ -106,7 +106,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
     this.productoForm.enable();
   }
 
-  private guardarProducto(prod: Producto): void {
+  protected guardarProducto(prod: Producto): void {
     this.productoForm.disable(NO_EVENT_CHAIN);
     this.showSpinner$ = of(true);
     

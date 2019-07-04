@@ -12,7 +12,7 @@ export class ProveedoresHttpService extends RootHttpService {
   protected baseURI = this.baseURI + "/gestion/proveedores";
 
   constructor(
-    private http: HttpClient
+    protected http: HttpClient
   ) { 
     super();
   }
