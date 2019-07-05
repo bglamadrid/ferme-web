@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RootHttpService } from 'src/http-services/root.service';
 import { Producto } from 'src/modelo/Producto';
+import { FiltrosProductos } from 'src/app/compartido/filtros-productos/filtros-productos.component';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +23,14 @@ export class ProductosHttpService extends RootHttpService {
   }
 
   public listarProductosByTipo(idTipo: number): Observable<Producto[]> {
-    return this.listarProductosByFilters({ tipo: idTipo });
+    return this.listarProductosFiltrados({ tipo: idTipo });
   }
 
   public listarProductosByFamilia(idFamilia: number): Observable<Producto[]> {
-    return this.listarProductosByFilters({ familia: idFamilia });
+    return this.listarProductosFiltrados({ familia: idFamilia });
   }
 
-  public listarProductosByFilters(filtros: any): Observable<Producto[]> {
+  public listarProductosFiltrados(filtros: FiltrosProductos): Observable<Producto[]> {
     let queryParams: HttpParams = new HttpParams();
     for (const key in filtros) {
       if (filtros.hasOwnProperty(key)) {

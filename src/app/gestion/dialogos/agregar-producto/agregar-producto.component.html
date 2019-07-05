@@ -5,52 +5,17 @@
     <mat-card-title>Productos disponibles</mat-card-title>
     
     <mat-card-content>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Filtrar por...</mat-panel-title>
-        </mat-expansion-panel-header>
-        <form [formGroup]="productoForm" 
-          style="grid-template-areas:   
-            'a' 
-            'b' 
-            'c'">
-
-          <mat-form-field style="grid-area: a">
-            <mat-select placeholder="Familia de Productos" 
-              formControlName="familia">
-              <mat-option *ngFor="let fml of (familias$ | async)" 
-                [value]="fml.idFamiliaProducto">
-                {{ fml.descripcionFamiliaProducto }}
-              </mat-option>
-            </mat-select>
-            <button matSuffix mat-button mat-icon-button *ngIf="familia.value" 
-              aria-label="Limpiar" (click)="onClickLimpiarFamilia($event)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <mat-form-field style="grid-area: b">
-            <mat-select placeholder="Tipo de Producto" 
-              formControlName="tipo">
-              <mat-option *ngFor="let tp of (tipos$ | async)" 
-                [value]="tp.idTipoProducto">
-                {{ tp.nombreTipoProducto }}
-              </mat-option>
-            </mat-select>
-            <button matSuffix mat-button mat-icon-button *ngIf="tipo.value" 
-              aria-label="Limpiar" (click)="onClickLimpiarTipo($event)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <mat-form-field style="grid-area: c">
-            <input matInput placeholder="Nombre de Producto" formControlName="nombre" />
-          </mat-form-field>
-        </form>
-      </mat-expansion-panel>
+      <app-filtros-productos 
+        (filtrosChange)="onFiltrosChange($event)">
+      </app-filtros-productos>
       
 
-      <ng-container *ngIf="!(productos$ | async); then loading; else tabla"></ng-container>
+      <ng-container 
+        *ngIf="(loading$ | async); 
+          then loading; 
+          else tabla">
+      </ng-container>
+
       <ng-template #loading>
         <div style="margin-top: 1em">
           <mat-spinner-centrado></mat-spinner-centrado>
@@ -128,7 +93,7 @@
     
   <div style="margin-top: 1em" class="acciones">
     <button mat-raised-button color="primary" 
-      [disabled]="!(hayProductos$ | async)" 
+      [disabled]="!hayProductos" 
       (click)="onClickAceptar()">
       Aceptar
     </button>

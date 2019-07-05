@@ -10,7 +10,7 @@ import { LoginComponent, Login } from 'src/app/login/login.component';
 import { Sesion } from 'src/modelo/Sesion';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-compra-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

@@ -34,20 +34,20 @@
         </ng-template>
         <ng-template #acciones>
           <div style="grid-area: c" class="acciones">
-            <button mat-raised-button color="primary"
+            <button mat-button mat-raised-button color="primary"
               type="submit" 
               [disabled]="loginForm.invalid"
               (click)="onClickAceptar()">
               Aceptar
             </button>
 
-            <button mat-raised-button 
+            <button mat-button mat-raised-button 
               type="reset"
               [disabled]="loginForm.pristine">
               Limpiar
             </button>
 
-            <a mat-raised-button color="warn"
+            <a mat-button mat-raised-button color="warn"
               routerLink="/">
               Volver
             </a>

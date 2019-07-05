@@ -3,16 +3,18 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule, MatExpansionModule, MatSidenavModule, MatTableModule, MatSelectModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { MatProgressSpinnerCentradoComponent } from './centered-mat-spinner/component';
 import { ListadoAccionesComponent } from './listado-acciones/listado-acciones.component';
+import { FiltrosProductosComponent } from './filtros-productos/filtros-productos.component';
 
 @NgModule({
   declarations: [
     MatProgressSpinnerCentradoComponent,
-    ListadoAccionesComponent
+    ListadoAccionesComponent,
+    FiltrosProductosComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,11 @@ import { ListadoAccionesComponent } from './listado-acciones/listado-acciones.co
     MatDialogModule,
     MatCardModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatExpansionModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatSelectModule
   ], 
   exports: [
     CommonModule,
@@ -49,10 +55,15 @@ import { ListadoAccionesComponent } from './listado-acciones/listado-acciones.co
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
+    MatExpansionModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatSelectModule,
 
     ListadoAccionesComponent,
+    FiltrosProductosComponent,
     MatProgressSpinnerCentradoComponent
   ]
 })
 
-export class CommonAssetsModule { }
+export class FermeCompartidoModule { }

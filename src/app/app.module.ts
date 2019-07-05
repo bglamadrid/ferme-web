@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppRoutingModule } from 'src/routing/app-routing.module';
 import { AuthGuard } from 'src/routing/auth.guard';
 
-import { CommonAssetsModule } from './compartido/common.module';
+import { FermeCompartidoModule } from './compartido/common.module';
 import { GestionModule } from './gestion/gestion.module';
 
 
@@ -22,7 +22,7 @@ const DEBUG_MODE: boolean = true;
     LoginComponent
   ],
   imports: [
-    CommonAssetsModule,
+    FermeCompartidoModule,
     AppRoutingModule,
     GestionModule,
     CompraModule

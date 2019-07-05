@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material';
 
-import { CommonAssetsModule } from 'src/app/compartido/common.module';
+import { FermeCompartidoModule } from 'src/app/compartido/common.module';
 import { GestionRoutingModule } from 'src/routing/gestion-routing.module';
 
 import { AgregarProductoVentaComponent } from './dialogos/agregar-producto/agregar-producto.component';
@@ -62,12 +62,8 @@ const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
     OrdenCompraFormularioComponent
   ],
   imports: [
-    CommonAssetsModule,
-    GestionRoutingModule,
-    MatSidenavModule,
-    MatTableModule,
-    MatSelectModule,
-    MatExpansionModule
+    FermeCompartidoModule,
+    GestionRoutingModule
   ],
   entryComponents: [
     EmpleadoFormularioComponent,

@@ -8,6 +8,7 @@ import { Producto } from 'src/modelo/Producto';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
 import { ProductosHttpService } from 'src/http-services/productos.service';
+import { FiltrosProductos } from 'src/app/compartido/filtros-productos/filtros-productos.component';
 
 export interface AgregarProductoDialogData {
   proveedor: number;
@@ -21,31 +22,21 @@ export interface AgregarProductoDialogData {
     './agregar-producto.component.css'
   ]
 })
-export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
-
+export class AgregarProductoVentaComponent implements OnInit {
   
-  protected _idProveedor: number;
-
-  public _filtro: string;
-  
-  public familias$: Observable<FamiliaProducto[]>;
-  public tipos$: Observable<TipoProducto[]>;
+  protected _productosSource: Subject<Producto[]>;
   public productos$: Observable<Producto[]>;
-  public showSpinner$: Observable<boolean>;
-  public hayProductos$: Observable<boolean>;
-  
 
-  public productoForm: FormGroup;
+  protected _loadingSource: Subject<boolean>;
+  public loading$: Observable<boolean>;
+
+  public hayProductos: boolean;
+
   @ViewChild("tablaProductos") public tablaProductos: MatTable<Producto>;
   @ViewChild("tablaProductosAgregar") public tablaProductosAgregar: MatTable<Producto>;
   public displayedColumns: string[];
 
-  protected nombreBuscar$: Subject<string>;
-
   protected _productosAgregar: Producto[];
-  protected _changeFiltrosSub: Subscription;
-  protected _changeTipoSub: Subscription;
-  protected _changeNombreSub: Subscription;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
@@ -55,128 +46,52 @@ export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar
   ) { 
+    this._loadingSource = new Subject<boolean>();
+    this.loading$ = this._loadingSource.asObservable();
+
+    this._productosSource = new Subject<Producto[]>();
+    this.productos$ = this._productosSource.asObservable();
+
     this._productosAgregar = [];
     this.displayedColumns = [ "nombre", "precio", "acciones" ];
 
-    this.nombreBuscar$ = new Subject<string>();
-
-    this.showSpinner$ = of(true);
-    this.familias$ = of([]);
-    this.tipos$ = of([]);
-    this.productos$ = of([]);
-    this.hayProductos$ = of(false);
-
-    this.productoForm = this.fb.group({
-      familia: [null],
-      tipo: [{value: null, disabled: true}],
-      nombre: ['']
-    });
+    this.hayProductos = false;
   }
-
-  public get familia() { return this.productoForm.get("familia"); }
-  public get tipo() { return this.productoForm.get("tipo"); }
-  public get nombre() { return this.productoForm.get("nombre"); }
 
   ngOnInit() {
     this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
-
-    this.familias$ = this.sharedSvc.familiasProducto();
-    this.productos$ = this.prodSvc.listarProductos();
-
-    this._changeFiltrosSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
-    this._changeTipoSub = this.tipo.valueChanges.subscribe(() => { this.buscar(); });
-    this._changeNombreSub = this.nombre.valueChanges.pipe( 
-      debounceTime(500),
-      distinctUntilChanged()
-    ).subscribe(() => { this.buscar(); });
+    this.onFiltrosChange({});
   }
 
-  ngOnDestroy() {
-    if (this._changeFiltrosSub) { this._changeFiltrosSub.unsubscribe(); }
-    if (this._changeTipoSub) { this._changeTipoSub.unsubscribe(); }
-    if (this._changeNombreSub) { this._changeTipoSub.unsubscribe(); }
-  }
 
-  protected resetTipo(): void {
-    this.tipos$ = of([]);
-    this.tipo.reset();
-    this.tipo.disable();
-  }
+  public onFiltrosChange(filtros: FiltrosProductos): void {
+    this._loadingSource.next(true);
+    let obs: Observable<Producto[]>;
 
-  protected buscar(): void {
-    this.productoForm.updateValueAndValidity();
-    let filtros = {};
-    
-    if (this.nombre.value) {
-      filtros["nombre"] = this.nombre.value;
+    if (filtros !== {}) {
+      obs = this.prodSvc.listarProductosFiltrados(filtros);
+    } else {
+      obs = this.prodSvc.listarProductos();
     }
-    if (this.tipo.value) {
-      filtros["tipo"] = this.tipo.value;
-    }
-    if (this.familia.value) {
-      filtros["familia"] = this.familia.value;
-    }
-  
-    this.productos$ = of([]);
-    this.prodSvc.listarProductosByFilters(filtros).subscribe(
+
+    obs.subscribe(
       (prods: Producto[]) => {
-        this.productos$ = of(prods);
+        this._productosSource.next(prods);
       },
       err => {
         console.log(err);
+        this._productosSource.next([]);
         this.snackBar.open("Hubo un problema al cargar los productos.");
-      }
+      },
+      () => { this._loadingSource.next(false); }
     );
-  }
-
-  public onChangeFamilia(): void {
-    const idTipoProductoSeleccionado: number = this.tipo.value;
-    if (this.familia.value) {
-      if (this.tipo.enabled) { this.tipo.disable(); }
-
-      const idFamilia: number = Number(this.familia.value);
-      if (!isNaN(idFamilia)) {
-        this.buscar();
-        this.sharedSvc.tiposProductoByFamilia(idFamilia).subscribe( 
-          (tipos: TipoProducto[]) => { 
-            if (tipos && tipos.length > 0) {
-              this.tipos$ = of(tipos);
-              this.tipo.enable(); 
-              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.idTipoProducto === idTipoProductoSeleccionado)) { 
-                this.tipo.reset();
-              }
-            } else {
-              this.resetTipo();
-            }
-          }, 
-          err => { 
-            console.log(err);
-            this.tipo.reset();
-            this.tipo.disable();
-          }
-        );
-        return;
-      }
-    }
-
-    this.resetTipo();
-  }
-
-  public onClickLimpiarFamilia(ev: any): void {
-    this.familia.reset();
-    ev.stopPropagation();
-  }
-
-  public onClickLimpiarTipo(ev: any): void {
-    this.tipo.reset();
-    ev.stopPropagation();
   }
 
   public onClickIncluirProducto(prod: Producto): void {
     this._productosAgregar.push(prod);
     this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
     if (this._productosAgregar.length === 1) {
-      this.hayProductos$ = of(true);
+      this.hayProductos = true;
     }
   }
 
@@ -184,7 +99,7 @@ export class AgregarProductoVentaComponent implements OnInit, OnDestroy {
     this._productosAgregar.splice(index, 1);
     this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
     if (this._productosAgregar.length === 0) {
-      this.hayProductos$ = of(false);
+      this.hayProductos = false;
     }
   }
 

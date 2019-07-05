@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
-import { CommonAssetsModule } from 'src/app/compartido/common.module';
+import { FermeCompartidoModule } from 'src/app/compartido/common.module';
 import { CompraRoutingModule } from 'src/routing/compra-routing.module';
 
-import { CatalogoComponent } from './catalogo/catalogo.component';
-import { ResumenComponent } from './resumen/resumen.component';
+import { CompraCatalogoComponent } from './catalogo/catalogo.component';
+import { CompraResumenComponent } from './resumen/resumen.component';
 import { CompraNavegadorComponent } from './navegador/compra.component';
 import { CompraLoginDialogComponent } from './dialogos/login/login.component';
 
@@ -15,17 +15,13 @@ const SNACKBAR_DEFAULTS = {
 @NgModule({
   declarations: [
     CompraNavegadorComponent,
-    CatalogoComponent,
-    ResumenComponent,
+    CompraCatalogoComponent,
+    CompraResumenComponent,
     CompraLoginDialogComponent
   ],
   imports: [
-    CommonAssetsModule,
-    CompraRoutingModule,
-    MatSidenavModule,
-    MatTableModule,
-    MatSelectModule,
-    MatExpansionModule
+    FermeCompartidoModule,
+    CompraRoutingModule
   ],
   entryComponents: [
     CompraLoginDialogComponent

@@ -5,18 +5,19 @@ import { Router, ActivatedRoute, Event } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Sesion } from 'src/modelo/Sesion';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { DetalleVenta } from 'src/modelo/DetalleVenta';
 import { CompraLoginDialogComponent } from '../dialogos/login/login.component';
+import { CompraService } from 'src/services/compra.service';
 
 @Component({
   selector: 'app-compra',
   templateUrl: './compra.component.html',
   styleUrls: ['./compra.component.css']
 })
-export class CompraNavegadorComponent implements OnInit {
+export class CompraNavegadorComponent implements OnInit, OnDestroy {
 
-  protected _autenticado: boolean;
+  protected _detallesSub: Subscription;
   public detallesVenta: DetalleVenta[];
 
   constructor(
@@ -24,15 +25,31 @@ export class CompraNavegadorComponent implements OnInit {
     protected auttHttpSvc: AuthHttpService,
     protected router: Router,
     protected snackBar: MatSnackBar,
-    protected dialog: MatDialog
+    protected dialog: MatDialog,
+    protected compraSvc: CompraService
   ) { 
-    this._autenticado = false;
+    this.detallesVenta = [];
   }
 
   public get estaAutenticado(): boolean { return !!this.authSvc.sesion; }
   public get usuarioNombre(): string { return this.authSvc.sesion? this.authSvc.sesion.nombreUsuario : "No identificado"; }
 
-  ngOnInit() {5
+  ngOnInit() {
+    this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.detallesVenta = d; });
+    
+  }
+
+  ngOnDestroy() {
+    if (this.estaAutenticado) {
+      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+        () => { },
+        err => { console.log(err); },
+        () => { 
+          this.snackBar.open("Su sesión ha sido cerrada por seguridad.");
+          this.authSvc.sesion = null; 
+        }
+      );
+    }
   }
 
   public onClickAbrirSesion(): void {
@@ -49,26 +66,9 @@ export class CompraNavegadorComponent implements OnInit {
         this.snackBar.open("Su sesión ha sido cerrada.");
       },
       err => {
+        console.log(err);
         this.snackBar.open("Hubo un error de comunicación con el servidor.");
       }
     );
   }
-
-  public onClickSalir(): void {
-
-    if (this.estaAutenticado) {
-      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
-        () => {
-          this.snackBar.open("Su sesión ha sido cerrada por seguridad.");
-        },
-        err => {
-          this.snackBar.open("Su sesión no pudo ser cerrada. Hubo un error de comunicación con el servidor.");
-        },
-        () => { this.authSvc.sesion = null; }
-      );
-    }
-
-    this.router.navigateByUrl("/login");
-  }
-
 }
