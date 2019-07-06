@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from, Subject } from 'rxjs';
+import { Observable, of, from, Subject, BehaviorSubject } from 'rxjs';
 import { Cliente } from 'src/modelo/Cliente';
 import { ClientesListadoComponent } from './listado/listado.component';
 import { ClientesHttpService } from 'src/http-services/clientes.service';
+import { MantenedorGestionComponent } from '../../compartido/mantenedor/mantenedor.component';
+import { MatSnackBar, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-clientes',
@@ -11,47 +13,22 @@ import { ClientesHttpService } from 'src/http-services/clientes.service';
     '../../compartido/mantenedores.css'
   ]
 })
-export class ClientesComponent implements OnInit {
-
-  protected _clientes: Cliente[];
-  protected _clientesSource: Subject<Cliente[]>;
-  public clientes$: Observable<Cliente[]>;
-
-  protected _loadingSource: Subject<boolean>;
-  public loading$: Observable<boolean>;
+export class ClientesComponent 
+  extends MantenedorGestionComponent<Cliente> {
 
   @ViewChild("listado") public listado: ClientesListadoComponent;
 
   constructor(
-    protected httpSvc: ClientesHttpService
+    protected httpSvc: ClientesHttpService,
+    protected dialog: MatDialog,
+    protected snackBar: MatSnackBar
   ) { 
-    this._clientes = [];
-    this._clientesSource = new Subject<Cliente[]>();
-    this.clientes$ = this._clientesSource.asObservable();
-
-    this._loadingSource = new Subject<boolean>();
-    this.loading$ = this._loadingSource.asObservable();
+    super();
+    
   }
 
-  ngOnInit() {
-    this.cargarClientes();
+  public cargarItems(): Observable<Cliente[]> {
+    return this.httpSvc.listarClientes();
   }
 
-  protected cargarClientes(): Observable<Cliente[]> {
-    this._loadingSource.next(true);
-    const clientes: Observable<Cliente[]> = this.httpSvc.listarClientes();
-    clientes.subscribe((payload: Cliente[]) => {
-      this._clientes = payload;
-      this._clientesSource.next(payload);
-    }, err => {
-      console.log(err);
-      this._clientes = [];
-      this._clientesSource.next([]);
-    }, () => {
-      this._loadingSource.next(false);
-    });
-    return from(clientes);
-  }
-
-  
 }

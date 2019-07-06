@@ -2,6 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { Cliente } from 'src/modelo/Cliente';
 import { of } from 'rxjs';
 import { MatTable } from '@angular/material';
+import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
 @Component({
   selector: 'app-clientes-listado',
@@ -11,19 +12,15 @@ import { MatTable } from '@angular/material';
     './listado.component.css'
   ]
 })
-export class ClientesListadoComponent {
+export class ClientesListadoComponent 
+  extends ListadoGestionComponent<Cliente>  {
 
   @ViewChild("tabla") public tabla: MatTable<Cliente>;
-  public displayedColumns: string[];
 
   constructor(
     
   ) { 
-    this.displayedColumns = [ "nombre", "rut" ];
+    super();
+    this.columnasTabla = [ "nombre", "rut" ];
   }
-
-  @Input() public set Clientes(clientes: Cliente[]) {
-    this.tabla.dataSource = clientes? of(clientes) : of([]);
-  }
-
 }

@@ -12,17 +12,17 @@ import { ClientesListadoComponent } from './mantenedores/clientes/listado/listad
 import { EmpleadosComponent } from './mantenedores/empleados/empleados.component';
 import { EmpleadoFormularioComponent } from './mantenedores/empleados/formulario/formulario.component';
 import { EmpleadosListadoComponent } from './mantenedores/empleados/listado/listado.component';
-import { ProductosComponent } from './mantenedores/productos/productos.component';
+import { MantenedorProductosComponent } from './mantenedores/productos/productos.component';
 import { GestionNavegadorComponent } from './navegador/gestion.component';
 import { ProductosListadoComponent } from './mantenedores/productos/listado/listado.component';
 import { ProductoFormularioComponent } from './mantenedores/productos/formulario/formulario.component';
 import { ProveedoresComponent } from './mantenedores/proveedores/proveedores.component';
 import { ProveedoresListadoComponent } from './mantenedores/proveedores/listado/listado.component';
 import { ProveedorFormularioComponent } from './mantenedores/proveedores/formulario/formulario.component';
-import { VentasComponent } from './mantenedores/ventas/ventas.component';
+import { MantenedorVentasComponent } from './mantenedores/ventas/ventas.component';
 import { VentasListadoComponent } from './mantenedores/ventas/listado/listado.component';
 import { VentaFormularioComponent } from './mantenedores/ventas/formulario/formulario.component';
-import { UsuariosComponent } from './mantenedores/usuarios/usuarios.component';
+import { MantenedorUsuariosComponent } from './mantenedores/usuarios/usuarios.component';
 import { UsuariosListadoComponent } from './mantenedores/usuarios/listado/listado.component';
 import { UsuarioFormularioComponent } from './mantenedores/usuarios/formulario/formulario.component';
 import { OrdenesCompraComponent } from './mantenedores/ordenes_compra/ordenes_compra.component';
@@ -44,17 +44,17 @@ const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
     EmpleadosComponent,
     EmpleadoFormularioComponent,
     EmpleadosListadoComponent,
-    ProductosComponent,
+    MantenedorProductosComponent,
     ProductosListadoComponent,
     ProductoFormularioComponent,
     ProveedoresComponent,
     ProveedoresListadoComponent,
     ProveedorFormularioComponent,
-    VentasComponent,
+    MantenedorVentasComponent,
     VentasListadoComponent,
     VentaFormularioComponent,
     AgregarProductoVentaComponent,
-    UsuariosComponent,
+    MantenedorUsuariosComponent,
     UsuariosListadoComponent,
     UsuarioFormularioComponent,
     OrdenesCompraComponent,

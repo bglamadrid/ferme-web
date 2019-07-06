@@ -7,4 +7,7 @@ export class OrdenCompra {
     public fechaSolicitudOrdenCompra: string;
     public fechaRecepcionOrdenCompra: string;
     public detallesOrdenCompra: DetalleOrdenCompra[];
+    public nombreEmpleado?: string;
+    public rutEmpleado?: string;
+    public idProveedor?: number;
 }

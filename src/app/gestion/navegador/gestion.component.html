@@ -1,10 +1,28 @@
 <div class="contenedor">
+  <div class="cabecera">
+    <button mat-button color="warn"
+      class="cabecera-alternar-navegacion"
+      title="Alternar menú lateral"
+      (click)="sidenavOpened = !sidenavOpened">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="logo">
+      <img src="logo.png" alt="FERME">
+      <h1>FERME</h1>
+    </div>
+    <div class="cabecera-contenido">  
+      <span>{{ moduloNombre }}</span>
+      <span>{{ usuarioNombre }}</span>
+    </div>
+    <button mat-button color="warn" 
+      class="cabecera-cerrar-sesion"
+      title="Salir"
+      (click)="onClickCerrarSesion()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </div>
   <mat-sidenav-container>
     <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
-      <div class="logo">
-        <img src="logo.png" alt="FERME">
-        <h1>FERME</h1>
-      </div>
       <mat-nav-list role="navigation-links">
         <a mat-list-item *ngFor="let modulo of modulos"
           (click)="onClickNavegar(modulo)"
@@ -16,35 +34,10 @@
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content role="main">
-      <div class="pagina">
-        <div class="cabecera">
-          <button mat-button color="warn"
-            class="cabecera-alternar-navegacion"
-            title="Alternar menú lateral"
-            (click)="sidenavOpened = !sidenavOpened">
-            <ng-container *ngIf="sidenavOpened; then ocultarNavegacion; else mostrarNavegacion"></ng-container>
-            <ng-template #ocultarNavegacion><mat-icon>view_quilt</mat-icon></ng-template>
-            <ng-template #mostrarNavegacion><mat-icon>view_stream</mat-icon></ng-template>
-            
-          </button>
-          <div class="cabecera-contenido">  
-            <span>{{ moduloNombre }}</span>
-            <span>{{ usuarioNombre }}</span>
-          </div>
-          <button mat-button color="warn" 
-            class="cabecera-cerrar-sesion"
-            title="Salir"
-            (click)="onClickCerrarSesion()">
-            <mat-icon>exit_to_app</mat-icon>
-          </button>
-        </div>
-        <div class="contenido">
-          <router-outlet></router-outlet>
-        </div>
-        <div class="pie">
-          <span>FERME 2019 - Todos los derechos reservados.</span>
-        </div>
-      </div>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
+  <div class="pie">
+    <span>FERME 2019 - Todos los derechos reservados.</span>
+  </div>
 </div>

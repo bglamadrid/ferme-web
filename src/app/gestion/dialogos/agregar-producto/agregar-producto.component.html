@@ -1,61 +1,60 @@
 <section class="overflow-y">
   <h2>Agregar Productos</h2>
 
-  <mat-card>
-    <mat-card-title>Productos disponibles</mat-card-title>
-    
-    <mat-card-content>
-      <app-filtros-productos 
-        (filtrosChange)="onFiltrosChange($event)">
-      </app-filtros-productos>
-      
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Productos disponibles
+    </mat-expansion-panel-header>
 
-      <ng-container 
-        *ngIf="(loading$ | async); 
-          then loading; 
-          else tabla">
-      </ng-container>
+    <app-filtros-productos 
+      (filtrosChange)="onFiltrosChange($event)">
+    </app-filtros-productos>
 
-      <ng-template #loading>
-        <div style="margin-top: 1em">
-          <mat-spinner-centrado></mat-spinner-centrado>
-        </div>
-      </ng-template>
+    <ng-container 
+      *ngIf="(cargandoItems); 
+        then indicadorCarga 
+        else tabla">
+    </ng-container>
 
-      <ng-template #tabla>
-        <div class="overflow-y" style="margin-top: 1em; height: 14.5em">
-          <table mat-table #tablaProductos [dataSource]="productos$ | async">
-            <ng-container matColumnDef="nombre">
-              <th mat-header-cell *matHeaderCellDef> Nombre </th>
-              <td mat-cell *matCellDef="let producto" class="left"> 
-                {{producto.nombreProducto}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="precio">
-              <th mat-header-cell *matHeaderCellDef> Precio </th>
-              <td mat-cell *matCellDef="let producto" class="left"> 
-                ${{producto.precioProducto}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="acciones">
-              <th mat-header-cell *matHeaderCellDef> </th>
-              <td mat-cell *matCellDef="let producto">
-                <div class="acciones">
-                  <button mat-button mat-icon-button color="primary" 
-                    (click)="onClickIncluirProducto(producto)">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div> 
-              </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </div>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
+    <ng-template #loading>
+      <div style="margin-top: 1em">
+        <mat-spinner-centrado></mat-spinner-centrado>
+      </div>
+    </ng-template>
+
+    <ng-template #tabla>
+      <div class="overflow-y" style="margin-top: 1em; height: 14.5em">
+        <table mat-table #tablaProductos [dataSource]="productos$ | async">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let producto" class="left"> 
+              {{producto.nombreProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <td mat-cell *matCellDef="let producto" class="left"> 
+              ${{producto.precioProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let producto">
+              <div class="acciones">
+                <button mat-button mat-icon-button color="primary" 
+                  (click)="onClickIncluirProducto(producto)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div> 
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+        </table>
+      </div>
+    </ng-template>
+  </mat-expansion-panel>
     
   <mat-card style="margin-top: 2em">
     <mat-card-title>Productos Seleccionados</mat-card-title>
@@ -85,8 +84,8 @@
           </td>
         </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
       </table>
     </mat-card-content>
   </mat-card>

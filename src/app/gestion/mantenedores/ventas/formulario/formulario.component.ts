@@ -48,7 +48,7 @@ export class VentaFormularioComponent implements OnInit {
 
   public ventaForm: FormGroup;
   @ViewChild("tablaDetalles") public tablaDetalles: MatTable<DetalleVenta>;
-  public displayedColumns: string[];
+  public columnasTabla: string[];
 
   public fechaVenta: string;
   public detallesVenta$: Observable<DetalleVenta[]>;
@@ -75,7 +75,7 @@ export class VentaFormularioComponent implements OnInit {
     this._detallesVenta = [];
     this.detallesVenta$ = of([]);
     this.subtotalVenta = 0;
-    this.displayedColumns = [ "producto", "precio", "cantidad", "acciones" ];
+    this.columnasTabla = [ "producto", "precio", "cantidad", "acciones" ];
 
     this.ventaForm = this.fb.group({
       tipo: [null, Validators.required],

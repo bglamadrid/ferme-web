@@ -5,8 +5,8 @@
   </app-filtros-productos>
   <div class="catalogo">
     <ng-container 
-      *ngIf="loading$ | async; 
-      then loading; 
+      *ngIf="cargandoItems; 
+      then indicadorCarga 
       else productosGrid">
     </ng-container>
   

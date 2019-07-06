@@ -9,8 +9,10 @@ import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from './gestion.routes'
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
+    
     public path: ActivatedRouteSnapshot[];
     public route: ActivatedRouteSnapshot;
+
     constructor(
         protected router: Router,
         protected authSvc: AuthService

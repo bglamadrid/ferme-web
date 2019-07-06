@@ -1,9 +1,6 @@
-import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { MatTable, MatDialog, MatSnackBar } from '@angular/material';
+import { Component, ViewChild, EventEmitter } from '@angular/core';
+import { MatTable } from '@angular/material';
 import { Producto } from 'src/modelo/Producto';
-import { ProductoFormularioDialogData, ProductoFormularioComponent } from '../formulario/formulario.component';
-import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
-import { ProductosHttpService } from 'src/http-services/productos.service';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
 @Component({
@@ -14,43 +11,16 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
     './listado.component.css'
   ]
 })
-export class ProductosListadoComponent extends ListadoGestionComponent implements OnInit {
-
-  @Output() public editar: EventEmitter<Producto>;
-  @Output() public borrar: EventEmitter<Producto>;
+export class ProductosListadoComponent 
+  extends ListadoGestionComponent<Producto> {
   
   @ViewChild("tabla") public tabla: MatTable<Producto>;
-  protected _items: Producto[];
-  protected _itemsSource: BehaviorSubject<Producto[]>;
-  public items$: Observable<Producto[]>;
 
-  constructor(
-    
-  ) { 
+  constructor() { 
     super();
     this.editar = new EventEmitter<Producto>();
     this.borrar = new EventEmitter<Producto>();
 
-    this._itemsSource = new BehaviorSubject<Producto[]>([]);
-    this.items$ = this._itemsSource.asObservable();
-
-    this.displayedColumns = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
+    this.columnasTabla = [ "nombre", "codigo", "precio", "stockActual", "stockCritico", "tipo", "acciones" ];
   }
-
-  ngOnInit() {
-    this.tabla.dataSource = this.items$;
-  }
-
-  public onClickVer(prod: Producto) {
-    this.editar.emit(prod);
-  }
-
-  public onClickBorrar(prod: Producto) {
-    this.borrar.emit(prod);
-  }
-
-  @Input() public set Items(productos: Producto[]) {
-    this._itemsSource.next(productos);
-  }
-
 }

@@ -18,8 +18,8 @@ export class CompraCatalogoComponent implements OnInit {
   protected _productosSource: BehaviorSubject<Producto[]>;
   public productos$: Observable<Producto[]>;
 
-  protected _loadingSource: Subject<boolean>;
-  public loading$: Observable<boolean>;
+  protected _loadingSource: BehaviorSubject<boolean>;
+  public cargando$: Observable<boolean>;
 
   public productoForm: FormGroup;
 
@@ -33,14 +33,16 @@ export class CompraCatalogoComponent implements OnInit {
     this._productosSource = new BehaviorSubject<Producto[]>([]);
     this.productos$ = this._productosSource.asObservable();
     
-    this._loadingSource = new Subject<boolean>();
-    this.loading$ = this._loadingSource.asObservable();
+    this._loadingSource = new BehaviorSubject<boolean>(true);
+    this.cargando$ = this._loadingSource.asObservable();
 
     this.productoForm = this.fb.group({
       familia: [null],
       tipo: [{value: null, disabled: true}],
       nombre: ['']
     });
+
+    this._loadingSource.next(false);
   }
 
   public get familia() { return this.productoForm.get("familia"); }

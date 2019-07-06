@@ -46,7 +46,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
 
   public ordenCompraForm: FormGroup;
   @ViewChild("tablaDetalles") public tablaDetalles: MatTable<DetalleOrdenCompra>;
-  public displayedColumns: string[];
+  public columnasTabla: string[];
 
   public fechaSolicitud: string;
   public detallesOrdenCompra$: Observable<DetalleOrdenCompra[]>;
@@ -76,7 +76,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
     this._detallesOrdenCompra = [];
     this.detallesOrdenCompra$ = of([]);
     this.subtotalOrdenCompra = 0;
-    this.displayedColumns = [ "producto", "precio", "cantidad", "acciones" ];
+    this.columnasTabla = [ "producto", "precio", "cantidad", "acciones" ];
 
     if (this.dialogData) {
       const oc: OrdenCompra = this.dialogData.ordenCompra;
@@ -100,20 +100,22 @@ export class OrdenCompraFormularioComponent implements OnInit {
     this.empHttpSvc.listarEmpleados().subscribe(emps => { this.empleados$ = of(emps); });
   }
 
-  protected cargarOrdenCompra(vnt: OrdenCompra): void {
+  protected cargarOrdenCompra(oc: OrdenCompra): void {
 
     this.ordenCompraForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
-    console.log(vnt);
-    
+    this.showSpinner$ = of(true);    
 
-    this._idOrdenCompra = vnt.idOrdenCompra;
+    this._idOrdenCompra = oc.idOrdenCompra;
 
-    if (vnt.idEmpleado) {
-      this.empleado.setValue(vnt.idEmpleado, NO_EVENT_CHAIN);
+    if (oc.idEmpleado) {
+      this.empleado.setValue(oc.idEmpleado, NO_EVENT_CHAIN);
     }
 
-    this.httpSvc.listarDetalles(vnt).subscribe(
+    if (oc.idProveedor) {
+      this.proveedor.setValue(oc.idProveedor, NO_EVENT_CHAIN);
+    }
+
+    this.httpSvc.listarDetalles(oc).subscribe(
       (detalles: DetalleOrdenCompra[]) => {
         this._detallesOrdenCompra = detalles;
         this.detallesOrdenCompra$ = of(detalles);

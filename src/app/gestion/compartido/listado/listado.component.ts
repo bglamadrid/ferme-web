@@ -1,51 +1,46 @@
-import { Output, ViewChild, Input, EventEmitter } from '@angular/core';
+import { Output, ViewChild, Input, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material';
-import { Subject, Observable } from 'rxjs';
+import { ListadoGestion } from './listado.interface';
+import { of } from 'rxjs';
 
-export abstract class ListadoGestionComponent {
+export abstract class ListadoGestionComponent<T> 
+  implements ListadoGestion<T> {
 
-  @Output() public editar: EventEmitter<any>;
-  @Output() public borrar: EventEmitter<any>;
+  @Output() public cargar: EventEmitter<void>;
+  @Output() public editar: EventEmitter<T>;
+  @Output() public borrar: EventEmitter<T>;
 
-  protected _busySource: Subject<boolean>;
-  public busy$: Observable<boolean>;
+  public tabla: MatTable<T>;
+  @Input() public ocupado: boolean;
+  public columnasTabla: string[];
 
-  @ViewChild("tabla") public tabla: MatTable<any>;
-  protected _items: any[];
-  protected _itemsSource: Subject<any[]>;
-  public items$: Observable<any[]>;
-  public displayedColumns: string[];
-
-  constructor(
-
-  ) { 
-    this._items = [];
-    this._busySource = new Subject();
-    this.busy$ = this._busySource.asObservable();
+  constructor() { 
+    this.columnasTabla = [];
+    this.cargar = new EventEmitter();
+    this.editar = new EventEmitter();
+    this.borrar = new EventEmitter();
+    this.ocupado = false;
   }
 
-  public onClickVer(prov: any) {
+  public onClickEditar(item: T) {
     if (this.editar) {
-      this.editar.emit(prov);
+      this.editar.emit(item);
     }
   }
 
-  public onClickBorrar(prov: any) {
+  public onClickBorrar(item: T) {
     if (this.borrar) {
-      this.borrar.emit(prov);
+      this.borrar.emit(item);
     }
   }
 
-  @Input() public set Busy(state: boolean) {
-    if (this._busySource) {
-      this._busySource.next(state);
-    }
-  }
-
-  @Input() public set Items(items: any[]) {
-    this._items = items;
-    if (this._itemsSource) {
-      this._itemsSource.next(items);
+  @Input() public set Items(input: T[]) {
+    if (this.tabla) {
+      if (input) {
+        this.tabla.dataSource = of(input);
+      } else {
+        this.tabla.dataSource = of([]);
+      }
     }
   }
 

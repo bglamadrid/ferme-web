@@ -1,20 +1,14 @@
 <div class="full-height">
-  <ng-container 
-    *ngIf="loading$ | async; 
-    then loading; 
-    else usuariosTable">
-  </ng-container>
-
-  <ng-template #loading>
+  <ng-template *ngIf="cargandoItems; else contenedorListado">
     <mat-spinner-centrado></mat-spinner-centrado>
   </ng-template>
-
-  <ng-template #usuariosTable>
+  <ng-template #contenedorListado>
     <div class="full-height contenedor">
       <div class="pagina overflow">
         <app-usuarios-listado #listado 
-          [Items]="usuarios$ | async"
-          [Busy]="busy$ | async"
+          [Items]="items$ | async"
+          [ocupado]="ocupado$ | async"
+          (cargar)="onCargar()"
           (editar)="onClickEditar($event)"
           (borrar)="onClickBorrar($event)">
         </app-usuarios-listado>

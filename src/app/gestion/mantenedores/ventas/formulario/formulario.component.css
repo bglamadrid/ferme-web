@@ -18,13 +18,24 @@ h2 {
 
 form {
     display: grid;
-    grid-gap: 1em;
+    grid-gap: 0.5em;
+    grid-template-areas: 
+        'a b'
+        'c c'
+        'd d'
+        'e e';
 }
-.formulario {
-    display: grid;
-    grid-gap: 0.25em;
-    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+
+@media(min-width: 768px) {
+    form {
+        grid-gap: 1em;
+        grid-template-areas: 
+            'a c c c'
+            'b d d d'
+            'e e e e';
+    }
 }
+
 
 .productos {
     display: grid;
@@ -34,13 +45,13 @@ form {
     margin-bottom: 1em;
 }
 
-.productos > .cabecera {
+form mat-card mat-card-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
 }
 
-table {
+form mat-card table {
     width: 100%;
 }
 

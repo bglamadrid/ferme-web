@@ -24,7 +24,7 @@
 
         <ng-container 
           *ngIf="(showSpinner$ | async); 
-            then loading; 
+            then indicadorCarga 
             else acciones">
         </ng-container>
         <ng-template #loading>

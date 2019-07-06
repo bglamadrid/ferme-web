@@ -41,20 +41,20 @@
       <div class="acciones">
         <button mat-button mat-icon-button 
           color="primary" class="details"
-          [disabled]="busy$ | async" 
-          (click)="onClickVerProducto(producto)">
+          [disabled]="ocupado$ | async" 
+          (click)="onClickEditar(producto)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-button mat-icon-button 
           color="warn" class="delete" 
-          [disabled]="busy$ | async" 
-          (click)="onClickBorrarProducto(producto)">
+          [disabled]="ocupado$ | async" 
+          (click)="onClickBorrar(producto)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
 </table>

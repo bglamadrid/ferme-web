@@ -12,15 +12,10 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
     './listado.component.css'
   ]
 })
-export class OrdenesCompraListadoComponent extends ListadoGestionComponent implements OnInit {
-
-  @Output() public editar: EventEmitter<OrdenCompra>;
-  @Output() public borrar: EventEmitter<OrdenCompra>;
+export class OrdenesCompraListadoComponent 
+  extends ListadoGestionComponent<OrdenCompra> {
 
   @ViewChild("tabla") public tabla: MatTable<OrdenCompra>;
-  protected _items: OrdenCompra[];
-  protected _itemsSource: BehaviorSubject<OrdenCompra[]>;
-  public items$: Observable<OrdenCompra[]>;
 
   constructor(
 
@@ -29,25 +24,6 @@ export class OrdenesCompraListadoComponent extends ListadoGestionComponent imple
     this.editar = new EventEmitter<OrdenCompra>();
     this.borrar = new EventEmitter<OrdenCompra>();
 
-    this._itemsSource = new BehaviorSubject<OrdenCompra[]>([]);
-    this.items$ = this._itemsSource.asObservable();
-    
-    this.displayedColumns = [ "numero", "fechaSolicitud", "fechaRecepcion", "acciones" ];
-  }
-
-  ngOnInit() {
-    this.tabla.dataSource = this.items$;
-  }
-
-  public onClickVer(prov: OrdenCompra) {
-    this.editar.emit(prov);
-  }
-
-  public onClickBorrar(prov: OrdenCompra) {
-    this.borrar.emit(prov);
-  }
-
-  @Input() public set Items(ordenesCompra: OrdenCompra[]) {
-    this._itemsSource.next(ordenesCompra);
+    this.columnasTabla = [ "numero", "fechaSolicitud", "fechaRecepcion", "acciones" ];
   }
 }

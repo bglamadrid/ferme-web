@@ -29,9 +29,11 @@ export const MODULOS_ICONOS = {
   templateUrl: './gestion.component.html',
   styleUrls: ['./gestion.component.css']
 })
-export class GestionNavegadorComponent implements OnInit {
+export class GestionNavegadorComponent implements OnInit, OnDestroy {
 
   protected _moduloNombre: string;
+  protected _sesionCambiaSub: Subscription;
+  
   public modulos: NavegadorModuloItem[];
   public sidenavOpened: boolean = true;
 
@@ -48,7 +50,9 @@ export class GestionNavegadorComponent implements OnInit {
   public get usuarioNombre(): string { return this.authSvc.sesion.nombreUsuario; }
   public get moduloNombre(): string { return this._moduloNombre; }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this._sesionCambiaSub = this.authSvc.sesionCambiada.subscribe(() => { this.alCambiarSesion(); });
+
     this.modulos = this.generarListadoModulos();
     
     const rutaActual = this.route.firstChild;
@@ -56,6 +60,18 @@ export class GestionNavegadorComponent implements OnInit {
       const moduloRuta: string = rutaActual.routeConfig.path;
       const modulo: NavegadorModuloItem = this.modulos.find(m => m.path === moduloRuta);
       this.onClickNavegar(modulo);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this._sesionCambiaSub) {
+      this._sesionCambiaSub.unsubscribe();
+    }
+  }
+
+  protected alCambiarSesion(): void {
+    if (!this.authSvc.sesion) {
+      this.router.navigateByUrl("/login");
     }
   }
 
@@ -105,16 +121,21 @@ export class GestionNavegadorComponent implements OnInit {
   }
 
   public onClickCerrarSesion(): void {
-    this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
-      () => {
-        this.authSvc.sesion = null;
-        this.snackBar.open("Su sesión ha sido cerrada.");
-        this.router.navigateByUrl("/login");
-      },
-      err => {
-        this.snackBar.open("Hubo un error de comunicación con el servidor.");
-      }
-    );
+    if (this.authSvc.sesion) {
+      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+        () => {
+          this.authSvc.sesion = null;
+          this.router.navigateByUrl("/login");
+          this.snackBar.open("Su sesión ha sido cerrada.");
+        },
+        err => {
+          this.snackBar.open("Hubo un error de comunicación con el servidor.");
+        }
+      );
+    } else {
+      this.snackBar.open("Su sesión ha sido cerrada.");
+      this.router.navigateByUrl("/login");
+    }
   }
 
 }

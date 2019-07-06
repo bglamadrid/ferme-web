@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from, Subject } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { Observable, from } from 'rxjs';
 import { Usuario } from 'src/modelo/Usuario';
 import { UsuariosListadoComponent } from './listado/listado.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatDialogConfig } from '@angular/material';
 import { UsuarioFormularioComponent, UsuarioFormularioDialogData } from './formulario/formulario.component';
 import { UsuariosHttpService } from 'src/http-services/usuarios.service';
+import { MantenedorGestionComponent } from '../../compartido/mantenedor/mantenedor.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -13,17 +14,8 @@ import { UsuariosHttpService } from 'src/http-services/usuarios.service';
     '../../compartido/mantenedores.css'
   ]
 })
-export class UsuariosComponent implements OnInit {
-
-  protected _usuarios: Usuario[];
-  protected _usuariosSource: Subject<Usuario[]>;
-  public usuarios$: Observable<Usuario[]>;
-
-  protected _loadingSource: Subject<boolean>;
-  public loading$: Observable<boolean>;
-
-  protected _busySource: Subject<boolean>;
-  public busy$: Observable<boolean>;
+export class MantenedorUsuariosComponent 
+  extends MantenedorGestionComponent<Usuario> {
 
   @ViewChild("listado") public listado: UsuariosListadoComponent;
   
@@ -32,82 +24,37 @@ export class UsuariosComponent implements OnInit {
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) { 
-    this._usuarios = [];
-    this._usuariosSource = new Subject<Usuario[]>();
-    this.usuarios$ = this._usuariosSource.asObservable();
-
-    this._loadingSource = new Subject<boolean>();
-    this.loading$ = this._loadingSource.asObservable();
-
-    this._busySource = new Subject<boolean>();
-    this.busy$ = this._busySource.asObservable();
+    super();
   }
 
-  ngOnInit() {
-    this.cargarUsuarios();
+  public cargarItems(): Observable<Usuario[]> {
+    return this.httpSvc.listarUsuarios();
   }
 
-  protected cargarUsuarios(): Observable<Usuario[]> {
-    this._loadingSource.next(true);
-    let usuarios: Observable<Usuario[]> = this.httpSvc.listarUsuarios();
-    usuarios.subscribe((payload: Usuario[]) => {
-      this._usuarios = payload;
-      this._usuariosSource.next(payload);
-    }, err => {
-      console.log(err);
-      this._usuarios = [];
-      this._usuariosSource.next([]);
-    }, () => {
-      this._loadingSource.next(false);
-      this._busySource.next(false);
-    });
-    return from(usuarios);
-  }
+  public abrirDialogoEdicion(item: Usuario): Observable<Usuario> {
 
-  public onClickAgregar(): void {
-    this._busySource.next(true);
-    this.dialog.open(UsuarioFormularioComponent, {
+    let dialogConfig: MatDialogConfig = {
       width: "40rem",
       height: "25rem"
-    }).afterClosed().subscribe(
-      (nuevo: Usuario) => {
-        if (nuevo) {
-          this.cargarUsuarios();
-        }
-      },
-      err => { console.log(err); },
-      () => { this._busySource.next(false); }
-    );
-  }
-
-  public onClickEditar(usr: Usuario): void {
-    this._busySource.next(true);
-    const dialogData: UsuarioFormularioDialogData = {
-      usuario: usr
     };
 
-    this.dialog.open(UsuarioFormularioComponent, {
-      width: "40rem",
-      height: "25rem",
-      data: dialogData
-    }).afterClosed().subscribe(
-      (editado: Usuario) => {
-        if (editado) {
-          this.cargarUsuarios();
-        }
-      },
-      err => { console.log(err); },
-      () => { this._busySource.next(false); }
-    );
+    if (item) {
+      let dialogData: UsuarioFormularioDialogData = { usuario: item };
+      dialogConfig.data = dialogData;
+    }
+
+    let dialog = this.dialog.open(UsuarioFormularioComponent, dialogConfig)
+    
+    return from(dialog.afterClosed());
   }
 
   public onClickBorrar(usr: Usuario) {
-    this._busySource.next(true);
+    this._ocupado$.next(true);
     this.httpSvc.borrarUsuario(usr.idUsuario).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Usuario '"+usr.nombreCompletoPersona+"' eliminado.");
-          this.cargarUsuarios();
+          this.onCargar();
         } else {
           this.snackBar.open("Hubo un problema al borrar el empleado.");
         }
@@ -116,7 +63,7 @@ export class UsuariosComponent implements OnInit {
         this.snackBar.open("Hubo un problema de comunicación con el servidor. Por favor, inténtelo nuevamente.");
         console.log(err);
        },
-       () => { this._busySource.next(false); }
+       () => { this._ocupado$.next(false); }
     );
   }
 

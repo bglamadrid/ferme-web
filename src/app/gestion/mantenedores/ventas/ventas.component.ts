@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of, from, Subject } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { Observable, from } from 'rxjs';
 import { Venta } from 'src/modelo/Venta';
 import { VentasListadoComponent } from './listado/listado.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatDialogConfig } from '@angular/material';
 import { VentaFormularioComponent, VentaFormularioDialogData } from './formulario/formulario.component';
 import { VentasHttpService } from 'src/http-services/ventas.service';
+import { MantenedorGestionComponent } from '../../compartido/mantenedor/mantenedor.component';
 
 @Component({
   selector: 'app-ventas',
@@ -13,17 +14,8 @@ import { VentasHttpService } from 'src/http-services/ventas.service';
     '../../compartido/mantenedores.css'
   ]
 })
-export class VentasComponent implements OnInit {
-
-  public _ventas: Venta[];
-  protected _ventasSource: Subject<Venta[]>;
-  public ventas$: Observable<Venta[]>;
-
-  protected _loadingSource: Subject<boolean>;
-  public loading$: Observable<boolean>;
-
-  protected _busySource: Subject<boolean>;
-  public busy$: Observable<boolean>;
+export class MantenedorVentasComponent 
+  extends MantenedorGestionComponent<Venta> {
 
   @ViewChild("listado") public listado: VentasListadoComponent;
 
@@ -32,79 +24,38 @@ export class VentasComponent implements OnInit {
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) { 
-    this._ventas = [];
-    this._ventasSource = new Subject<Venta[]>();
-    this.ventas$ = this._ventasSource.asObservable();
-
-    this._loadingSource = new Subject<boolean>();
-    this.loading$ = this._loadingSource.asObservable();
-
-    this._busySource = new Subject<boolean>();
-    this.busy$ = this._busySource.asObservable();
+    super();
+    
   }
 
-  ngOnInit() {
-    this.cargarVentas();
+  public cargarItems(): Observable<Venta[]> {
+    return this.httpSvc.listarVentas();
   }
 
-  protected cargarVentas(): Observable<Venta[]> {
-    this.loading$ = of(true);
-    let ventas: Observable<Venta[]> = this.httpSvc.listarVentas();
-    ventas.subscribe((payload: Venta[]) => {
-      this.ventas$ = of(payload);
-    }, err => {
-      console.log(err);
-      this.ventas$ = of([]);
-    }, () => {
-      this.loading$ = of(false);
-      this.busy$ = of(false);
-    });
-    return from(ventas);
-  }
+  public abrirDialogoEdicion(item: Venta): Observable<Venta> {
 
-  public onClickAgregar(): void {
-    this.busy$ = of(true);
-    this.dialog.open(VentaFormularioComponent, {
+    let dialogConfig: MatDialogConfig = {
       width: "80rem",
-      height: "28rem"
-    }).afterClosed().subscribe(
-      (nuevo: Venta) => {
-        if (nuevo) {
-          this.cargarVentas();
-        }
-      },
-      err => { console.log(err); },
-      () => { this.busy$ = of(false); }
-    );
-  }
-
-  public onClickEditar(vnt: Venta): void {
-    this.busy$ = of(true);
-    const dialogData: VentaFormularioDialogData = {
-      venta: vnt
+      height: "30rem"
     };
 
-    this.dialog.open(VentaFormularioComponent, {
-      width: "40rem",
-      height: "28rem",
-      data: dialogData
-    }).afterClosed().subscribe(
-      (editado: Venta) => {
-        if (editado) {
-          this.cargarVentas();
-        }
-      },
-      err => { console.log(err); },
-      () => { this.busy$ = of(false); }
-    );
+    if (item) {
+      let dialogData: VentaFormularioDialogData = { venta: item };
+      dialogConfig.data = dialogData;
+    }
+    
+    let dialog = this.dialog.open(VentaFormularioComponent, dialogConfig);
+    
+    return from(dialog.afterClosed());
   }
 
   public onClickBorrar(vnt: Venta) {
-    this.busy$ = of(true);
+    this._ocupado$.next(true);
     this.httpSvc.borrarVenta(vnt.idVenta).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open("Venta N°'"+vnt.idVenta+"' ("+vnt.fechaVenta+") eliminada.");
+          this.onCargar();
         } else {
           this.snackBar.open("Hubo un problema al borrar la venta.");
         }
@@ -113,7 +64,7 @@ export class VentasComponent implements OnInit {
         this.snackBar.open("Hubo un problema de comunicación con el servidor. Por favor, inténtelo nuevamente.");
         console.log(err);
        },
-       () => { this.busy$ = of(false); }
+       () => { this._ocupado$.next(false); }
     );
   }
 

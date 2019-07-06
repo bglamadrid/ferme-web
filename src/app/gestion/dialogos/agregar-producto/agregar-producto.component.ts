@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, Inject } from '@angular/core';
 import { FamiliaProducto } from 'src/modelo/FamiliaProducto';
-import { Observable, of, Subscription, Subject } from 'rxjs';
+import { Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { TipoProducto } from 'src/modelo/TipoProducto';
 import { MatDialogRef, MatTable, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
@@ -27,14 +27,14 @@ export class AgregarProductoVentaComponent implements OnInit {
   protected _productosSource: Subject<Producto[]>;
   public productos$: Observable<Producto[]>;
 
-  protected _loadingSource: Subject<boolean>;
-  public loading$: Observable<boolean>;
+  protected _loadingSource: BehaviorSubject<boolean>;
+  public cargando$: Observable<boolean>;
 
   public hayProductos: boolean;
 
   @ViewChild("tablaProductos") public tablaProductos: MatTable<Producto>;
   @ViewChild("tablaProductosAgregar") public tablaProductosAgregar: MatTable<Producto>;
-  public displayedColumns: string[];
+  public columnasTabla: string[];
 
   protected _productosAgregar: Producto[];
 
@@ -46,16 +46,18 @@ export class AgregarProductoVentaComponent implements OnInit {
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar
   ) { 
-    this._loadingSource = new Subject<boolean>();
-    this.loading$ = this._loadingSource.asObservable();
+    this._loadingSource = new BehaviorSubject<boolean>(true);
+    this.cargando$ = this._loadingSource.asObservable();
 
     this._productosSource = new Subject<Producto[]>();
     this.productos$ = this._productosSource.asObservable();
 
     this._productosAgregar = [];
-    this.displayedColumns = [ "nombre", "precio", "acciones" ];
+    this.columnasTabla = [ "nombre", "precio", "acciones" ];
 
     this.hayProductos = false;
+    
+    this._loadingSource.next(false);
   }
 
   ngOnInit() {
