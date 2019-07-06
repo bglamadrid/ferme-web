@@ -37,7 +37,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
   public get usuarioNombre(): string { return this.authSvc.sesion? this.authSvc.sesion.nombreUsuario : "No identificado"; }
 
   ngOnInit() {
-    this._sesionCambiaSub = this.authSvc.sesionCambiada.subscribe(() => { this.alCambiarSesion(); });
+    //this._sesionCambiaSub = this.authSvc.sesionCambiada.subscribe(() => { this.alCambiarSesion(); });
     this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.detallesVenta = d; });
     
   }
@@ -58,13 +58,13 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+/*
   protected alCambiarSesion(): void {
     if (!this.authSvc.sesion) {
       this.router.navigateByUrl("/login");
     }
   }
-
+*/
   public onClickAbrirSesion(): void {
     this.dialog.open(CompraLoginDialogComponent, {
       width: "24rem",
