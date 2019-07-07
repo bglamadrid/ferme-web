@@ -93,6 +93,6 @@ mat-nav-list > a mat-icon {
 }
 mat-nav-list > a.active {
     background: darkred;
-    border-top: 1px rgba(0, 0, 0, 0.5) solid;
-    border-bottom: 1px rgba(0, 0, 0, 0.5) solid;
+    border-top: 1px rgba(255, 255, 255, 0.1) solid;
+    border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
 }
