@@ -1,27 +1,27 @@
-# FermeWeb
+# Ferme Web App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
+Este proyecto ha sido generado y construido usando [Angular CLI](https://github.com/angular/angular-cli) v7.3.9.
 
-## Development server
+## Visualización y Desarrollo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Ejecuta `npm start` en la raíz del proyecto para abrir un servidor local de desarrollo. 
+Navega a `http://localhost:4200/` para ver la app en funcionamiento.
+Cualquier cambio que se realice en el código fuente dentro de la carpeta 'src', desencadenará una re-compilación y recarga de la app en el navegador.
 
-## Code scaffolding
+## Compilación
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Ejecuta `ng build` para compilar y generar  binarios. 
+Éstos se almacenarán en el directorio `dist/`, en la raíz de la app. 
+Si le adicionas el parámetro `--prod`, generarás una versión apta para ambientes de producción.
 
-## Build
+## Pruebas Unitarias
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Ejecuta `ng test` para que [Karma](https://karma-runner.github.io) ejecute las pruebas.
 
-## Running unit tests
+## Pruebas "Frente a Frente"
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Ejecuta `ng e2e` para que [Protractor](http://www.protractortest.org/) ejecute las pruebas.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Ayuda
+s
+Si necesitas ayuda con Angular CLI, ejecuta `ng help` o revisa el [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
