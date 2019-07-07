@@ -5,7 +5,7 @@
     height: 100vh;
 }
 .pagina > .cabecera {
-    height: 4em;
+    height: 5em;
     flex-grow: 0;
     flex-shrink: 0;
     background: maroon;
@@ -31,6 +31,14 @@
 .logo > img {
     height: 2.75em;
     width: 2.75em;
+}
+
+.cabecera .resumen {
+    padding: 0.5em 1em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 

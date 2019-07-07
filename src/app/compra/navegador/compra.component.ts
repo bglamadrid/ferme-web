@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, Event } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Sesion } from 'src/modelo/Sesion';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription, Subject, BehaviorSubject, Observable } from 'rxjs';
 import { DetalleVenta } from 'src/modelo/DetalleVenta';
 import { CompraLoginDialogComponent } from '../dialogos/login/login.component';
 import { CompraService } from 'src/services/compra.service';
@@ -20,7 +20,12 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
   protected _detallesSub: Subscription;
   protected _sesionCambiaSub: Subscription;
 
-  public detallesVenta: DetalleVenta[];
+  protected _mostrarResumen$: BehaviorSubject<boolean>;
+
+  public subtotalVentaActual: number;
+  public cantidadItems: number;
+
+  public mostrarResumen$: Observable<boolean>;
 
   constructor(
     protected authSvc: AuthService,
@@ -30,15 +35,38 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
     protected dialog: MatDialog,
     protected compraSvc: CompraService
   ) { 
-    this.detallesVenta = [];
+    this.subtotalVentaActual = 0;
+
+    this._mostrarResumen$ = new BehaviorSubject<boolean>(false);
+    this.mostrarResumen$ = this._mostrarResumen$.asObservable();
   }
 
   public get estaAutenticado(): boolean { return !!this.authSvc.sesion; }
-  public get usuarioNombre(): string { return this.authSvc.sesion? this.authSvc.sesion.nombreUsuario : "No identificado"; }
+  public get usuarioNombre(): string { return this.authSvc.sesion? this.authSvc.sesion.nombreUsuario : "Usuario no identificado"; }
 
   ngOnInit() {
-    //this._sesionCambiaSub = this.authSvc.sesionCambiada.subscribe(() => { this.alCambiarSesion(); });
-    this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.detallesVenta = d; });
+    this.compraSvc.reset();
+    this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.generarResumen(d); });
+  }
+
+  private generarResumen(detalles: DetalleVenta[]): void {
+    let cantidadAux: number = 0;
+    let subtotalAux: number = 0;
+    for (const item of detalles) {
+      if (item.precioProducto && item.unidadesProducto) {
+        const unidades = item.unidadesProducto;
+        cantidadAux += unidades;
+
+        const detalleValor = item.precioProducto * unidades;
+        subtotalAux += detalleValor;
+      }
+    }
+    
+    this.cantidadItems = cantidadAux;
+    this.subtotalVentaActual = subtotalAux;
+
+    const mostrar = (subtotalAux > 0);
+    this._mostrarResumen$.next(mostrar);
     
   }
 

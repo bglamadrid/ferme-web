@@ -12,7 +12,7 @@
 }
 
 .cabecera {
-    height: 4em;
+    height: 5em;
     flex-grow: 0;
     flex-shrink: 0;
     background: maroon;

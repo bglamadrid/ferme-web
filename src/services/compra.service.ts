@@ -15,6 +15,12 @@ export class CompraService {
   constructor(
 
   ) { 
+    this.reset();
+  }
+
+  public reset() {
+    console.log("reset");
+    
     this._detalles = [];
     this._detallesSource = new Subject<DetalleVenta[]>();
     this.detalles$ = this._detallesSource.asObservable();
