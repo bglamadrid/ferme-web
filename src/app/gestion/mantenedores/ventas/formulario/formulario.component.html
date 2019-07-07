@@ -54,7 +54,7 @@
           <mat-card>
             <mat-card-header>
               <mat-card-title>Productos de esta Venta</mat-card-title>
-              <button mat-raised-button color="primary"
+              <button mat-button mat-raised-button color="primary"
                 (click)="onClickAgregarProductos()">
                 Agregar
               </button>
@@ -130,13 +130,13 @@
   </div>
       
   <div style="margin-top: 1em" class="acciones">
-    <button mat-raised-button color="primary" 
+    <button mat-button mat-raised-button color="primary" 
       [disabled]="ventaForm.invalid"
       (click)="onClickAceptar()">
       Aceptar
     </button>
 
-    <button mat-raised-button 
+    <button mat-button mat-raised-button 
       (click)="onClickCancelar()">
       Cancelar
     </button>

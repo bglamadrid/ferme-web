@@ -30,13 +30,13 @@
   </form>
     
   <div class="acciones">
-    <button mat-raised-button color="primary" 
+    <button mat-button mat-raised-button color="primary" 
       [disabled]="usuarioForm.invalid || (showSpinner$ | async)"
       (click)="onClickAceptar()">
       Aceptar
     </button>
 
-    <button mat-raised-button 
+    <button mat-button mat-raised-button 
       [disabled]="showSpinner$ | async"
       (click)="onClickCancelar()">
       Cancelar

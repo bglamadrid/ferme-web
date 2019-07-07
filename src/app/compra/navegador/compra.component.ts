@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from '../../../routing/gestion.routes';
 import { AuthService } from 'src/services/auth.service';
 import { Router, ActivatedRoute, Event } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
-import { Sesion } from 'src/modelo/Sesion';
 import { Subscription, Subject, BehaviorSubject, Observable } from 'rxjs';
 import { DetalleVenta } from 'src/modelo/DetalleVenta';
 import { CompraLoginDialogComponent } from '../dialogos/login/login.component';
@@ -45,11 +43,29 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
   public get usuarioNombre(): string { return this.authSvc.sesion? this.authSvc.sesion.nombreUsuario : "Usuario no identificado"; }
 
   ngOnInit() {
-    this.compraSvc.reset();
-    this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.generarResumen(d); });
+    this._detallesSub = this.compraSvc.detalles$.subscribe(d => { this.generarResumenEnCabecera(d); });
   }
 
-  private generarResumen(detalles: DetalleVenta[]): void {
+  ngOnDestroy() {
+    if (this._sesionCambiaSub) {
+      this._sesionCambiaSub.unsubscribe();
+    }
+
+    if (this.estaAutenticado) {
+      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+        () => { 
+          this.snackBar.open("Su sesión ha sido cerrada por seguridad.");
+        },
+        err => { console.log(err); },
+        () => { 
+          this.authSvc.sesion = null; 
+        }
+      );
+    }
+  }
+
+
+  private generarResumenEnCabecera(detalles: DetalleVenta[]): void {
     let cantidadAux: number = 0;
     let subtotalAux: number = 0;
     for (const item of detalles) {
@@ -70,29 +86,6 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
     
   }
 
-  ngOnDestroy() {
-    if (this._sesionCambiaSub) {
-      this._sesionCambiaSub.unsubscribe();
-    }
-
-    if (this.estaAutenticado) {
-      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
-        () => { },
-        err => { console.log(err); },
-        () => { 
-          this.snackBar.open("Su sesión ha sido cerrada por seguridad.");
-          this.authSvc.sesion = null; 
-        }
-      );
-    }
-  }
-/*
-  protected alCambiarSesion(): void {
-    if (!this.authSvc.sesion) {
-      this.router.navigateByUrl("/login");
-    }
-  }
-*/
   public onClickAbrirSesion(): void {
     this.dialog.open(CompraLoginDialogComponent, {
       width: "24rem",

@@ -64,9 +64,7 @@ export class CompraCatalogoComponent implements OnInit {
     }
 
     obs.subscribe(
-      (prods: Producto[]) => {
-        console.log(prods);
-        
+      (prods: Producto[]) => { 
         this._productosSource.next(prods);
       },
       err => {

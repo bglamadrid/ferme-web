@@ -15,9 +15,11 @@
           <mat-form-field>
             <input matInput [type]="claveInputType" placeholder="Contraseña" formControlName="clave" />
           </mat-form-field>
-          <button mat-icon-button 
+          <button mat-icon-button title="Mantenga presionado para ver..."
             type="button"
-            (click)="esconderClave = !esconderClave">
+            (mousedown)="esconderClave = false"
+            (mouseup)="esconderClave = true"
+            (mouseleave)="esconderClave = true">
             <mat-icon>{{ iconoBotonMostrarClave }}</mat-icon>
           </button>
         </div>

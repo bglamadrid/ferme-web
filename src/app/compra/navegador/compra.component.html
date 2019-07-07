@@ -10,16 +10,26 @@
         [routerLink]="['/compra', 'catalogo']">
         <mat-icon>dashboard</mat-icon>
       </a>
-      <a mat-button color="warn" 
-        title="Resumen"
-        [routerLink]="['/compra', 'resumen']">
-        <mat-icon>shopping_cart</mat-icon>
-        <span *ngIf="mostrarResumen$ | async" 
-          class="resumen">
-          <span>{{ cantidadItems + ' item' + (cantidadItems > 1? 's':'') }}</span>
-          <span>${{ subtotalVentaActual }}</span>
-        </span>
-      </a>
+      <ng-container 
+        *ngIf="(mostrarResumen$ | async);
+          then ventaEnProgreso; 
+          else ventaNoEnProgreso">
+      </ng-container>
+      <ng-template #ventaEnProgreso>
+        <a mat-button color="warn" title="Carrito" 
+          [routerLink]="['/compra', 'resumen']">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="resumen">
+            <span>{{ cantidadItems + ' item' + (cantidadItems > 1? 's':'') }}</span>
+            <span>${{ subtotalVentaActual }}</span>
+          </span>
+        </a>
+      </ng-template>
+      <ng-template #ventaNoEnProgreso>
+        <a mat-button color="warn">
+          <mat-icon>shopping_cart</mat-icon>
+        </a>
+      </ng-template>
     </div>
     <div class="cabecera-espacio"></div>
     <div class="cabecera-acciones">
@@ -52,7 +62,7 @@
       </a>
     </div>
   </div>
-  <div class="contenido">
+  <div class="contenido overflow-y">
     <router-outlet></router-outlet>
   </div>
   <div class="pie">

@@ -5,5 +5,6 @@ export class DetalleVenta {
     public unidadesProducto: number;
     public montoDetalleVenta?: number;
     public nombreProducto?: string;
+    public codigoProducto?: string;
     public precioProducto?: number;
 }

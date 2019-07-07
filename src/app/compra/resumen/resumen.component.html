@@ -1,3 +1,74 @@
-<p>
-  resumen works!
-</p>
+<section>
+  <h2>Productos en el Carrito</h2>
+  <div class="productos overflow-y">
+    <table mat-table #tabla [dataSource]="detallesVenta$">
+      <ng-container matColumnDef="producto">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let detalle" class="left"> 
+          <div class="resumen-producto">
+            <span style="font-size: 1.1rem">{{ detalle.nombreProducto }}</span>
+            <span style="font-size: 0.9rem">{{ detalle.codigoProducto }}</span>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef class="center"> Precio </th>
+        <td mat-cell *matCellDef="let detalle" class="center"> 
+          ${{ detalle.precioProducto }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef class="center"> Unidades </th>
+        <td mat-cell *matCellDef="let detalle; let i = index" class="center"> 
+          <button mat-button mat-icon-button 
+            [disabled]="ocupado$ | async" 
+            (click)="onClickIncrementarCantidadProducto(i)">
+            <mat-icon>add</mat-icon>
+          </button>
+          {{ detalle.unidadesProducto }}
+          <button mat-button mat-icon-button 
+            [disabled]="(ocupado$ | async) || (detalle.unidadesProducto < 2)" 
+            (click)="onClickReducirCantidadProducto(i)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef class="center"> Total </th>
+        <td mat-cell *matCellDef="let detalle" class="center"> 
+          ${{ detalle.precioProducto * detalle.unidadesProducto }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="right"></th>
+        <td mat-cell *matCellDef="let i = index" class="right">
+          <button mat-button mat-icon-button 
+            color="warn" class="delete" 
+            (click)="onClickQuitarProducto(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+    </table>
+  </div>
+
+  <h2>Resumen de tu Compra</h2>
+  <div class="resumen-venta">
+    <div class="border">
+      <div>Subtotal: ${{ subtotalVenta$ | async }}</div>
+      <div>Total: ${{ totalVenta$ | async }} (IVA incl.)</div>
+    </div>
+  </div>
+
+  <div class="acciones-venta">
+    <button mat-button mat-raised-button color="primary"
+      type="button"
+      [disabled]=""
+      (click)="onClickAceptar()">
+      Aceptar e Ingresar Mi Compra
+    </button>
+  </div>
+</section>

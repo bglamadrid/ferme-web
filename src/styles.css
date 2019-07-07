@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { 
+    height: 100%; 
+    overflow-x: hidden;
+}
 body { font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body, div {
@@ -17,10 +20,6 @@ table { width: 100%; }
 
 .inline {
     display: inline;
-}
-
-.left {
-    text-align: left;
 }
 
 .full-width {
@@ -44,6 +43,10 @@ table { width: 100%; }
     padding: 0;
 }
 
+.super-overlay {
+    z-index: 999999999;
+}
+
 .bg-ng-primary {
     background-color: #3f51b5;
     color: white;
@@ -54,3 +57,15 @@ table { width: 100%; }
     color: white;
 }
 
+th.left,
+td.left {
+    text-align: left !important;
+}
+th.center,
+td.center {
+    text-align: center !important;
+}
+th.right,
+td.right {
+    text-align: center !important;
+}
