@@ -1,16 +1,16 @@
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('Ferme Web App', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('deberia tener un contenedor visual de navegacion (router outlet)', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to ferme-web!');
+    expect(page.hasRouterOutlet()).toEqual(true);
   });
 
   afterEach(async () => {
