@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule, MatListModule, MatButtonModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule, MatExpansionModule, MatSidenavModule, MatTableModule, MatSelectModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { MatProgressSpinnerCentradoComponent } from './centered-mat-spinner/component';
+import { MatProgressSpinnerCentradoComponent } from './mat-spinner-centrado/component';
 import { ListadoAccionesComponent } from './listado-acciones/listado-acciones.component';
 import { FiltrosProductosComponent } from './filtros-productos/filtros-productos.component';
 
