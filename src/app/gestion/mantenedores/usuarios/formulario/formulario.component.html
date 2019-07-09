@@ -1,13 +1,13 @@
 <section>
   <h2>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Usuario</h2>
 
-  <ng-template *ngIf="(showSpinner$ | async) || !(personas$ | async)">
+  <ng-template *ngIf="(cargando$ | async) || !(personas$ | async)">
     <div class="spinner-container">
       <mat-spinner></mat-spinner>
     </div>
   </ng-template>
 
-  <form [formGroup]="usuarioForm" [hidden]="(showSpinner$ | async) || !(personas$ | async)"
+  <form [formGroup]="usuarioForm" [hidden]="(cargando$ | async) || !(personas$ | async)"
     style="grid-template-areas:   
       'a' 
       'b' 
@@ -31,13 +31,13 @@
     
   <div class="acciones">
     <button mat-button mat-raised-button color="primary" 
-      [disabled]="usuarioForm.invalid || (showSpinner$ | async)"
+      [disabled]="usuarioForm.invalid || (cargando$ | async)"
       (click)="onClickAceptar()">
       Aceptar
     </button>
 
     <button mat-button mat-raised-button 
-      [disabled]="showSpinner$ | async"
+      [disabled]="cargando$ | async"
       (click)="onClickCancelar()">
       Cancelar
     </button>

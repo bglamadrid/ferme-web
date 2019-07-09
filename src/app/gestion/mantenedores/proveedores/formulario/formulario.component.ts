@@ -23,7 +23,7 @@ export class ProveedorFormularioComponent implements OnInit {
   protected _idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
 
   public proveedorForm: FormGroup;
 
@@ -35,7 +35,7 @@ export class ProveedorFormularioComponent implements OnInit {
     protected sharedSvc: GestionSharedHttpService,
     protected httpSvc: ProveedoresHttpService
   ) { 
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     this.proveedorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -72,7 +72,7 @@ export class ProveedorFormularioComponent implements OnInit {
   protected cargarProveedor(prov: Proveedor): void {
 
     this.proveedorForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     if (prov.idProveedor) {
       this._idProveedor = prov.idProveedor; 
@@ -101,13 +101,13 @@ export class ProveedorFormularioComponent implements OnInit {
       this.fono3.setValue(String(prov.fonoPersona3), NO_EVENT_CHAIN);
     }
 
-    this.showSpinner$ = of(false);
+    this.cargando$ = of(false);
     this.proveedorForm.enable();
   }
 
   protected guardarProveedor(prov: Proveedor): void {
     this.proveedorForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
     
     this.httpSvc.guardarProveedor(prov).subscribe(
       (id: number) => {
@@ -125,7 +125,7 @@ export class ProveedorFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar proveedor.");
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.proveedorForm.enable(NO_EVENT_CHAIN);
       }
     );

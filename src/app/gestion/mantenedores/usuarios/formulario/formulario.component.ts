@@ -22,7 +22,7 @@ export class UsuarioFormularioComponent implements OnInit {
   protected _idUsuario: number;
 
   public personas$: Observable<Persona[]>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
 
   public usuarioForm: FormGroup;
 
@@ -34,7 +34,7 @@ export class UsuarioFormularioComponent implements OnInit {
     protected sharedSvc: GestionSharedHttpService,
     protected httpSvc: UsuariosHttpService
   ) { 
-    this.showSpinner$ = of(false);
+    this.cargando$ = of(false);
 
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -61,7 +61,7 @@ export class UsuarioFormularioComponent implements OnInit {
   protected cargarUsuario(usr: Usuario): void {
 
     this.usuarioForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     if (usr.idUsuario) {
       this._idUsuario = usr.idUsuario; 
@@ -71,13 +71,13 @@ export class UsuarioFormularioComponent implements OnInit {
     this.nombre.setValue(usr.nombreUsuario, NO_EVENT_CHAIN);
     this.persona.setValue(usr.idPersona, NO_EVENT_CHAIN);
 
-    this.showSpinner$ = of(false);
+    this.cargando$ = of(false);
     this.usuarioForm.enable();
   }
 
   protected guardarUsuario(usr: Usuario): void {
     this.usuarioForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
     
     this.httpSvc.guardarUsuario(usr).subscribe(
       (id: number) => {
@@ -95,7 +95,7 @@ export class UsuarioFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar usuario.");
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.usuarioForm.enable(NO_EVENT_CHAIN);
       }
     );

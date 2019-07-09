@@ -3,6 +3,7 @@ import { DetalleVenta } from 'src/modelo/DetalleVenta';
 import { Producto } from 'src/modelo/Producto';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Venta } from 'src/modelo/Venta';
+import { crearDetalleVentaDesdeProducto } from 'src/app/compartido/funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -29,16 +30,6 @@ export class CompraService {
     return this._detalles.findIndex(d => d.idProducto === prod.idProducto);
   }
 
-  private crearDetalleVentaDesdeProducto(prod: Producto) {
-    let detalleConEsteProducto = new DetalleVenta();
-    detalleConEsteProducto.unidadesProducto = 1;
-    detalleConEsteProducto.idProducto = prod.idProducto;
-    detalleConEsteProducto.nombreProducto = prod.nombreProducto;
-    detalleConEsteProducto.codigoProducto = prod.codigoProducto;
-    detalleConEsteProducto.precioProducto = prod.precioProducto;
-    return detalleConEsteProducto;
-  }
-
   public agregarProducto(prod: Producto): void {
     let indice: number = this.obtenerIndiceDetallesVentaSegunProducto(prod);
     
@@ -47,7 +38,7 @@ export class CompraService {
       detalleConEsteProducto = this._detalles[indice];
       detalleConEsteProducto.unidadesProducto++;
     } else {
-      detalleConEsteProducto = this.crearDetalleVentaDesdeProducto(prod);
+      detalleConEsteProducto = crearDetalleVentaDesdeProducto(prod);
       indice = this._detalles.push(detalleConEsteProducto);
       indice--;
     }

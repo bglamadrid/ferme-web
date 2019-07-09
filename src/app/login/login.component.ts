@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
   protected _showSpinnerSource: Subject<boolean>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
   public esconderClave: boolean;
 
   constructor(
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     protected authHttpSvc: AuthHttpService
   ) { 
     this._showSpinnerSource = new Subject<boolean>();
-    this.showSpinner$ = this._showSpinnerSource.asObservable();
+    this.cargando$ = this._showSpinnerSource.asObservable();
 
     this.esconderClave = true;
 
@@ -65,8 +65,12 @@ export class LoginComponent implements OnInit {
         if (!ssn || !ssn.hashSesion) {
           this.snackBar.open("Credenciales inválidas.");
         } else {          
-          this.authSvc.sesion = ssn;
-          this.router.navigateByUrl("/gestion");
+          if (!ssn.idEmpleado) {
+            this.snackBar.open("Su cuenta no posee privilegios suficientes para ingresar.");
+          } else {  
+            this.authSvc.sesion = ssn;
+            this.router.navigateByUrl("/gestion");
+          }
         }
         
       },

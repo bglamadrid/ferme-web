@@ -24,7 +24,7 @@ export class EmpleadoFormularioComponent implements OnInit {
   protected _idPersona: number;
 
   public cargos$: Observable<Cargo[]>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
 
   public empleadoForm: FormGroup;
 
@@ -36,7 +36,7 @@ export class EmpleadoFormularioComponent implements OnInit {
     protected sharedSvc: GestionSharedHttpService,
     protected httpSvc: EmpleadosHttpService
   ) { 
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     this.empleadoForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -73,7 +73,7 @@ export class EmpleadoFormularioComponent implements OnInit {
   protected cargarEmpleado(emp: Empleado): void {
 
     this.empleadoForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     if (emp.idEmpleado) {
       this._idEmpleado = emp.idEmpleado; 
@@ -102,13 +102,13 @@ export class EmpleadoFormularioComponent implements OnInit {
       this.fono3.setValue(String(emp.fonoPersona3), NO_EVENT_CHAIN);
     }
 
-    this.showSpinner$ = of(false);
+    this.cargando$ = of(false);
     this.empleadoForm.enable();
   }
 
   protected guardarEmpleado(emp: Empleado): void {
     this.empleadoForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
     
     this.httpSvc.guardarEmpleado(emp).subscribe(
       (id: number) => {
@@ -126,7 +126,7 @@ export class EmpleadoFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar empleado.");
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.empleadoForm.enable(NO_EVENT_CHAIN);
       }
     );

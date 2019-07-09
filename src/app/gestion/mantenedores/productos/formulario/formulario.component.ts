@@ -24,7 +24,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
 
   public familias$: Observable<FamiliaProducto[]>;
   public tipos$: Observable<TipoProducto[]>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
 
   public productoForm: FormGroup;
 
@@ -48,7 +48,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
       stockCritico: [null, Validators.required],
       descripcion: ['']
     });
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     if (this.dialogData) {
       const prod: Producto = this.dialogData.producto;
@@ -81,7 +81,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
   protected cargarProducto(prod: Producto): void {
 
     this.productoForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     if (prod.idProducto) {
       this._idProducto = prod.idProducto; 
@@ -102,13 +102,13 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
     }
     this.onChangeFamilia();
 
-    this.showSpinner$ = of(false);
+    this.cargando$ = of(false);
     this.productoForm.enable();
   }
 
   protected guardarProducto(prod: Producto): void {
     this.productoForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
     
     this.httpSvc.guardarProducto(prod).subscribe(
       (id: number) => {
@@ -126,7 +126,7 @@ export class ProductoFormularioComponent implements OnInit, OnDestroy {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar producto.");
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.productoForm.enable(NO_EVENT_CHAIN);
       }
     );

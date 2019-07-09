@@ -21,7 +21,7 @@
       </button>
     </div>
 
-    <ng-container *ngIf="(showSpinner$ | async); 
+    <ng-container *ngIf="(cargando$ | async); 
       then indicadorCarga 
       else acciones">
     </ng-container>

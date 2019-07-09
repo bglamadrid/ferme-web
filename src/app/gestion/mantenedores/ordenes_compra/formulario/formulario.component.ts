@@ -42,7 +42,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
 
   public empleados$: Observable<Empleado[]>;
   public proveedores$: Observable<Proveedor[]>;
-  public showSpinner$: Observable<boolean>;
+  public cargando$: Observable<boolean>;
 
   public ordenCompraForm: FormGroup;
   @ViewChild("tablaDetalles") public tablaDetalles: MatTable<DetalleOrdenCompra>;
@@ -64,7 +64,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
     protected prvHttpSvc: ProveedoresHttpService,
     protected dialog: MatDialog
   ) { 
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
 
     this.fechaSolicitud = (new Date()).toLocaleDateString();
 
@@ -103,7 +103,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
   protected cargarOrdenCompra(oc: OrdenCompra): void {
 
     this.ordenCompraForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);    
+    this.cargando$ = of(true);    
 
     this._idOrdenCompra = oc.idOrdenCompra;
 
@@ -125,7 +125,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
         this.snackBar.open("Hubo un problema cargando los detalles de la orden-compra.");
       },
       () => {
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.ordenCompraForm.enable();
       }
     )
@@ -133,7 +133,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
 
   protected guardarOrdenCompra(vnt: OrdenCompra): void {
     this.ordenCompraForm.disable(NO_EVENT_CHAIN);
-    this.showSpinner$ = of(true);
+    this.cargando$ = of(true);
     
     this.httpSvc.guardarOrdenCompra(vnt).subscribe(
       (id: number) => {
@@ -151,7 +151,7 @@ export class OrdenCompraFormularioComponent implements OnInit {
       }, err => {
         console.log(err);
         this.snackBar.open("Error al guardar orden-compra.");
-        this.showSpinner$ = of(false);
+        this.cargando$ = of(false);
         this.ordenCompraForm.enable(NO_EVENT_CHAIN);
       }
     );
