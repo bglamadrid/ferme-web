@@ -44,6 +44,16 @@
 
 .cabecera > .cabecera-espacio {
     flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+.cabecera-espacio > h1 {
+    font-size: 0;
+}
+@media(min-width: 780px) {
+    .cabecera-espacio > h1 {
+        font-size: 2rem;
+    }
 }
 .cabecera > .cabecera-acciones {
     flex-grow: 0;
