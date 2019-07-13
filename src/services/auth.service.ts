@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { Sesion } from 'src/modelo/Sesion';
 import { MatSnackBar } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
@@ -9,17 +9,23 @@ import { AuthHttpService } from 'src/http-services/auth.service';
 })
 export class AuthService {
 
-  protected _changeSesionSource = new Subject<Sesion>();
-  protected _changeSesion$: Observable<Sesion> = this._changeSesionSource.asObservable();
+  protected _cambioSesion$: Subject<Sesion>;
+  protected cambioSesion$: Observable<Sesion>;
+
+  protected _validandoSesion$: Subject<boolean>;
+  protected validandoSesion$: Observable<boolean>;
 
   constructor(
     protected authHttpSvc: AuthHttpService
   ) { 
-    this._changeSesion$ = of(null);
+    const ssn = this.sesion;
+    this._cambioSesion$ = new BehaviorSubject<Sesion>(ssn);
     this.validarSesion();
+    this.cambioSesion$ = this._cambioSesion$.asObservable();
   }
 
-  public get sesionCambiada(): Observable<Sesion> { return this._changeSesion$; }
+  public get cambioSesion(): Observable<Sesion> { return this.cambioSesion$; }
+  public get validandoSesion(): Observable<boolean> { return this.validandoSesion$; }
   
   public get sesion(): Sesion {
     const ssnJSON: string = sessionStorage.getItem("sesion");
@@ -33,11 +39,11 @@ export class AuthService {
   public set sesion(ssn: Sesion) {
     if (!ssn) {
       sessionStorage.removeItem("sesion");
-      this._changeSesionSource.next(null);
+      this._cambioSesion$.next(null);
     } else if (this.isSesionValida(ssn)) {      
       const ssnJSON: string = JSON.stringify(ssn);
       sessionStorage.setItem("sesion", ssnJSON);
-      this._changeSesionSource.next(ssn);
+      this._cambioSesion$.next(ssn);
     }
   }
 
@@ -58,6 +64,13 @@ export class AuthService {
    * Rutina de validación sencilla.
    */
   public validarSesion(): Observable<boolean> | boolean {
+    if (this._validandoSesion$) { 
+      this._validandoSesion$.next(true);
+    } else {
+      this._validandoSesion$ = new BehaviorSubject<boolean>(true);
+      this.validandoSesion$ = this._validandoSesion$.asObservable();
+    }
+    
     const ssn = this.sesion;
     if (ssn) {
       const obs: Observable<boolean> = this.authHttpSvc.validarSesion(ssn);
@@ -71,6 +84,9 @@ export class AuthService {
         },
         err => {
           this.sesion = null;
+        },
+        () => {
+          this._validandoSesion$.next(false);
         }
       );
       return obs;

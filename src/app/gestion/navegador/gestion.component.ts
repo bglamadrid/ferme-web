@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, Event } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { AuthHttpService } from 'src/http-services/auth.service';
 import { Sesion } from 'src/modelo/Sesion';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, Subject, BehaviorSubject } from 'rxjs';
     
 export interface NavegadorModuloItem {
   path: string;
@@ -14,14 +14,32 @@ export interface NavegadorModuloItem {
   activo: boolean;
 }
 
-export const MODULOS_ICONOS = {
-  clientes: "person",
-  empleados: "work",
-  productos: "store",
-  proveedores: "rv_hookup",
-  ventas: "attach_money",
-  ordenes_compra: "assignment",
-  usuarios: "perm_identity"
+export interface ItemListaEnlaceMetadata {
+  codigoMaterialIcon: string;
+}
+
+export const MODULOS_ICONOS: { [key: string]: ItemListaEnlaceMetadata } = {
+  clientes: { 
+    codigoMaterialIcon: "person" 
+  },
+  empleados: {
+    codigoMaterialIcon: "work"
+  },
+  productos: {
+    codigoMaterialIcon: "store"
+  },
+  proveedores: {
+    codigoMaterialIcon: "rv_hookup"
+  },
+  ventas: {
+    codigoMaterialIcon: "attach_money"
+  },
+  ordenes_compra: {
+    codigoMaterialIcon: "assignment"
+  },
+  usuarios: {
+    codigoMaterialIcon: "perm_identity"
+  }
 }
 
 @Component({
@@ -31,11 +49,14 @@ export const MODULOS_ICONOS = {
 })
 export class GestionNavegadorComponent implements OnInit, OnDestroy {
 
-  protected _moduloNombre: string;
-  protected _sesionCambiaSub: Subscription;
-  
+  protected _nombreModulo$: Subject<string>;
+  protected _nombreUsuario$: Subject<string>;
+  protected _suscrCambioSesion: Subscription;
+
   public modulos: NavegadorModuloItem[];
   public sidenavOpened: boolean = true;
+  public nombreModulo$: Observable<string>;
+  public nombreUsuario$: Observable<string>;
 
   constructor(
     protected authSvc: AuthService,
@@ -44,28 +65,33 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
     protected snackBar: MatSnackBar,
     protected route : ActivatedRoute
   ) { 
-    this._moduloNombre = "Inicio";    
+    this._nombreModulo$ = new BehaviorSubject<string>("Inicio"); // puede ser un subject si se quiere implementar de otra manera
+    this._nombreUsuario$ = new BehaviorSubject<string>(this.usuarioNombre); // puede ser un subject si se quiere implementar de otra manera
+
+    this.nombreModulo$ = this._nombreModulo$.asObservable();
+    this.nombreUsuario$ = this._nombreUsuario$.asObservable();
   }
 
-  public get usuarioNombre(): string { return this.authSvc.sesion.nombreUsuario; }
-  public get moduloNombre(): string { return this._moduloNombre; }
+  protected get usuarioNombre(): string { return this.authSvc.sesion.nombreUsuario; }
 
   ngOnInit(): void {
-    this._sesionCambiaSub = this.authSvc.sesionCambiada.subscribe(() => { this.alCambiarSesion(); });
+    this._suscrCambioSesion = this.authSvc.cambioSesion.subscribe(() => { this.alCambiarSesion(); });
 
     this.modulos = this.generarListadoModulos();
     
     const rutaActual = this.route.firstChild;
     if (rutaActual) {
       const moduloRuta: string = rutaActual.routeConfig.path;
-      const modulo: NavegadorModuloItem = this.modulos.find(m => m.path === moduloRuta);
-      this.onClickNavegar(modulo);
+      const moduloIndex: number = this.modulos.findIndex(m => m.path === moduloRuta);
+      const modulo = this.modulos[moduloIndex];
+      this.onClickNavegar(moduloIndex);
+      this.router.navigate([modulo.path], {relativeTo: this.route});
     }
   }
 
   ngOnDestroy(): void {
-    if (this._sesionCambiaSub) {
-      this._sesionCambiaSub.unsubscribe();
+    if (this._suscrCambioSesion) {
+      this._suscrCambioSesion.unsubscribe();
     }
   }
 
@@ -75,9 +101,10 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickNavegar(item: NavegadorModuloItem) {
+  public onClickNavegar(indice: number) {
+    const item: NavegadorModuloItem = this.modulos[indice];
     this.modulos.forEach(m => m.activo = false);
-    this._moduloNombre = item.texto;
+    this._nombreModulo$.next(item.texto);
     item.activo = true;
   }
 
@@ -99,10 +126,11 @@ export class GestionNavegadorComponent implements OnInit, OnDestroy {
       }
     ).map(
       (route) => {
+        const metadatos: ItemListaEnlaceMetadata = MODULOS_ICONOS[route.path];
         const protoModulo: NavegadorModuloItem = {
           path: route.path,
           texto: this.routePathToText(route.path),
-          icono: MODULOS_ICONOS[route.path],
+          icono: metadatos.codigoMaterialIcon,
           activo: false
         };
         return protoModulo;

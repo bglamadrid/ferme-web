@@ -11,7 +11,7 @@
       <h1>FERME</h1>
     </div>
     <div class="cabecera-contenido">  
-      <span>{{ moduloNombre }}</span>
+      <span>{{ (nombreModulo$ | async) }}</span>
       <span>{{ usuarioNombre }}</span>
     </div>
     <button mat-button color="warn" 
@@ -24,12 +24,12 @@
   <mat-sidenav-container>
     <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
       <mat-nav-list role="navigation-links">
-        <a mat-list-item *ngFor="let modulo of modulos"
-          (click)="onClickNavegar(modulo)"
+        <a mat-list-item *ngFor="let modulo of modulos; let i = index"
+          (click)="onClickNavegar(i)"
           [class.active]="modulo.activo"
           [routerLink]="['/gestion', modulo.path]">
           <mat-icon>{{ modulo.icono }}</mat-icon>
-          {{ modulo.texto }}
+          <span class="enlace-texto">{{ modulo.texto }}</span>
         </a>
       </mat-nav-list>
     </mat-sidenav>

@@ -81,15 +81,29 @@ mat-nav-list * {
 
 
 mat-sidenav {
-    width: 12em;
+    width: 16em;
     background: maroon;
     border-right: none;
 }
 mat-nav-list {
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    height: 100%;
 }
-mat-nav-list > a mat-icon {
-    margin-right: 1em;
+mat-nav-list > a.mat-list-item {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+mat-nav-list mat-icon {
+    font-size: 2.5rem;
+    width: 1.5em;
+    height: 1em;
+}
+mat-nav-list .enlace-texto {
+    font-size: 1.25rem;
 }
 mat-nav-list > a.active {
     background: darkred;
