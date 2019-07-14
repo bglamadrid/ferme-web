@@ -11,7 +11,7 @@
       <h1>FERME</h1>
     </div>
     <div class="cabecera-contenido">  
-      <span>{{ (nombreModulo$ | async) }}</span>
+      <span>{{ nombreModulo$ | async }}</span>
       <span>{{ usuarioNombre }}</span>
     </div>
     <button mat-button color="warn" 
@@ -29,7 +29,7 @@
           [class.active]="modulo.activo"
           [routerLink]="['/gestion', modulo.path]">
           <mat-icon>{{ modulo.icono }}</mat-icon>
-          <span class="enlace-texto">{{ modulo.texto }}</span>
+          {{ modulo.texto }}
         </a>
       </mat-nav-list>
     </mat-sidenav>

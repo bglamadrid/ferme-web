@@ -93,6 +93,7 @@ mat-nav-list {
     height: 100%;
 }
 mat-nav-list > a.mat-list-item {
+    font-size: 1.25rem;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -101,9 +102,6 @@ mat-nav-list mat-icon {
     font-size: 2.5rem;
     width: 1.5em;
     height: 1em;
-}
-mat-nav-list .enlace-texto {
-    font-size: 1.25rem;
 }
 mat-nav-list > a.active {
     background: darkred;
