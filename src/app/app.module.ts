@@ -12,8 +12,9 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { CompraModule } from './compra/compra.module';
+import { FallbackRoutingModule } from 'src/routing/special-routing.module';
 
-const DEBUG_ROUTES: boolean = false;
+const DEBUG_ROUTES = false;
 
 @NgModule({
   declarations: [
@@ -25,17 +26,17 @@ const DEBUG_ROUTES: boolean = false;
     FermeCompartidoModule,
     AppRoutingModule,
     GestionModule,
-    CompraModule
+    CompraModule,
+    FallbackRoutingModule
   ],
   providers: [
-    AppRoutingModule,
     AuthGuard
   ],
   bootstrap: [
     AppComponent
   ]
 })
-export class AppModule { 
+export class AppModule {
 
   constructor(router: Router) {
     if (DEBUG_ROUTES) {

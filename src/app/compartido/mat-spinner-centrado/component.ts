@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
       grid-template-columns: 1fr;
       align-items: center;
       justify-items: center;
+      overflow: hidden;
     }`
   ]
 })

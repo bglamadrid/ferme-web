@@ -1,35 +1,31 @@
 import { NgModule } from '@angular/core';
-import { MatExpansionModule, MatSelectModule, MatSidenavModule, MatTableModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material';
-
+import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
 import { FermeCompartidoModule } from 'src/app/compartido/common.module';
 import { GestionRoutingModule } from 'src/routing/gestion-routing.module';
-
-import { AgregarProductoVentaComponent } from './dialogos/agregar-producto/agregar-producto.component';
-
-import { ClientesComponent } from './mantenedores/clientes/clientes.component';
-import { ClienteFormularioComponent } from './mantenedores/clientes/formulario/formulario.component';
-import { ClientesListadoComponent } from './mantenedores/clientes/listado/listado.component';
-import { EmpleadosComponent } from './mantenedores/empleados/empleados.component';
-import { EmpleadoFormularioComponent } from './mantenedores/empleados/formulario/formulario.component';
-import { EmpleadosListadoComponent } from './mantenedores/empleados/listado/listado.component';
-import { MantenedorProductosComponent } from './mantenedores/productos/productos.component';
+import { AgregarProductoDialogComponent } from './dialogos/agregar-producto/agregar-producto.component';
+import { ClienteFormularioDialogComponent } from './dialogos/formulario-cliente/formulario-cliente.component';
+import { EmpleadoFormularioDialogComponent } from './dialogos/formulario-empleado/formulario-empleado.component';
+import { OrdenCompraFormularioDialogComponent } from './dialogos/formulario-orden-compra/formulario-orden-compra.component';
+import { ProductoFormularioDialogComponent } from './dialogos/formulario-producto/formulario-producto.component';
+import { ProveedorFormularioDialogComponent } from './dialogos/formulario-proveedor/formulario-proveedor.component';
+import { UsuarioFormularioDialogComponent } from './dialogos/formulario-usuario/formulario-usuario.component';
+import { VentaFormularioDialogComponent } from './dialogos/formulario-venta/formulario-venta.component';
 import { GestionNavegadorComponent } from './navegador/gestion.component';
-import { ProductosListadoComponent } from './mantenedores/productos/listado/listado.component';
-import { ProductoFormularioComponent } from './mantenedores/productos/formulario/formulario.component';
-import { ProveedoresComponent } from './mantenedores/proveedores/proveedores.component';
-import { ProveedoresListadoComponent } from './mantenedores/proveedores/listado/listado.component';
-import { ProveedorFormularioComponent } from './mantenedores/proveedores/formulario/formulario.component';
-import { MantenedorVentasComponent } from './mantenedores/ventas/ventas.component';
-import { VentasListadoComponent } from './mantenedores/ventas/listado/listado.component';
-import { VentaFormularioComponent } from './mantenedores/ventas/formulario/formulario.component';
-import { MantenedorUsuariosComponent } from './mantenedores/usuarios/usuarios.component';
-import { UsuariosListadoComponent } from './mantenedores/usuarios/listado/listado.component';
-import { UsuarioFormularioComponent } from './mantenedores/usuarios/formulario/formulario.component';
-import { OrdenesCompraComponent } from './mantenedores/ordenes_compra/ordenes_compra.component';
-import { OrdenesCompraListadoComponent } from './mantenedores/ordenes_compra/listado/listado.component';
-import { OrdenCompraFormularioComponent } from './mantenedores/ordenes_compra/formulario/formulario.component';
-
-
+import { ClientesGestionComponent } from './paginas/clientes/clientes.component';
+import { ClientesListadoComponent } from './paginas/clientes/listado/listado.component';
+import { GestionEmpleadosComponent } from './paginas/empleados/empleados.component';
+import { EmpleadosListadoComponent } from './paginas/empleados/listado/listado.component';
+import { OrdenesCompraListadoComponent } from './paginas/ordenes_compra/listado/listado.component';
+import { OrdenesCompraGestionComponent } from './paginas/ordenes_compra/ordenes_compra.component';
+import { ProductosListadoComponent } from './paginas/productos/listado/listado.component';
+import { ProductosGestionComponent } from './paginas/productos/productos.component';
+import { ProveedoresListadoComponent } from './paginas/proveedores/listado/listado.component';
+import { ProveedoresGestionComponent } from './paginas/proveedores/proveedores.component';
+import { ResumenGestionComponent } from './paginas/resumen/resumen.component';
+import { UsuariosListadoComponent } from './paginas/usuarios/listado/listado.component';
+import { UsuariosGestionComponent } from './paginas/usuarios/usuarios.component';
+import { VentasListadoComponent } from './paginas/ventas/listado/listado.component';
+import { VentasGestionComponent } from './paginas/ventas/ventas.component';
 
 const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
   duration: 5000
@@ -38,44 +34,45 @@ const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
 @NgModule({
   declarations: [
     GestionNavegadorComponent,
-    ClientesComponent,
-    ClienteFormularioComponent,
+    ClientesGestionComponent,
+    ClienteFormularioDialogComponent,
     ClientesListadoComponent,
-    EmpleadosComponent,
-    EmpleadoFormularioComponent,
+    GestionEmpleadosComponent,
+    EmpleadoFormularioDialogComponent,
     EmpleadosListadoComponent,
-    MantenedorProductosComponent,
+    ProductosGestionComponent,
     ProductosListadoComponent,
-    ProductoFormularioComponent,
-    ProveedoresComponent,
+    ProductoFormularioDialogComponent,
+    ProveedoresGestionComponent,
     ProveedoresListadoComponent,
-    ProveedorFormularioComponent,
-    MantenedorVentasComponent,
+    ProveedorFormularioDialogComponent,
+    VentasGestionComponent,
     VentasListadoComponent,
-    VentaFormularioComponent,
-    AgregarProductoVentaComponent,
-    MantenedorUsuariosComponent,
+    VentaFormularioDialogComponent,
+    AgregarProductoDialogComponent,
+    UsuariosGestionComponent,
     UsuariosListadoComponent,
-    UsuarioFormularioComponent,
-    OrdenesCompraComponent,
+    UsuarioFormularioDialogComponent,
+    OrdenesCompraGestionComponent,
     OrdenesCompraListadoComponent,
-    OrdenCompraFormularioComponent
+    OrdenCompraFormularioDialogComponent,
+    ResumenGestionComponent
   ],
   imports: [
     FermeCompartidoModule,
     GestionRoutingModule
   ],
   entryComponents: [
-    EmpleadoFormularioComponent,
-    ProductoFormularioComponent,
-    ProveedorFormularioComponent,
-    VentaFormularioComponent,
-    AgregarProductoVentaComponent,
-    UsuarioFormularioComponent,
-    OrdenCompraFormularioComponent
-  ], 
+    EmpleadoFormularioDialogComponent,
+    ProductoFormularioDialogComponent,
+    ProveedorFormularioDialogComponent,
+    VentaFormularioDialogComponent,
+    AgregarProductoDialogComponent,
+    UsuarioFormularioDialogComponent,
+    OrdenCompraFormularioDialogComponent
+  ],
   providers: [
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS}
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS }
   ]
 })
 export class GestionModule { }

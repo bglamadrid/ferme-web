@@ -6,8 +6,8 @@ import { AuthGuard } from './auth.guard';
 
 
 @NgModule({
-  imports: [RouterModule.forChild([ 
-    { path: "gestion", component: GestionNavegadorComponent, 
+  imports: [RouterModule.forChild([
+    { path: 'gestion', component: GestionNavegadorComponent,
         children: FERME_GESTION_ROUTES,
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard]
@@ -15,7 +15,4 @@ import { AuthGuard } from './auth.guard';
   ])],
   exports: [RouterModule]
 })
-export class GestionRoutingModule { 
-
-}
-  
+export class GestionRoutingModule { }

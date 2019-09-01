@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Proveedor</h2>
+<mat-dialog-content>
+
+  <mat-spinner-centrado *ngIf="cargando">
+  </mat-spinner-centrado>
+
+  <div class="form-container" [hidden]="cargando">
+    
+    <mat-form-field>
+      <input matInput placeholder="Razón Social" [formControl]="razonSocial" />
+    </mat-form-field>
+
+    <app-formulario-datos-persona #personaForm [Persona]="proveedor">
+    </app-formulario-datos-persona>
+
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+
+  <button mat-button mat-raised-button color="primary" [disabled]="cargando || formularioCompleto.invalid || guardando"
+    (click)="onClickAceptar()">
+    Aceptar
+  </button>
+
+  <button mat-button mat-raised-button [disabled]="guardando" (click)="onClickCancelar()">
+    Cancelar
+  </button>
+
+</mat-dialog-actions>

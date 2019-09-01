@@ -1,70 +1,58 @@
-<div class="pagina">
+<div class="contenedor">
   <div class="cabecera">
     <div class="logo">
       <img src="logo.png" alt="FERME">
       <h1>FERME</h1>
     </div>
     <div class="cabecera-acciones">
-      <a mat-button color="warn" 
-        title="Catálogo"
-        [routerLink]="['/compra', 'catalogo']">
+      <a mat-button color="warn" title="Catálogo" [routerLink]="['/compra', 'catalogo']">
         <mat-icon>dashboard</mat-icon>
       </a>
-      <ng-container 
-        *ngIf="(mostrarResumen$ | async);
-          then ventaEnProgreso; 
-          else ventaNoEnProgreso">
-      </ng-container>
-      <ng-template #ventaEnProgreso>
-        <a mat-button color="warn" title="Carrito" 
-          [routerLink]="['/compra', 'resumen']">
+      <ng-container *ngIf="mostrarResumen">
+        <a mat-button color="warn" title="Carrito" [routerLink]="['/compra', 'resumen']">
           <mat-icon>shopping_cart</mat-icon>
           <span class="resumen">
             <span>{{ cantidadItems + ' item' + (cantidadItems > 1? 's':'') }}</span>
             <span>${{ subtotalVentaActual }}</span>
           </span>
         </a>
-      </ng-template>
-      <ng-template #ventaNoEnProgreso>
-        <a mat-button color="warn">
-          <mat-icon>shopping_cart</mat-icon>
-        </a>
-      </ng-template>
+      </ng-container>
     </div>
-    <div class="cabecera-espacio">
-      <h1>Compra En Línea</h1>
+    <div class="cabecera-contenido">
+      <span>Compra En Línea</span>
     </div>
     <div class="cabecera-acciones">
-      <ng-container
-        *ngIf="estaAutenticado;
+      <ng-container *ngIf="estaAutenticado;
           then cerrarSesion;
           else abrirSesion">
       </ng-container>
       <ng-template #cerrarSesion>
-        <button mat-button color="warn" 
-          title="Cerrar Sesión"
-          (click)="onClickCerrarSesion()">
-          <span>{{ usuarioNombre }}</span>
-          <mat-icon>cancel</mat-icon>
+        <mat-menu #menuCabecera class="cabecera-menu">
+          <span mat-menu-item disabled>{{ usuarioNombre }}</span>
+          <button mat-menu-item class="cabecera-editar-usuario" (click)="onClickEditarUsuario()">
+            <mat-icon>edit</mat-icon>
+            Editar Perfil
+          </button>
+          <button mat-menu-item class="cabecera-cerrar-sesion" (click)="onClickCerrarSesion()">
+            <mat-icon>exit_to_app</mat-icon>
+            Cerrar sesion
+          </button>
+        </mat-menu>
+        <button mat-button class="cabecera-abrir-menu" [matMenuTriggerFor]="menuCabecera">
+          <mat-icon>person</mat-icon>
         </button>
       </ng-template>
       <ng-template #abrirSesion>
-        <button mat-button color="warn" 
-          title="Iniciar Sesión"
-          (click)="onClickAbrirSesion()">
-          <span>{{ usuarioNombre }}</span>
+        <button mat-button class="cabecera-abrir-sesion" title="Abrir sesion" (click)="onClickAbrirSesion()">
           <mat-icon>person_outline</mat-icon>
         </button>
       </ng-template>
-
-      <a mat-button color="warn" 
-        title="Salir"
-        routerLink="/">
+      <a mat-button color="warn" title="Salir" routerLink="/">
         <mat-icon>exit_to_app</mat-icon>
       </a>
     </div>
   </div>
-  <div class="contenido overflow-y">
+  <div class="contenido">
     <router-outlet></router-outlet>
   </div>
   <div class="pie">

@@ -7,34 +7,34 @@
           'a' 
           'b'
           'c'">
-        <mat-form-field style="grid-area: a">
-          <input matInput type="text" placeholder="Nombre de Usuario" formControlName="usuario" />
-        </mat-form-field>
-
-        <div style="grid-area: b" class="clave-fg">
-          <mat-form-field>
-            <input matInput [type]="claveInputType" placeholder="Contraseña" formControlName="clave" />
-          </mat-form-field>
-          <button mat-icon-button title="Mantenga presionado para ver..."
-            type="button"
-            (mousedown)="esconderClave = false"
-            (mouseup)="esconderClave = true"
-            (mouseleave)="esconderClave = true">
-            <mat-icon>{{ iconoBotonMostrarClave }}</mat-icon>
-          </button>
-        </div>
-
         <ng-container 
-          *ngIf="(cargando$ | async); 
+          *ngIf="cargando; 
             then indicadorCarga 
-            else acciones">
+            else formulario">
         </ng-container>
-        <ng-template #loading>
-          <div style="grid-area: c">
+        <ng-template #indicadorCarga>
+          <div style="grid-area: b">
             <mat-spinner-centrado></mat-spinner-centrado>
           </div>
         </ng-template>
-        <ng-template #acciones>
+        <ng-template #formulario>
+          <mat-form-field style="grid-area: a">
+            <input matInput type="text" placeholder="Nombre de Usuario" formControlName="usuario" />
+          </mat-form-field>
+
+          <div style="grid-area: b" class="clave-fg">
+            <mat-form-field>
+              <input matInput [type]="claveInputType" placeholder="Contraseña" formControlName="clave" />
+            </mat-form-field>
+            <button mat-icon-button title="Mantenga presionado para ver..."
+              type="button"
+              (mousedown)="esconderClave = false"
+              (mouseup)="esconderClave = true"
+              (mouseleave)="esconderClave = true">
+              <mat-icon>{{ iconoBotonMostrarClave }}</mat-icon>
+            </button>
+          </div>
+
           <div style="grid-area: c" class="acciones">
             <button mat-button mat-raised-button color="primary"
               type="submit" 

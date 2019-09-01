@@ -1,73 +1,67 @@
-import { Component, OnInit, ViewChild, OnDestroy, Inject } from '@angular/core';
-import { FamiliaProducto } from 'src/modelo/FamiliaProducto';
-import { Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { TipoProducto } from 'src/modelo/TipoProducto';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { MatDialogRef, MatTable, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Producto } from 'src/modelo/Producto';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
-import { ProductosHttpService } from 'src/http-services/productos.service';
+import { FormBuilder } from '@angular/forms';
+import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
+import { ProductosHttpService } from 'src/http-services/productos-http.service';
 import { FiltrosProductos } from 'src/app/compartido/filtros-productos/filtros-productos.component';
+import { MSJ_ERROR_COMM_SRV } from 'src/app/compartido/constantes';
 
 export interface AgregarProductoDialogData {
   proveedor: number;
 }
 
 @Component({
-  selector: 'app-venta-agregar-producto',
+  selector: 'app-agregar-producto-dialog',
   templateUrl: './agregar-producto.component.html',
   styleUrls: [
     '../../compartido/formularios.css',
     './agregar-producto.component.css'
   ]
 })
-export class AgregarProductoVentaComponent implements OnInit {
-  
-  protected _productosSource: Subject<Producto[]>;
-  public productos$: Observable<Producto[]>;
+export class AgregarProductoDialogComponent implements OnInit {
 
-  protected _loadingSource: BehaviorSubject<boolean>;
-  public cargando$: Observable<boolean>;
-
+  public cargando: boolean;
   public hayProductos: boolean;
 
-  @ViewChild("tablaProductos") public tablaProductos: MatTable<Producto>;
-  @ViewChild("tablaProductosAgregar") public tablaProductosAgregar: MatTable<Producto>;
+  @ViewChild('tablaProductosDisponibles') public tablaProductosDisponibles: MatTable<Producto>;
+  @ViewChild('tablaProductosSeleccionados') public tablaProductosSeleccionados: MatTable<Producto>;
   public columnasTabla: string[];
 
-  protected _productosAgregar: Producto[];
+  protected productosAgregar: Producto[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
-    protected self: MatDialogRef<AgregarProductoVentaComponent>,
+    protected self: MatDialogRef<AgregarProductoDialogComponent>,
     protected sharedSvc: GestionSharedHttpService,
     protected prodSvc: ProductosHttpService,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar
-  ) { 
-    this._loadingSource = new BehaviorSubject<boolean>(true);
-    this.cargando$ = this._loadingSource.asObservable();
+  ) {
+    this.cargando = true;
 
-    this._productosSource = new Subject<Producto[]>();
-    this.productos$ = this._productosSource.asObservable();
-
-    this._productosAgregar = [];
-    this.columnasTabla = [ "nombre", "precio", "acciones" ];
+    this.productosAgregar = [];
+    this.columnasTabla = [ 'nombre', 'precio', 'acciones' ];
 
     this.hayProductos = false;
-    
-    this._loadingSource.next(false);
+
+    // if (this.dialogData) {
+    //   this.onFiltrosChange(this.dialogData);
+    // } else {
+    this.onFiltrosChange({});
+    // }
   }
 
   ngOnInit() {
-    this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
-    this.onFiltrosChange({});
+    this.tablaProductosSeleccionados.dataSource = of(this.productosAgregar);
+    // this.onFiltrosChange({});
   }
 
 
   public onFiltrosChange(filtros: FiltrosProductos): void {
-    this._loadingSource.next(true);
+    this.cargando = true;
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
@@ -76,37 +70,37 @@ export class AgregarProductoVentaComponent implements OnInit {
       obs = this.prodSvc.listarProductos();
     }
 
-    obs.subscribe(
+    obs.pipe(
+      finalize(() => { this.cargando = false; })
+    ).subscribe(
       (prods: Producto[]) => {
-        this._productosSource.next(prods);
+        this.tablaProductosDisponibles.dataSource = of(prods);
       },
-      err => {
-        console.log(err);
-        this._productosSource.next([]);
-        this.snackBar.open("Hubo un problema al cargar los productos.");
-      },
-      () => { this._loadingSource.next(false); }
+      () => {
+        this.tablaProductosDisponibles.dataSource = of([]);
+        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+      }
     );
   }
 
   public onClickIncluirProducto(prod: Producto): void {
-    this._productosAgregar.push(prod);
-    this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
-    if (this._productosAgregar.length === 1) {
+    this.productosAgregar.push(prod);
+    this.tablaProductosSeleccionados.dataSource = of(this.productosAgregar);
+    if (this.productosAgregar.length === 1) {
       this.hayProductos = true;
     }
   }
 
   public onClickRetirarProducto(index: number): void {
-    this._productosAgregar.splice(index, 1);
-    this.tablaProductosAgregar.dataSource = of(this._productosAgregar);
-    if (this._productosAgregar.length === 0) {
+    this.productosAgregar.splice(index, 1);
+    this.tablaProductosSeleccionados.dataSource = of(this.productosAgregar);
+    if (this.productosAgregar.length === 0) {
       this.hayProductos = false;
     }
   }
 
   public onClickAceptar(): void {
-    this.self.close(this._productosAgregar);
+    this.self.close(this.productosAgregar);
   }
 
   public onClickCancelar(): void {

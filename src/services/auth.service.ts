@@ -1,49 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Sesion } from 'src/modelo/Sesion';
-import { MatSnackBar } from '@angular/material';
-import { AuthHttpService } from 'src/http-services/auth.service';
+import { AuthHttpService } from 'src/http-services/auth-http.service';
+import { finalize } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  protected _cambioSesion$: Subject<Sesion>;
+  protected cambioSesionSource: Subject<Sesion>;
   protected cambioSesion$: Observable<Sesion>;
 
-  protected _validandoSesion$: Subject<boolean>;
+  protected validandoSesionSource: Subject<boolean>;
   protected validandoSesion$: Observable<boolean>;
 
   constructor(
     protected authHttpSvc: AuthHttpService
-  ) { 
+  ) {
     const ssn = this.sesion;
-    this._cambioSesion$ = new BehaviorSubject<Sesion>(ssn);
+    this.cambioSesionSource = new BehaviorSubject(ssn);
     this.validarSesion();
-    this.cambioSesion$ = this._cambioSesion$.asObservable();
+    this.cambioSesion$ = this.cambioSesionSource.asObservable();
   }
 
   public get cambioSesion(): Observable<Sesion> { return this.cambioSesion$; }
   public get validandoSesion(): Observable<boolean> { return this.validandoSesion$; }
-  
+
   public get sesion(): Sesion {
-    const ssnJSON: string = sessionStorage.getItem("sesion");
+    const ssnJSON: string = sessionStorage.getItem('sesion');
     if (ssnJSON) {
       return this.JSONToSesion(ssnJSON);
     } else {
       return null;
-    }
-  }
-
-  public set sesion(ssn: Sesion) {
-    if (!ssn) {
-      sessionStorage.removeItem("sesion");
-      this._cambioSesion$.next(null);
-    } else if (this.isSesionValida(ssn)) {      
-      const ssnJSON: string = JSON.stringify(ssn);
-      sessionStorage.setItem("sesion", ssnJSON);
-      this._cambioSesion$.next(ssn);
     }
   }
 
@@ -64,35 +51,47 @@ export class AuthService {
    * Rutina de validación sencilla.
    */
   public validarSesion(): Observable<boolean> | boolean {
-    if (this._validandoSesion$) { 
-      this._validandoSesion$.next(true);
+    if (this.validandoSesionSource) {
+      this.validandoSesionSource.next(true);
     } else {
-      this._validandoSesion$ = new BehaviorSubject<boolean>(true);
-      this.validandoSesion$ = this._validandoSesion$.asObservable();
+      this.validandoSesionSource = new BehaviorSubject(true);
+      this.validandoSesion$ = this.validandoSesionSource.asObservable();
     }
-    
+
     const ssn = this.sesion;
     if (ssn) {
       const obs: Observable<boolean> = this.authHttpSvc.validarSesion(ssn);
-      obs.subscribe(
+      obs.pipe(
+        finalize(() => { this.validandoSesionSource.next(false); })
+      ).subscribe(
         (validada: boolean) => {
           if (validada) {
-            this.sesion = ssn;
+            this.Sesion = ssn;
           } else {
-            this.sesion = null;
+            this.Sesion = null;
           }
         },
         err => {
-          this.sesion = null;
-        },
-        () => {
-          this._validandoSesion$.next(false);
+          this.Sesion = null;
         }
       );
       return obs;
     } else {
-      this.sesion = ssn;
+      this.Sesion = ssn;
       return false;
     }
   }
+
+
+  public set Sesion(ssn: Sesion) {
+    if (!ssn) {
+      sessionStorage.removeItem('sesion');
+      this.cambioSesionSource.next(null);
+    } else if (this.isSesionValida(ssn)) {
+      const ssnJSON: string = JSON.stringify(ssn);
+      sessionStorage.setItem('sesion', ssnJSON);
+      this.cambioSesionSource.next(ssn);
+    }
+  }
+
 }

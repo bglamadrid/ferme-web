@@ -1,0 +1,6 @@
+form {
+  grid-template-areas:   
+      'a' 
+      'b' 
+      'c';
+}

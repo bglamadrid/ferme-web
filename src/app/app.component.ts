@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material';
   template: '<router-outlet></router-outlet>',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy { 
+export class AppComponent implements OnInit, OnDestroy {
 
   protected _usuario: Usuario;
   protected _changeSesionSub: Subscription;
@@ -22,22 +22,22 @@ export class AppComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected route: ActivatedRoute,
     protected snackBar: MatSnackBar
-  ) { 
+  ) {
   }
-  
+
   ngOnInit() {
-    
+
     // this._routerParamsSub = this.route.params.subscribe((params) => {
     //   alert("aaa");
     //   this.rutinaAutorizacion();
     // });
 
-    // this._changeSesionSub = this.authSvc.sesionCambia.subscribe( 
-    //   (ssn: Sesion) => { 
+    // this._changeSesionSub = this.authSvc.sesionCambia.subscribe(
+    //   (ssn: Sesion) => {
     //     const modulo = this.route.snapshot.url[0].toString();
-        
+
     //     if (modulo !== "login") {
-    //       if (ssn) { 
+    //       if (ssn) {
     //         this._usuario = new Usuario();
     //         this._usuario.idUsuario = ssn.idUsuario;
     //         this._usuario.nombreUsuario = ssn.nombreUsuario;

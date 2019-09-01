@@ -1,55 +1,27 @@
-.pagina,
-mat-card-content,
 form {
-    display: grid;
+  display: grid;
+  grid-gap: 1em;
+  padding: 1em;
 }
 
-.pagina {
-    background-color: #fafafa;
-    grid-auto-rows: 100vh;
-    align-items: center;
-    justify-items: center;
-}
-mat-card { 
-    width: 20rem; 
-    height: 20rem;
+form * {
+  text-align: left;
 }
 
-mat-card-title { 
-    height: 25%;
-    margin: 0;
-    color: black;
-    vertical-align: middle;
-    font-size: 32pt;
-    text-align: center;
+.clave-fg, .acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: stretch;
 }
 
-mat-card-content {  
-    height: 75%; 
-    margin: 0;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-} 
-
-form {
-    grid-gap: 1em;
-    padding: 1em;
+.clave-fg>mat-form-field {
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 
-.clave-fg,
-.acciones {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    justify-items: stretch;
-}
-
-.clave-fg > mat-form-field {
-    flex-grow: 1;
-    flex-shrink: 0;
-}
-.clave-fg > button {
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin-left: 1em;
+.clave-fg>button {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 1em;
 }

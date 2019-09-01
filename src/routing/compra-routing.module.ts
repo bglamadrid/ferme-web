@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FERME_COMPRA_ROUTES } from './compra.routes';
-import { AuthGuard } from './auth.guard';
 import { CompraNavegadorComponent } from 'src/app/compra/navegador/compra.component';
 
 
 @NgModule({
-  imports: [RouterModule.forRoot([ 
-    { path: "compra", component: CompraNavegadorComponent, 
+  imports: [RouterModule.forRoot([
+    { path: 'compra', component: CompraNavegadorComponent,
         children: FERME_COMPRA_ROUTES,
         canActivate: [],
         canActivateChild: []
@@ -15,6 +14,6 @@ import { CompraNavegadorComponent } from 'src/app/compra/navegador/compra.compon
   ])],
   exports: [RouterModule]
 })
-export class CompraRoutingModule { 
+export class CompraRoutingModule {
 
 }

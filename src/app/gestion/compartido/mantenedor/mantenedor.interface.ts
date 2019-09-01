@@ -1,9 +1,8 @@
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ListadoGestion } from '../listado/listado.interface';
-import { RootHttpService } from 'src/http-services/root.service';
 
 export interface MantenedorGestion<T> {
-  
+
   items$: Observable<T[]>;
   ocupado$: Observable<boolean>;
   cargandoItems: boolean;
@@ -13,7 +12,7 @@ export interface MantenedorGestion<T> {
   cargarItems(): void;
 
   abrirDialogoEdicion(item: T): void;
-  
+
   onCargar(): void;
   onClickAgregar(): void;
   onClickEditar(item: T): void;

@@ -1,16 +1,17 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ListadoGestionComponent } from '../listado/listado.component';
 import { MantenedorGestion } from './mantenedor.interface';
-import { RootHttpService } from 'src/http-services/root.service';
+import { RootHttpService } from 'src/http-services/root-http.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AfterViewInit } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 
 export abstract class MantenedorGestionComponent<T>
   implements MantenedorGestion<T>, AfterViewInit {
 
-  protected _ocupado$: BehaviorSubject<boolean>;
-  protected _items$: BehaviorSubject<T[]>;
-  
+  protected ocupadoSource: BehaviorSubject<boolean>;
+  protected itemsSource: BehaviorSubject<T[]>;
+
   protected httpSvc: RootHttpService;
   protected dialog: MatDialog;
   protected snackBar: MatSnackBar;
@@ -19,42 +20,40 @@ export abstract class MantenedorGestionComponent<T>
   public cargandoItems: boolean;
   public ocupado$: Observable<boolean>;
   public items$: Observable<T[]>;
-  
+
   public listado: ListadoGestionComponent<T>;
 
-  constructor() { 
+  constructor() {
     this.cargandoItems = true;
-    this._ocupado$ = new BehaviorSubject<boolean>(true);
-    this.ocupado$ = this._ocupado$.asObservable();
+    this.ocupadoSource = new BehaviorSubject(true);
+    this.ocupado$ = this.ocupadoSource.asObservable();
 
-    
-    this._items$ = new BehaviorSubject<T[]>([]);
-    this.items$ = this._items$.asObservable();
 
-    this._ocupado$.next(false);
+    this.itemsSource = new BehaviorSubject([]);
+    this.items$ = this.itemsSource.asObservable();
+
+    this.ocupadoSource.next(false);
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit");
     this.onCargar();
-    
   }
 
   protected terminarCargaItems(): void {
     this.cargandoItems = false;
-    this._ocupado$.next(false);
+    this.ocupadoSource.next(false);
   }
 
   protected terminarEdicion(): void {
-    this._ocupado$.next(false);
+    this.ocupadoSource.next(false);
   }
 
   public cargarItems(): Observable<T[]> {
-    throw Error("Método por defecto; no configurado.");
+    throw Error('Operación no soportada.');
   }
 
   public abrirDialogoEdicion(item: T): Observable<T> {
-    throw Error("Método por defecto; no configurado.");
+    throw Error('Operación no soportada.');
   }
 
   protected iniciarCargaItems(): Observable<T[]> {
@@ -63,48 +62,51 @@ export abstract class MantenedorGestionComponent<T>
   }
 
   protected intentarEdicion(item: T): Observable<T> {
-    this._ocupado$.next(true);
+    this.ocupadoSource.next(true);
     return this.abrirDialogoEdicion(item);
   }
 
   public onCargar(): void {
-    console.log("onCargar");
-    
-    this.iniciarCargaItems().subscribe(
-      (rspSvc: T[]) => {
-        this._items$.next(rspSvc);
-      }, err => {
-        console.log(err);
-        this._items$.next([]);
-      }, 
-      () => { this.terminarCargaItems(); }
+    this.iniciarCargaItems().pipe(
+      finalize(() => { this.terminarCargaItems(); })
+    ).subscribe(
+      (items: T[]) => {
+        this.itemsSource.next(items);
+      },
+      () => {
+        this.itemsSource.next([]);
+      }
     );
   }
 
   public onClickEditar(item: T): void {
-    this.intentarEdicion(item).subscribe(
+    this.intentarEdicion(item).pipe(
+      finalize(() => { this.terminarEdicion(); })
+    ).subscribe(
       (nuevo: T) => {
         if (nuevo) { this.onCargar(); }
       },
-      err => { console.log(err); },
-      () => { this.terminarEdicion(); }
+      err => {
+        console.log(err);
+      }
     );
   }
 
   public onClickAgregar(): void {
-    this.intentarEdicion(undefined).subscribe(
+    this.intentarEdicion(undefined).pipe(
+      finalize(() => { this.terminarEdicion(); })
+    ).subscribe(
       (nuevo: T) => {
         if (nuevo) { this.onCargar(); }
       },
-      err => { console.log(err); },
-      () => { this.terminarEdicion(); }
+      err => {
+        console.log(err);
+      }
     );
   }
 
   public onClickBorrar(item: T): void {
-    throw Error("Método por defecto; no configurado.");
+    throw Error('Operación no soportada.');
   }
-
-
 
 }

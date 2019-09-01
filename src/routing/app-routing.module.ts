@@ -14,6 +14,6 @@ import { FERME_ROUTES } from './app.routes';
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { 
+export class AppRoutingModule {
 
 }

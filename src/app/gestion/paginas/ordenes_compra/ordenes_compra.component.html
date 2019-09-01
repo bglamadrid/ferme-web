@@ -1,0 +1,21 @@
+<div class="full-height">
+
+  <mat-spinner-centrado *ngIf="cargandoItems">
+  </mat-spinner-centrado>
+
+  <div class="contenedor" [hidden]="cargandoItems">
+    <div class="pagina overflow">
+      <app-ordenes-compra-listado #listado 
+        [Items]="items$ | async"
+        [ocupado]="ocupado$ | async"
+        (cargar)="onCargar()"
+        (editar)="onClickEditar($event)"
+        (borrar)="onClickBorrar($event)">
+      </app-ordenes-compra-listado>
+    </div>
+    <app-listado-acciones
+      (agregar)="onClickAgregar()">
+    </app-listado-acciones>
+  </div>
+
+</div>

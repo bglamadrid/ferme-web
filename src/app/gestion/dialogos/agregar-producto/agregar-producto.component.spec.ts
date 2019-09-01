@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AgregarProductoVentaComponent } from './agregar-producto.component';
+import { AgregarProductoDialogComponent } from './agregar-producto.component';
 
 describe('AgregarProductoComponent', () => {
-  let component: AgregarProductoVentaComponent;
-  let fixture: ComponentFixture<AgregarProductoVentaComponent>;
+  let component: AgregarProductoDialogComponent;
+  let fixture: ComponentFixture<AgregarProductoDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AgregarProductoVentaComponent ]
+      declarations: [ AgregarProductoDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AgregarProductoVentaComponent);
+    fixture = TestBed.createComponent(AgregarProductoDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

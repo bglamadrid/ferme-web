@@ -1,8 +1,6 @@
 <div class="contenedor">
   <div class="cabecera">
-    <button mat-button color="warn"
-      class="cabecera-alternar-navegacion"
-      title="Alternar menú lateral"
+    <button mat-button color="warn" class="cabecera-alternar-navegacion" title="Alternar menú lateral"
       (click)="sidenavOpened = !sidenavOpened">
       <mat-icon>menu</mat-icon>
     </button>
@@ -10,30 +8,35 @@
       <img src="logo.png" alt="FERME">
       <h1>FERME</h1>
     </div>
-    <div class="cabecera-contenido">  
-      <span>{{ nombreModulo$ | async }}</span>
-      <span>{{ usuarioNombre }}</span>
+    <div class="cabecera-contenido">
+      <span>{{ nombreModulo }}</span>
     </div>
-    <button mat-button color="warn" 
-      class="cabecera-cerrar-sesion"
-      title="Salir"
-      (click)="onClickCerrarSesion()">
-      <mat-icon>exit_to_app</mat-icon>
+    <mat-menu #menuCabecera class="cabecera-menu">
+      <span mat-menu-item disabled>{{ nombreUsuario }}</span>
+      <button mat-menu-item class="cabecera-editar-usuario" title="Editar Perfil" (click)="onClickEditarUsuario()">
+        <mat-icon>edit</mat-icon>
+        Editar Perfil
+      </button>
+      <button mat-menu-item class="cabecera-cerrar-sesion" title="Cerrar Sesion" (click)="onClickCerrarSesion()">
+        <mat-icon>exit_to_app</mat-icon>
+        Cerrar sesion
+      </button>
+    </mat-menu>
+    <button mat-button class="cabecera-abrir-menu" [matMenuTriggerFor]="menuCabecera">
+      <mat-icon>person</mat-icon>
     </button>
   </div>
   <mat-sidenav-container>
     <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
       <mat-nav-list role="navigation-links">
-        <a mat-list-item *ngFor="let modulo of modulos; let i = index"
-          (click)="onClickNavegar(i)"
-          [class.active]="modulo.activo"
-          [routerLink]="['/gestion', modulo.path]">
+        <a mat-list-item *ngFor="let modulo of modulos; let i = index" (click)="onClickNavegar(i)"
+          [class.active]="modulo.activo" [routerLink]="['/gestion', modulo.path]">
           <mat-icon>{{ modulo.icono }}</mat-icon>
           {{ modulo.texto }}
         </a>
       </mat-nav-list>
     </mat-sidenav>
-    <mat-sidenav-content role="main">
+    <mat-sidenav-content role="main" class="contenido">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

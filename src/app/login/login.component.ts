@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { Observable, of, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/services/auth.service';
-import { AuthHttpService } from 'src/http-services/auth.service';
+import { AuthHttpService } from 'src/http-services/auth-http.service';
 import { Sesion } from 'src/modelo/Sesion';
+import { finalize } from 'rxjs/operators';
+import { MSJ_ERROR_COMM_SRV } from '../compartido/constantes';
 
 export interface Login {
   usuario: string;
@@ -16,13 +17,15 @@ export interface Login {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: [ './login.component.css' ]
+  styleUrls: [
+    '../compartido/single-card-page.css',
+    './login.component.css'
+  ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   public loginForm: FormGroup;
-  protected _showSpinnerSource: Subject<boolean>;
-  public cargando$: Observable<boolean>;
+  public cargando: boolean;
   public esconderClave: boolean;
 
   constructor(
@@ -31,55 +34,46 @@ export class LoginComponent implements OnInit {
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
     protected authHttpSvc: AuthHttpService
-  ) { 
-    this._showSpinnerSource = new Subject<boolean>();
-    this.cargando$ = this._showSpinnerSource.asObservable();
-
+  ) {
+    this.cargando = true;
     this.esconderClave = true;
 
     this.loginForm = this.fb.group({
-      usuario: ["", Validators.required],
-      clave: ["", Validators.required]
+      usuario: ['', Validators.required],
+      clave: ['', Validators.required]
     });
+    this.cargando = false;
   }
 
-  public get usuario() { return this.loginForm.get("usuario"); }
-  public get clave() { return this.loginForm.get("clave"); }
+  public get usuario() { return this.loginForm.get('usuario'); }
+  public get clave() { return this.loginForm.get('clave'); }
 
-  public get iconoBotonMostrarClave(): string { return this.esconderClave? "visibility" : "visibility_off"; }
-  public get claveInputType(): string { return this.esconderClave? "password" : "text"; }
-
-  ngOnInit() {
-  }
+  public get iconoBotonMostrarClave(): string { return this.esconderClave ? 'visibility' : 'visibility_off'; }
+  public get claveInputType(): string { return this.esconderClave ? 'password' : 'text'; }
 
   public onClickAceptar(): void {
-    this._showSpinnerSource.next(true);
+    this.cargando = true;
 
     const usr: Login = {
       usuario: this.usuario.value,
       clave: this.clave.value
     };
-    
-    this.authHttpSvc.abrirSesion(usr).subscribe(
+
+    this.authHttpSvc.abrirSesion(usr).pipe(
+      finalize(() => { this.cargando = false; })
+    ).subscribe(
       (ssn: Sesion) => {
         if (!ssn || !ssn.hashSesion) {
-          this.snackBar.open("Credenciales inválidas.");
-        } else {          
-          if (!ssn.idEmpleado) {
-            this.snackBar.open("Su cuenta no posee privilegios suficientes para ingresar.");
-          } else {  
-            this.authSvc.sesion = ssn;
-            this.router.navigateByUrl("/gestion");
-          }
+          this.snackBar.open('Credenciales invalidas.', 'OK', { duration: -1 });
+        } else if (!ssn.idEmpleado) {
+          this.snackBar.open('Su cuenta no posee privilegios suficientes para ingresar.', 'OK', { duration: -1 });
+        } else {
+          this.authSvc.Sesion = ssn;
+          this.router.navigateByUrl('/gestion');
         }
-        
       },
-      err => {
-        console.log(err);
-        this.snackBar.open("Hubo un problema al autenticar.");
-      },
-      () => { 
-        this._showSpinnerSource.next(false);
+      () => {
+        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }

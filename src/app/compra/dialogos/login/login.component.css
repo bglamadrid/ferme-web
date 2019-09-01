@@ -1,45 +1,44 @@
-.pagina,
-form {
-    display: grid;
+.pagina, form {
+  display: grid;
 }
 
 .pagina {
-    height: 100%;
-    align-items: center;
-    justify-items: stretch;
-    grid-template-rows: 1fr 3fr;
+  height: 100%;
+  align-items: center;
+  justify-items: stretch;
+  grid-template-rows: 1fr 3fr;
 }
 
-h5 { 
-    margin: 0;
-    color: black;
-    vertical-align: middle;
-    font-size: 24pt;
-    text-align: center;
+h5 {
+  margin: 0;
+  color: black;
+  vertical-align: middle;
+  font-size: 24pt;
+  text-align: center;
 }
 
 form {
-    margin: 0;
-    grid-gap: 1em;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    padding: 1em;
+  margin: 0;
+  grid-gap: 1em;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  padding: 1em;
 }
 
-.clave-fg,
-.acciones {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    justify-items: stretch;
+.clave-fg, .acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: stretch;
 }
 
-.clave-fg > mat-form-field {
-    flex-grow: 1;
-    flex-shrink: 0;
+.clave-fg>mat-form-field {
+  flex-grow: 1;
+  flex-shrink: 0;
 }
-.clave-fg > button {
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin-left: 1em;
+
+.clave-fg>button {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 1em;
 }

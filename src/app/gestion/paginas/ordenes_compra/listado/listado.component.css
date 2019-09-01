@@ -1,0 +1,9 @@
+.mat-column-nombre {
+  flex: 1 0 1em;
+  min-width: 20em;
+}
+
+.mat-column-rut {
+  flex: 1 0 1em;
+  min-width: 20em;
+}

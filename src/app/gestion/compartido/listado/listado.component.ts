@@ -1,9 +1,9 @@
-import { Output, ViewChild, Input, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { Output, Input, EventEmitter } from '@angular/core';
 import { MatTable } from '@angular/material';
 import { ListadoGestion } from './listado.interface';
 import { of } from 'rxjs';
 
-export abstract class ListadoGestionComponent<T> 
+export abstract class ListadoGestionComponent<T>
   implements ListadoGestion<T> {
 
   @Output() public cargar: EventEmitter<void>;
@@ -14,7 +14,7 @@ export abstract class ListadoGestionComponent<T>
   @Input() public ocupado: boolean;
   public columnasTabla: string[];
 
-  constructor() { 
+  constructor() {
     this.columnasTabla = [];
     this.cargar = new EventEmitter();
     this.editar = new EventEmitter();

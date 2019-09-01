@@ -1,4 +1,4 @@
 export class Cargo {
-    public idCargo: number;
-    public descripcionCargo: string;
+  public idCargo: number;
+  public descripcionCargo: string;
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription, Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FamiliaProducto } from 'src/modelo/FamiliaProducto';
 import { TipoProducto } from 'src/modelo/TipoProducto';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared.service';
+import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
 
 export interface FiltrosProductos {
   nombre?: string;
@@ -20,22 +20,22 @@ export interface FiltrosProductos {
     './filtros-productos.component.css'
   ]
 })
-export class FiltrosProductosComponent implements OnInit {
+export class FiltrosProductosComponent implements OnInit, OnDestroy {
 
   protected _changeFamiliasSub: Subscription;
   protected _changeTipoSub: Subscription;
   protected _changeNombreSub: Subscription;
 
   @Output() public filtrosChange: EventEmitter<FiltrosProductos>;
-  
+
   public productoForm: FormGroup;
   public familias$: Observable<FamiliaProducto[]>;
   public tipos$: Observable<TipoProducto[]>;
-  
+
   constructor(
     protected fb: FormBuilder,
     protected sharedSvc: GestionSharedHttpService
-  ) { 
+  ) {
     this.filtrosChange = new EventEmitter<FiltrosProductos>();
 
     this.productoForm = this.fb.group({
@@ -45,16 +45,16 @@ export class FiltrosProductosComponent implements OnInit {
     });
   }
 
-  public get familia() { return this.productoForm.get("familia"); }
-  public get tipo() { return this.productoForm.get("tipo"); }
-  public get nombre() { return this.productoForm.get("nombre"); }
+  public get familia() { return this.productoForm.get('familia'); }
+  public get tipo() { return this.productoForm.get('tipo'); }
+  public get nombre() { return this.productoForm.get('nombre'); }
 
   ngOnInit() {
     this.familias$ = this.sharedSvc.familiasProducto();
 
     this._changeFamiliasSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
     this._changeTipoSub = this.tipo.valueChanges.subscribe(() => { this.emitirFiltros(); });
-    this._changeNombreSub = this.nombre.valueChanges.pipe( 
+    this._changeNombreSub = this.nombre.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe(() => { this.emitirFiltros(); });
@@ -74,8 +74,8 @@ export class FiltrosProductosComponent implements OnInit {
 
   protected emitirFiltros(): void {
     this.productoForm.updateValueAndValidity();
-    let filtros: FiltrosProductos = {};
-    
+    const filtros: FiltrosProductos = {};
+
     if (this.nombre.value) {
       filtros.nombre = this.nombre.value;
     }
@@ -85,7 +85,7 @@ export class FiltrosProductosComponent implements OnInit {
     if (this.familia.value) {
       filtros.familia = this.familia.value;
     }
-    
+
     this.filtrosChange.emit(filtros);
   }
 
@@ -97,20 +97,19 @@ export class FiltrosProductosComponent implements OnInit {
       const idFamilia: number = Number(this.familia.value);
       if (!isNaN(idFamilia)) {
         this.emitirFiltros();
-        this.sharedSvc.tiposProductoByFamilia(idFamilia).subscribe( 
-          (tipos: TipoProducto[]) => { 
+        this.sharedSvc.tiposProductoByFamilia(idFamilia).subscribe(
+          (tipos: TipoProducto[]) => {
             if (tipos && tipos.length > 0) {
               this.tipos$ = of(tipos);
-              this.tipo.enable(); 
-              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.idTipoProducto === idTipoProductoSeleccionado)) { 
+              this.tipo.enable();
+              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.idTipoProducto === idTipoProductoSeleccionado)) {
                 this.tipo.reset();
               }
             } else {
               this.resetTipo();
             }
-          }, 
-          err => { 
-            console.log(err);
+          },
+          err => {
             this.tipo.reset();
             this.tipo.disable();
           }

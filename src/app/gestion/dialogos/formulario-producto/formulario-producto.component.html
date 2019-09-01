@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Producto</h2>
+<mat-dialog-content>
+
+  <mat-spinner-centrado *ngIf="cargando">
+  </mat-spinner-centrado>
+
+  <div [hidden]="cargando">
+    <form [formGroup]="productoForm">
+      <mat-form-field style="grid-area: a">
+        <input matInput placeholder="Código" [ngModel]="codigoProducto" [ngModelOptions]="{standalone: true}" disabled />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: b">
+        <input matInput placeholder="Nombre" formControlName="nombre" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: c">
+        <mat-select placeholder="Familia de Producto" formControlName="familia">
+          <mat-option *ngFor="let familia of (familias$ | async)" [value]="familia.idFamiliaProducto">
+            {{ familia.descripcionFamiliaProducto }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: d">
+        <mat-select placeholder="Tipo de Producto" formControlName="tipo">
+          <mat-option *ngFor="let tipo of (tipos$ | async)" [value]="tipo.idTipoProducto">
+            {{ tipo.nombreTipoProducto }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: e">
+        <input matInput placeholder="Precio" formControlName="precio" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: f">
+        <input matInput placeholder="Stock Actual" formControlName="stockActual" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: g">
+        <input matInput placeholder="Stock crítico" formControlName="stockCritico" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: h">
+        <textarea matInput placeholder="Descripción" formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+    </form>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+
+  <button mat-button mat-raised-button color="primary" [disabled]="productoForm.invalid" (click)="onClickAceptar()">
+    Aceptar
+  </button>
+
+  <button mat-button mat-raised-button (click)="onClickCancelar()">
+    Cancelar
+  </button>
+
+</mat-dialog-actions>

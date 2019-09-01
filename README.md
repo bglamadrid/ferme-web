@@ -1,4 +1,6 @@
 # Ferme Web App
+Una aplicación pensada para la administración de los datos de una ferretería.
+
 Este proyecto ha sido generado y construido usando [Angular CLI](https://github.com/angular/angular-cli) v7.3.9.
 Para seguir las instrucciones descritas, debes poseer los binarios de Node.JS y Angular CLI en un ambiente de línea de comandos.
 
