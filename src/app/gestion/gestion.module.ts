@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
+import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { FermeCompartidoModule } from 'src/app/compartido/common.module';
 import { GestionRoutingModule } from 'src/routing/gestion-routing.module';
 import { AgregarProductoDialogComponent } from './dialogos/agregar-producto/agregar-producto.component';

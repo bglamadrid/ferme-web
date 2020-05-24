@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Empleado } from 'src/modelo/Empleado';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';

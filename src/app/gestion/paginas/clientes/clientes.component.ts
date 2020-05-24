@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { ClientesHttpService } from 'src/http-services/clientes-http.service';
 import { Cliente } from 'src/modelo/Cliente';

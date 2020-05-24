@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { MatDialogRef, MatTable, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
 import { Producto } from 'src/modelo/Producto';
 import { FormBuilder } from '@angular/forms';
 import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';

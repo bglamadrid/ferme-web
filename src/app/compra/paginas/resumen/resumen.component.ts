@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatSnackBar, MatTable } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/compartido/constantes';

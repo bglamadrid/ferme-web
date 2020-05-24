@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from 'src/services/auth.service';
 import { AuthHttpService } from 'src/http-services/auth-http.service';

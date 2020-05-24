@@ -2,7 +2,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { ListadoGestionComponent } from '../listado/listado.component';
 import { MantenedorGestion } from './mantenedor.interface';
 import { RootHttpService } from 'src/http-services/root-http.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AfterViewInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 

@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Sesion } from 'src/modelo/Sesion';
 import { AuthService } from 'src/services/auth.service';
 import { Usuario } from 'src/modelo/Usuario';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',

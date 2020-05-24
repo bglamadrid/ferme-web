@@ -1,6 +1,7 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { Persona } from 'src/modelo/Persona';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormularioDatosPersonaComponent } from 'src/app/compartido/formulario-datos-persona/formulario-datos-persona.component';
 import { AuthHttpService } from 'src/http-services/auth-http.service';
 import { finalize } from 'rxjs/operators';

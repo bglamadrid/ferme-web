@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/compartido/constantes';

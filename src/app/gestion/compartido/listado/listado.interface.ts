@@ -1,5 +1,5 @@
 import { EventEmitter, } from '@angular/core';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 
 export interface ListadoGestion<T> {
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { Cargo } from 'src/modelo/Cargo';
 import { Proveedor } from 'src/modelo/Proveedor';

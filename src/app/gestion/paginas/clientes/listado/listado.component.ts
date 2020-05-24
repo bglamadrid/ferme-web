@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Cliente } from 'src/modelo/Cliente';
 import { of } from 'rxjs';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 
 @Component({

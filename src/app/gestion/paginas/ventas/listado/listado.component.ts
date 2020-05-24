@@ -1,5 +1,5 @@
 import { Component, ViewChild, EventEmitter } from '@angular/core';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { Venta } from 'src/modelo/Venta';
 import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/listado.component';
 

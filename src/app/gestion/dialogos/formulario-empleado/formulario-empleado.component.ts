@@ -1,6 +1,7 @@
 import { ApplicationRef, Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/compartido/constantes';
 import { FormularioDatosPersonaComponent } from 'src/app/compartido/formulario-datos-persona/formulario-datos-persona.component';

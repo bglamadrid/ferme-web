@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { FermeCompartidoModule } from 'src/app/compartido/common.module';
 import { CompraRoutingModule } from 'src/routing/compra-routing.module';
 

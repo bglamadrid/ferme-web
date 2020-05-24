@@ -1,5 +1,5 @@
 import { Output, Input, EventEmitter } from '@angular/core';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { ListadoGestion } from './listado.interface';
 import { of } from 'rxjs';
 
