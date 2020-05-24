@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router/src/utils/preactivation';
-import { ActivatedRouteSnapshot, UrlTree, Router, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 import { Sesion } from 'src/modelo/Sesion';
 import { FERME_AUTHORIZED_CARGOS } from './gestion.routes';
+import { Injectable } from '@angular/core';
+import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { CargosEnum } from 'src/enums/CargosEnum';
 
 @Injectable()

@@ -22,7 +22,7 @@ import { EmpleadosListadoComponent } from './listado/listado.component';
 export class GestionEmpleadosComponent
   extends MantenedorGestionComponent<Empleado> {
 
-  @ViewChild('listado') public listado: EmpleadosListadoComponent;
+  @ViewChild('listado', { static: true }) public listado: EmpleadosListadoComponent;
 
   constructor(
     protected httpSvc: EmpleadosHttpService,

@@ -22,7 +22,7 @@ import { VentasListadoComponent } from './listado/listado.component';
 export class VentasGestionComponent
   extends MantenedorGestionComponent<Venta> {
 
-  @ViewChild('listado') public listado: VentasListadoComponent;
+  @ViewChild('listado', { static: true }) public listado: VentasListadoComponent;
 
   constructor(
     protected httpSvc: VentasHttpService,

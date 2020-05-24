@@ -14,7 +14,7 @@ import { ListadoGestionComponent } from 'src/app/gestion/compartido/listado/list
 export class UsuariosListadoComponent 
   extends ListadoGestionComponent<Usuario> {
 
-  @ViewChild("tabla") public tabla: MatTable<Usuario>;
+  @ViewChild("tabla", { static: true }) public tabla: MatTable<Usuario>;
 
   constructor(
 

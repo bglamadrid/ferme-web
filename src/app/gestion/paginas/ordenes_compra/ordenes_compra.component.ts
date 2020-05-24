@@ -22,7 +22,7 @@ import { OrdenesCompraListadoComponent } from './listado/listado.component';
 export class OrdenesCompraGestionComponent
   extends MantenedorGestionComponent<OrdenCompra> {
 
-  @ViewChild('listado') public listado: OrdenesCompraListadoComponent;
+  @ViewChild('listado', { static: true }) public listado: OrdenesCompraListadoComponent;
 
   constructor(
     protected httpSvc: OrdenesCompraHttpService,

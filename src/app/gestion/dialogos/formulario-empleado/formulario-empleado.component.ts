@@ -31,7 +31,7 @@ export class EmpleadoFormularioDialogComponent implements OnInit {
   public guardando: boolean;
 
   public cargo: FormControl;
-  @ViewChild('personaForm') public personaForm: FormularioDatosPersonaComponent;
+  @ViewChild('personaForm', { static: true }) public personaForm: FormularioDatosPersonaComponent;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) protected data: EmpleadoFormularioDialogData,

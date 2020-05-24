@@ -21,7 +21,7 @@ export class DatosUsuarioDialogComponent<T extends Persona> {
   public cancelar: boolean;
   public guardando: boolean;
 
-  @ViewChild('formularioPersona') public formularioPersona: FormularioDatosPersonaComponent;
+  @ViewChild('formularioPersona', { static: true }) public formularioPersona: FormularioDatosPersonaComponent;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DatosUsuarioDialogData,

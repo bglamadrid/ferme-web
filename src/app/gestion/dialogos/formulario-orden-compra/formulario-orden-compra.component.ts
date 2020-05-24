@@ -49,7 +49,7 @@ export class OrdenCompraFormularioDialogComponent implements OnInit {
   public guardando: boolean;
 
   public ordenCompraForm: FormGroup;
-  @ViewChild('tablaDetalles') public tablaDetalles: MatTable<DetalleOrdenCompra>;
+  @ViewChild('tablaDetalles', { static: true }) public tablaDetalles: MatTable<DetalleOrdenCompra>;
   public columnasTabla: string[];
 
   public fechaSolicitud: string;

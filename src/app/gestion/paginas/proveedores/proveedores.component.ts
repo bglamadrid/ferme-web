@@ -22,7 +22,7 @@ import { ProveedoresListadoComponent } from './listado/listado.component';
 export class ProveedoresGestionComponent
 extends MantenedorGestionComponent<Proveedor> {
 
-  @ViewChild('listado') public listado: ProveedoresListadoComponent;
+  @ViewChild('listado', { static: true }) public listado: ProveedoresListadoComponent;
 
   constructor(
     protected httpSvc: ProveedoresHttpService,

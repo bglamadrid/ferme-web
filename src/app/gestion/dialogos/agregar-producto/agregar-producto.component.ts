@@ -26,8 +26,8 @@ export class AgregarProductoDialogComponent implements OnInit {
   public cargando: boolean;
   public hayProductos: boolean;
 
-  @ViewChild('tablaProductosDisponibles') public tablaProductosDisponibles: MatTable<Producto>;
-  @ViewChild('tablaProductosSeleccionados') public tablaProductosSeleccionados: MatTable<Producto>;
+  @ViewChild('tablaProductosDisponibles', { static: true }) public tablaProductosDisponibles: MatTable<Producto>;
+  @ViewChild('tablaProductosSeleccionados', { static: true }) public tablaProductosSeleccionados: MatTable<Producto>;
   public columnasTabla: string[];
 
   protected productosAgregar: Producto[];

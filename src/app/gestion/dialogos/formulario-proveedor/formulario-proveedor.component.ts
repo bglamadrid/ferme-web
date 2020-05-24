@@ -30,7 +30,7 @@ export class ProveedorFormularioDialogComponent {
   public guardando: boolean;
 
   public razonSocial: FormControl;
-  @ViewChild('personaForm') public personaForm: FormularioDatosPersonaComponent;
+  @ViewChild('personaForm', { static: true }) public personaForm: FormularioDatosPersonaComponent;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) protected data: ProveedorFormularioDialogData,

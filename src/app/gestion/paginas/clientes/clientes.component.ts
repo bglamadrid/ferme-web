@@ -17,7 +17,7 @@ export class ClientesGestionComponent
 
   extends MantenedorGestionComponent<Cliente> {
 
-  @ViewChild('listado') public listado: ClientesListadoComponent;
+  @ViewChild('listado', { static: true }) public listado: ClientesListadoComponent;
 
   constructor(
     protected httpSvc: ClientesHttpService,

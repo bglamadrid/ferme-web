@@ -24,7 +24,7 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
   protected subtotalVentaSource: BehaviorSubject<number>;
   protected totalVentaSource: BehaviorSubject<number>;
 
-  @ViewChild('tabla') public tabla: MatTable<DetalleVenta>;
+  @ViewChild('tabla', { static: true }) public tabla: MatTable<DetalleVenta>;
   public columnasTabla: string[];
 
   public fechaVenta: string;

@@ -55,7 +55,7 @@ export class VentaFormularioDialogComponent implements OnInit {
 
   public ventaForm: FormGroup;
 
-  @ViewChild('tablaDetalles') public tablaDetalles: MatTable<DetalleVenta>;
+  @ViewChild('tablaDetalles', { static: true }) public tablaDetalles: MatTable<DetalleVenta>;
   public columnasTabla: string[];
 
   public fechaVenta: string;
