@@ -78,6 +78,6 @@
       "fechaCreacionUsuario": "19/06/2019",
       "sesion": "858d8339e42dddd9525ba776e2922f8bf9a9e9c9a6654eee78cb7c96be571498"
     },
-    "gestion/sesiones/validar": true,
-    "gestion/sesiones/cerrar": true
+    "gestion/sesiones/validar": { "status": 0, "response": true },
+    "gestion/sesiones/cerrar": { "status": 0, "response": true }
   }

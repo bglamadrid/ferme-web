@@ -1,18 +1,18 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-
 import { AppRoutingModule } from 'src/routing/app-routing.module';
 import { AuthGuard } from 'src/routing/auth.guard';
-
-import { FermeCompartidoModule } from './compartido/common.module';
-import { GestionModule } from './gestion/gestion.module';
-
-
+import { FallbackRoutingModule } from 'src/routing/special-routing.module';
 import { AppComponent } from './app.component';
+import { CompraModule } from './compra/compra.module';
+import { GestionModule } from './gestion/gestion.module';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
-import { CompraModule } from './compra/compra.module';
-import { FallbackRoutingModule } from 'src/routing/special-routing.module';
+import { SharedModule } from './shared/shared.module';
 
 const DEBUG_ROUTES = false;
 
@@ -23,7 +23,8 @@ const DEBUG_ROUTES = false;
     LoginComponent
   ],
   imports: [
-    FermeCompartidoModule,
+    SharedModule,
+    HttpClientModule,
     AppRoutingModule,
     GestionModule,
     CompraModule,

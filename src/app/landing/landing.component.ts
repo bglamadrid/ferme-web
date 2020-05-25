@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: [
-    '../compartido/single-card-page.css',
+    '../../assets/styles/single-card-page.css',
     './landing.component.css'
   ]
 })

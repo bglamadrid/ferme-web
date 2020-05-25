@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Editar Perfil</h2>
+<mat-dialog-content>
+  <mat-spinner-centrado *ngIf="guardando"></mat-spinner-centrado>
+
+  <app-datos-persona-form #formularioPersona
+    [hidden]="guardando"
+    [Persona]="data.persona">
+  </app-datos-persona-form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-raised-button
+    type="button"
+    [disabled]="guardando"
+    (click)="onClickAceptar()">
+    Aceptar
+  </button>
+  <button mat-button mat-raised-button
+    [color]="colorBotonCancelar"
+    type="button"
+    [disabled]="guardando"
+    (click)="onClickCancelar()">
+    Cancelar
+  </button>
+</mat-dialog-actions>

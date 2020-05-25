@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RootHttpService } from 'src/http-services/root-http.service';
-import { Producto } from 'src/modelo/Producto';
-import { FiltrosProductos } from 'src/app/compartido/filtros-productos/filtros-productos.component';
+import { Producto } from 'src/models/Producto';
+import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

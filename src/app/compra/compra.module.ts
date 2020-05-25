@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { FermeCompartidoModule } from 'src/app/compartido/common.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { CompraRoutingModule } from 'src/routing/compra-routing.module';
 
-import { CompraCatalogoComponent } from './paginas/catalogo/catalogo.component';
-import { CompraResumenComponent } from './paginas/resumen/resumen.component';
-import { CompraNavegadorComponent } from './navegador/compra.component';
-import { CompraLoginDialogComponent } from './dialogos/login/login.component';
+import { CompraCatalogoComponent } from './catalogo/catalogo.component';
+import { CompraResumenComponent } from './resumen/resumen.component';
+import { CompraNavegadorComponent } from './compra.component';
+import { CompraLoginDialogComponent } from './login-dialog/login.component';
 
 const SNACKBAR_DEFAULTS = {
   duration: 5000
@@ -20,11 +20,8 @@ const SNACKBAR_DEFAULTS = {
     CompraLoginDialogComponent
   ],
   imports: [
-    FermeCompartidoModule,
+    SharedModule,
     CompraRoutingModule
-  ],
-  entryComponents: [
-    CompraLoginDialogComponent
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS}

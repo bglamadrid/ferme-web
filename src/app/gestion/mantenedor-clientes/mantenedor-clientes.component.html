@@ -1,0 +1,16 @@
+<div class="full-height">
+
+  <mat-spinner-centrado *ngIf="cargandoItems">
+  </mat-spinner-centrado>
+
+  <div class="contenedor" [hidden]="cargandoItems">
+    <div class="pagina overflow">
+      <app-listado-clientes-gestion #listado
+        [Items]="items$ | async"
+        [ocupado]="ocupado$ | async"
+        (cargar)="onCargar()">
+      </app-listado-clientes-gestion>
+    </div>
+  </div>
+
+</div>

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { RootHttpService } from './root-http.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Sesion } from 'src/modelo/Sesion';
-import { Persona } from 'src/modelo/Persona';
+import { Sesion } from 'src/models/Sesion';
+import { Persona } from 'src/models/Persona';
 import { retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

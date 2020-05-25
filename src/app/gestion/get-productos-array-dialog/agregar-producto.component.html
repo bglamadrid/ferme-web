@@ -1,0 +1,99 @@
+<h2 mat-dialog-title>Agregar Productos</h2>
+<mat-dialog-content>
+
+  <mat-spinner-centrado *ngIf="cargando">
+  </mat-spinner-centrado>
+
+  <div [hidden]="cargando">
+    <mat-expansion-panel [expanded]="true">
+
+      <mat-expansion-panel-header>
+        Productos disponibles
+      </mat-expansion-panel-header>
+
+      <app-filtros-productos-panel (filtrosChange)="onFiltrosChange($event)">
+      </app-filtros-productos-panel>
+
+      <div class="tabla-productos">
+        <table mat-table #tablaProductosDisponibles>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let producto" class="left">
+              {{producto.nombreProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <td mat-cell *matCellDef="let producto" class="left">
+              ${{producto.precioProducto}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let producto">
+              <div class="acciones">
+                <button mat-button mat-icon-button color="primary" (click)="onClickIncluirProducto(producto)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+        </table>
+      </div>
+
+    </mat-expansion-panel>
+  </div>
+
+  <mat-card>
+
+    <mat-card-header>
+      <mat-card-title>Productos Seleccionados</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="tabla-productos">
+      <table mat-table #tablaProductosSeleccionados>
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let producto" class="left">
+            {{producto.nombreProducto}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="precio">
+          <th mat-header-cell *matHeaderCellDef> Precio </th>
+          <td mat-cell *matCellDef="let producto" class="left">
+            ${{producto.precioProducto}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let i=index">
+            <div class="acciones">
+              <button mat-button mat-icon-button color="warn" (click)="onClickRetirarProducto(i)">
+                <mat-icon>remove</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+      </table>
+    </mat-card-content>
+
+  </mat-card>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+
+  <button mat-button mat-raised-button color="primary" [disabled]="!hayProductos" (click)="onClickAceptar()">
+    Aceptar
+  </button>
+
+  <button mat-button mat-raised-button (click)="onClickCancelar()">
+    Cancelar
+  </button>
+
+</mat-dialog-actions>

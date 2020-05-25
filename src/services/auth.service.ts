@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Sesion } from 'src/modelo/Sesion';
+import { Sesion } from 'src/models/Sesion';
 import { AuthHttpService } from 'src/http-services/auth-http.service';
 import { finalize } from 'rxjs/operators';
 

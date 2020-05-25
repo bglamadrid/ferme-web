@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FERME_COMPRA_ROUTES } from './compra.routes';
-import { CompraNavegadorComponent } from 'src/app/compra/navegador/compra.component';
+import { CompraNavegadorComponent } from 'src/app/compra/compra.component';
 
 
 @NgModule({

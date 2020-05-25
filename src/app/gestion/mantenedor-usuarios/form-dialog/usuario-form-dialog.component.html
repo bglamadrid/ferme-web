@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>{{ esNuevo? 'Nuevo' : 'Actualizar' }} Usuario</h2>
+<mat-dialog-content>
+
+  <mat-spinner-centrado *ngIf="cargando">
+  </mat-spinner-centrado>
+
+  <div [hidden]="cargando">
+    <form [formGroup]="usuarioForm">
+
+      <mat-form-field style="grid-area: a">
+        <input matInput placeholder="Nombre de Usuario" formControlName="nombre" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: b">
+        <input matInput placeholder="Clave de Usuario" formControlName="clave" type="password" />
+      </mat-form-field>
+
+      <mat-form-field style="grid-area: c">
+        <mat-select placeholder="Persona" formControlName="persona">
+          <mat-option *ngFor="let persona of (personas$ | async)" [value]="persona.idPersona">
+            {{ persona.nombreCompletoPersona + " (" + persona.rutPersona + ")" }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+
+  <button mat-button mat-raised-button color="primary" [disabled]="usuarioForm.invalid || cargando"
+    (click)="onClickAceptar()">
+    Aceptar
+  </button>
+
+  <button mat-button mat-raised-button [disabled]="cargando" (click)="onClickCancelar()">
+    Cancelar
+  </button>
+
+</mat-dialog-actions>

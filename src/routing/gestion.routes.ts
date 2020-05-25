@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { CargosEnum } from 'src/enums/CargosEnum';
-import { ClientesGestionComponent } from 'src/app/gestion/paginas/clientes/clientes.component';
-import { GestionEmpleadosComponent } from 'src/app/gestion/paginas/empleados/empleados.component';
-import { ProductosGestionComponent } from 'src/app/gestion/paginas/productos/productos.component';
-import { ProveedoresGestionComponent } from 'src/app/gestion/paginas/proveedores/proveedores.component';
-import { VentasGestionComponent } from 'src/app/gestion/paginas/ventas/ventas.component';
-import { OrdenesCompraGestionComponent } from 'src/app/gestion/paginas/ordenes_compra/ordenes_compra.component';
-import { UsuariosGestionComponent } from 'src/app/gestion/paginas/usuarios/usuarios.component';
-import { ResumenGestionComponent } from 'src/app/gestion/paginas/resumen/resumen.component';
+import { MantenedorClientesGestionComponent } from 'src/app/gestion/mantenedor-clientes/mantenedor-clientes.component';
+import { MantenedorEmpleadosGestionComponent } from 'src/app/gestion/mantenedor-empleados/mantenedor-empleados.component';
+import { MantenedorProductosGestionComponent } from 'src/app/gestion/mantenedor-productos/mantenedor-productos.component';
+import { MantenedorProveedoresGestionComponent } from 'src/app/gestion/mantenedor-proveedores/mantenedor-proveedores.component';
+import { MantenedorVentasGestionComponent } from 'src/app/gestion/mantenedor-ventas/mantenedor-ventas.component';
+import { MantenedorOrdenesCompraGestionComponent } from 'src/app/gestion/mantenedor-ordenes_compra/mantenedor-ordenes_compra.component';
+import { MantenedorUsuariosGestionComponent } from 'src/app/gestion/mantenedor-usuarios/mantenedor-usuarios.component';
+import { ResumenGestionComponent } from 'src/app/gestion/resumen/resumen.component';
 
 export const FERME_AUTHORIZED_CARGOS: { [key: string]: CargosEnum[] } = {
   resumen: [CargosEnum.Administrador, CargosEnum.Encargado, CargosEnum.Vendedor],
@@ -22,12 +22,12 @@ export const FERME_AUTHORIZED_CARGOS: { [key: string]: CargosEnum[] } = {
 
 export const FERME_GESTION_ROUTES: Routes = [
   { path: 'resumen', component: ResumenGestionComponent },
-  { path: 'clientes', component: ClientesGestionComponent },
-  { path: 'empleados', component: GestionEmpleadosComponent },
-  { path: 'productos', component: ProductosGestionComponent },
-  { path: 'proveedores', component: ProveedoresGestionComponent },
-  { path: 'ventas', component: VentasGestionComponent },
-  { path: 'ordenes_compra', component: OrdenesCompraGestionComponent },
-  { path: 'usuarios', component: UsuariosGestionComponent },
+  { path: 'clientes', component: MantenedorClientesGestionComponent },
+  { path: 'empleados', component: MantenedorEmpleadosGestionComponent },
+  { path: 'productos', component: MantenedorProductosGestionComponent },
+  { path: 'proveedores', component: MantenedorProveedoresGestionComponent },
+  { path: 'ventas', component: MantenedorVentasGestionComponent },
+  { path: 'ordenes_compra', component: MantenedorOrdenesCompraGestionComponent },
+  { path: 'usuarios', component: MantenedorUsuariosGestionComponent },
   { path: '**', redirectTo: 'resumen', pathMatch: 'prefix' }
 ];

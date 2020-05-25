@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { crearDetalleVentaDesdeProducto } from 'src/app/compartido/funciones';
-import { DetalleVenta } from 'src/modelo/DetalleVenta';
-import { Producto } from 'src/modelo/Producto';
-import { Venta } from 'src/modelo/Venta';
+import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
+import { DetalleVenta } from 'src/models/DetalleVenta';
+import { Producto } from 'src/models/Producto';
+import { Venta } from 'src/models/Venta';
 
 @Injectable({ providedIn: 'root' })
 export class CompraService {

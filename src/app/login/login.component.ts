@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 
 import { AuthService } from 'src/services/auth.service';
 import { AuthHttpService } from 'src/http-services/auth-http.service';
-import { Sesion } from 'src/modelo/Sesion';
+import { Sesion } from 'src/models/Sesion';
 import { finalize } from 'rxjs/operators';
-import { MSJ_ERROR_COMM_SRV } from '../compartido/constantes';
+import { MSJ_ERROR_COMM_SRV } from '../shared/constantes';
 
 export interface Login {
   usuario: string;
@@ -18,7 +18,7 @@ export interface Login {
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: [
-    '../compartido/single-card-page.css',
+    '../../assets/styles/single-card-page.css',
     './login.component.css'
   ]
 })

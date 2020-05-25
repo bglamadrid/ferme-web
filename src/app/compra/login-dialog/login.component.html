@@ -1,0 +1,46 @@
+<div class="pagina">
+  <h5>Ingresar</h5>
+  <form [formGroup]="loginForm" novalidate style="grid-template-areas:
+    'a'
+    'b'
+    'c'">
+    <mat-form-field style="grid-area: a">
+      <input matInput type="text" placeholder="Nombre de Usuario" formControlName="usuario" />
+    </mat-form-field>
+
+    <div style="grid-area: b" class="clave-fg">
+      <mat-form-field>
+        <input matInput [type]="claveInputType" placeholder="Contraseña" formControlName="clave" />
+      </mat-form-field>
+      <button mat-icon-button title="Mantenga presionado para ver..."
+        type="button"
+        (mousedown)="esconderClave = false"
+        (mouseup)="esconderClave = true"
+        (mouseleave)="esconderClave = true">
+        <mat-icon>{{ iconoBotonMostrarClave }}</mat-icon>
+      </button>
+    </div>
+
+    <ng-container *ngIf="cargando; then indicadorCarga; else acciones">
+    </ng-container>
+    <ng-template #indicadorCarga>
+      <div style="grid-area: c">
+        <mat-spinner-centrado></mat-spinner-centrado>
+      </div>
+    </ng-template>
+    <ng-template #acciones>
+      <div style="grid-area: c" class="acciones">
+        <button mat-button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid"
+          (click)="onClickAceptar()">
+          Aceptar
+        </button>
+        <button mat-button mat-raised-button type="reset" [disabled]="loginForm.pristine">
+          Limpiar
+        </button>
+        <button mat-button mat-raised-button color="warn" type="button" (click)="onClickCancelar()">
+          Cancelar
+        </button>
+      </div>
+    </ng-template>
+  </form>
+</div>

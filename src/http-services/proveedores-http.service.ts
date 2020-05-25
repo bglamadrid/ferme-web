@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RootHttpService } from 'src/http-services/root-http.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Proveedor } from 'src/modelo/Proveedor';
+import { Proveedor } from 'src/models/Proveedor';
 import { retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

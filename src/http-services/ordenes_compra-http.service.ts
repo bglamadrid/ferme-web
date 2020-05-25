@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RootHttpService } from 'src/http-services/root-http.service';
-import { OrdenCompra } from 'src/modelo/OrdenCompra';
-import { DetalleOrdenCompra } from 'src/modelo/DetalleOrdenCompra';
+import { OrdenCompra } from 'src/models/OrdenCompra';
+import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
 import { retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
