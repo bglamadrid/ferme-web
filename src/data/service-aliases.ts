@@ -3,7 +3,7 @@ export const SERVICE_ALIASES = {
   shared: 'SharedData',
   clients: 'ClientsData',
   employees: 'EmployeesData',
-  purchaseOrder: 'PurchaseOrderData',
+  purchaseOrders: 'PurchaseOrderData',
   products: 'ProductsData',
   providers: 'ProvidersData',
   users: 'UsersData',
