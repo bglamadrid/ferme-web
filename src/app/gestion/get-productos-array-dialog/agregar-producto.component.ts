@@ -6,10 +6,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { Producto } from 'src/models/Producto';
 import { FormBuilder } from '@angular/forms';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
-import { ProductosHttpService } from 'src/http-services/productos-http.service';
+import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
+import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
 
 export interface AgregarProductoDialogData {
   proveedor: number;
@@ -37,8 +39,8 @@ export class AgregarProductoDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
     protected self: MatDialogRef<AgregarProductoDialogComponent>,
-    protected sharedSvc: GestionSharedHttpService,
-    protected prodSvc: ProductosHttpService,
+    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(SERVICE_ALIASES.products) protected prodSvc: EntityDataService<Producto>,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar
   ) {
@@ -67,9 +69,9 @@ export class AgregarProductoDialogComponent implements OnInit {
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
-      obs = this.prodSvc.listarProductosFiltrados(filtros);
+      obs = this.prodSvc.readFiltered(filtros);
     } else {
-      obs = this.prodSvc.listarProductos();
+      obs = this.prodSvc.readAll();
     }
 
     obs.pipe(

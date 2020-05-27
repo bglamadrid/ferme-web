@@ -5,8 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cargo } from 'src/models/Cargo';
 import { Empleado } from 'src/models/Empleado';
 
@@ -41,8 +42,8 @@ export class EmpleadoFormDialogGestionComponent
     protected dialogRef: MatDialogRef<EmpleadoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    protected sharedSvc: GestionSharedHttpService,
-    protected httpSvc: EmpleadosHttpService
+    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
   ) {
     this.cargando = true;
     this.guardando = false;
@@ -76,16 +77,16 @@ export class EmpleadoFormDialogGestionComponent
     this.formularioCompleto.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.guardarEmpleado(emp).subscribe(
-      (id: number) => {
-        if (id) {
+    this.httpSvc.create(emp).subscribe(
+      (emp2: Empleado) => {
+        // TODO: make sure emp2 is not actually emp
+        if (emp2.idEmpleado) {
           if (emp.idEmpleado) {
             this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' registrado/a exitosamente.');
+            this.snackBar.open('Empleado \'' + emp2.nombreCompletoPersona + '\' registrado/a exitosamente.');
           }
-          emp.idEmpleado = id;
-          this.dialogRef.close(emp);
+          this.dialogRef.close(emp2);
         } else {
           this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.formularioCompleto.enable(REACTIVE_FORMS_ISOLATE);

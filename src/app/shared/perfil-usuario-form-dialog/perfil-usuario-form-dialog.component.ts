@@ -3,8 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs/operators';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
+import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { Persona } from 'src/models/Persona';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 export interface PerfilUsuarioFormDialogData {
   persona: Persona;
@@ -28,7 +29,7 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
     @Inject(MAT_DIALOG_DATA) public data: PerfilUsuarioFormDialogData,
     protected dialogRef: MatDialogRef<PerfilUsuarioFormDialogComponent<T>>,
     protected snackBar: MatSnackBar,
-    protected httpSvc: AuthHttpService
+    @Inject(SERVICE_ALIASES.auth) protected httpSvc: AuthHttpDataService,
   ) {
     this.cancelar = false;
     this.guardando = false;

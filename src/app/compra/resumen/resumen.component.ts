@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { PerfilUsuarioFormDialogComponent } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
-import { VentasHttpService } from 'src/http-services/ventas-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cliente } from 'src/models/Cliente';
 import { DetalleVenta } from 'src/models/DetalleVenta';
 import { Venta } from 'src/models/Venta';
@@ -43,8 +43,8 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
     protected compraSvc: CompraService,
-    protected vtaHttpSvc: VentasHttpService,
-    protected cliHttpSvc: ClientesHttpService
+    @Inject(SERVICE_ALIASES.sales) protected vtaHttpSvc: EntityDataService<Venta>,
+    @Inject(SERVICE_ALIASES.clients) protected cliHttpSvc: EntityDataService<Cliente>
   ) {
     this.detallesVentaSource = new BehaviorSubject([]);
     this.cantidadItemsSource = new BehaviorSubject(0);
@@ -105,12 +105,13 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
     this.compraSvc.quitarProducto(index);
   }
 
-  protected ingresarVenta(vta: Venta): void {
-    this.vtaHttpSvc.guardarVenta(vta).subscribe(
-      (idVenta: number) => {
-        if (idVenta) {
+  protected ingresarVenta(vt: Venta): void {
+    this.vtaHttpSvc.create(vt).subscribe(
+      (vt2: Venta) => {
+        // TODO: make sure vt2 is not actually vt
+        if (vt2) {
           this.snackBar.open(
-            '¡Gracias por su compra! Esta transacción es la N° ' + idVenta + '.',
+            '¡Gracias por su compra! Esta transacción es la N° ' + vt2 + '.',
             'OK',
             {duration: undefined, panelClass: 'super-overlay'}
           );

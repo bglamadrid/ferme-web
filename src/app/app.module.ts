@@ -13,6 +13,7 @@ import { GestionModule } from './gestion/gestion.module';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
+import { HttpDataModule } from 'src/data/http/http-data.module';
 
 const DEBUG_ROUTES = false;
 
@@ -28,7 +29,8 @@ const DEBUG_ROUTES = false;
     AppRoutingModule,
     GestionModule,
     CompraModule,
-    FallbackRoutingModule
+    FallbackRoutingModule,
+    HttpDataModule
   ],
   providers: [
     AuthGuard

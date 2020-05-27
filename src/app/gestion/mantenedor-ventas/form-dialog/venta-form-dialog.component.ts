@@ -5,12 +5,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA, MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
 import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-array-dialog/agregar-producto.component';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { VentasHttpService } from 'src/http-services/ventas-http.service';
+import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
+import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cliente } from 'src/models/Cliente';
 import { DetalleVenta } from 'src/models/DetalleVenta';
 import { Empleado } from 'src/models/Empleado';
@@ -72,11 +72,11 @@ export class VentaFormDialogGestionComponent
     protected self: MatDialogRef<VentaFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    protected httpSvc: VentasHttpService,
-    protected empHttpSvc: EmpleadosHttpService,
-    protected clHttpSvc: ClientesHttpService,
+    @Inject(SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
+    @Inject(SERVICE_ALIASES.clients) protected clHttpSvc: EntityDataService<Cliente>,
     protected authSvc: AuthService,
-    protected dialog: MatDialog
+    protected dialog: MatDialog,
+    @Inject(SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>
   ) {
     this.cargando = true;
     this.guardando = true;
@@ -114,8 +114,8 @@ export class VentaFormDialogGestionComponent
   public get esNueva() { return isNaN(this.idVenta); }
 
   ngOnInit() {
-    this.clientes$ = this.clHttpSvc.listarClientes();
-    this.empleados$ = this.empHttpSvc.listarEmpleados();
+    this.clientes$ = this.clHttpSvc.readAll();
+    this.empleados$ = this.empHttpSvc.readAll();
   }
 
   protected cargarVenta(vnt: Venta): void {
@@ -134,7 +134,7 @@ export class VentaFormDialogGestionComponent
 
     this.fechaVenta = vnt.fechaVenta;
 
-    this.httpSvc.listarDetalles(vnt).pipe(
+    this.httpSvc.readDetailsById(vnt.idVenta).pipe(
       finalize(() => {
         this.cargando = false;
         this.ventaForm.enable();
@@ -173,20 +173,20 @@ export class VentaFormDialogGestionComponent
     this.detallesVentaSource.next(detalles);
   }
 
-  protected guardarVenta(vnt: Venta): void {
+  protected guardarVenta(vt: Venta): void {
     this.ventaForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.guardarVenta(vnt).subscribe(
-      (id: number) => {
-        if (id) {
-          if (vnt.idVenta) {
-            this.snackBar.open('Venta N° \'' + vnt.idVenta + '\' actualizada exitosamente.');
+    this.httpSvc.create(vt).subscribe(
+      (vt2: Venta) => {
+        // TODO: make sure vt2 is not actually vt
+        if (vt2.idVenta) {
+          if (vt.idVenta) {
+            this.snackBar.open('Venta N° \'' + vt.idVenta + '\' actualizada exitosamente.');
           } else {
-            this.snackBar.open('Venta N° \'' + id + '\' registrada exitosamente.');
+            this.snackBar.open('Venta N° \'' + vt2.idVenta + '\' registrada exitosamente.');
           }
-          vnt.idVenta = id;
-          this.self.close(vnt);
+          this.self.close(vt2);
         } else {
           this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.ventaForm.enable(REACTIVE_FORMS_ISOLATE);

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { RootHttpService } from './root-http.service';
+import { HttpService } from './http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Sesion } from 'src/models/Sesion';
 import { Persona } from 'src/models/Persona';
 import { retry } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
-export class AuthHttpService extends RootHttpService {
+@Injectable()
+export class AuthHttpDataService
+  extends HttpService {
 
   protected baseURI = this.baseURI + '/sesiones';
 

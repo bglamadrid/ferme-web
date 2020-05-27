@@ -1,14 +1,15 @@
-import { Component, OnInit, Inject, Input, OnDestroy } from '@angular/core';
-import { Producto } from 'src/models/Producto';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, of, Subscription } from 'rxjs';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TipoProducto } from 'src/models/TipoProducto';
-import { ProductosHttpService } from 'src/http-services/productos-http.service';
+import { Observable, of, Subscription } from 'rxjs';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
+import { Producto } from 'src/models/Producto';
+import { TipoProducto } from 'src/models/TipoProducto';
 
 export interface ProductoFormDialogGestionData {
   producto: Producto;
@@ -42,8 +43,8 @@ export class ProductoFormDialogGestionComponent
     protected self: MatDialogRef<ProductoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    protected sharedSvc: GestionSharedHttpService,
-    protected httpSvc: ProductosHttpService
+    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(SERVICE_ALIASES.products) protected httpSvc: EntityDataService<Producto>
   ) {
     this.productoForm = this.fb.group({
       nombre: [null, Validators.required],
@@ -115,16 +116,16 @@ export class ProductoFormDialogGestionComponent
     this.productoForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.guardarProducto(prod).subscribe(
-      (id: number) => {
-        if (id) {
+    this.httpSvc.create(prod).subscribe(
+      (prod2: Producto) => {
+        // TODO: make sure prod2 is not actually prod
+        if (prod2.idProducto) {
           if (prod.idProducto) {
             this.snackBar.open('Producto \'' + prod.nombreProducto + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Producto \'' + prod.nombreProducto + '\' registrado/a exitosamente.');
+            this.snackBar.open('Producto \'' + prod2.nombreProducto + '\' registrado/a exitosamente.');
           }
-          prod.idProducto = id;
-          this.self.close(prod);
+          this.self.close(prod2);
         } else {
           this.snackBar.open('Error al guardar producto.');
         }

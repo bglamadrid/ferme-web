@@ -5,8 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
-import { ProveedoresHttpService } from 'src/http-services/proveedores-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cargo } from 'src/models/Cargo';
 import { Proveedor } from 'src/models/Proveedor';
 
@@ -38,8 +39,8 @@ export class ProveedorFormDialogGestionComponent {
     protected self: MatDialogRef<ProveedorFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    protected sharedSvc: GestionSharedHttpService,
-    protected httpSvc: ProveedoresHttpService
+    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>
   ) {
     this.cargando = true;
     this.guardando = false;
@@ -71,16 +72,16 @@ export class ProveedorFormDialogGestionComponent {
     this.formularioCompleto.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.guardarProveedor(prov).subscribe(
-      (id: number) => {
-        if (id) {
+    this.httpSvc.create(prov).subscribe(
+      (prov2: Proveedor) => {
+        // TODO: make sure prod2 is not actually prod
+        if (prov2.idProveedor) {
           if (prov.idProveedor) {
             this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' registrado/a exitosamente.');
+            this.snackBar.open('Proveedor \'' + prov2.nombreCompletoPersona + '\' registrado/a exitosamente.');
           }
-          prov.idProveedor = id;
-          this.self.close(prov);
+          this.self.close(prov2);
         } else {
           this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.formularioCompleto.enable(REACTIVE_FORMS_ISOLATE);

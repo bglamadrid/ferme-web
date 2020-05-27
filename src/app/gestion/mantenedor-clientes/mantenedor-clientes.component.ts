@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cliente } from 'src/models/Cliente';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { ListadoClientesGestionComponent } from './listado/listado-clientes.component';
@@ -20,7 +21,7 @@ export class MantenedorClientesGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoClientesGestionComponent;
 
   constructor(
-    protected httpSvc: ClientesHttpService,
+    @Inject(SERVICE_ALIASES.clients) protected httpSvc: EntityDataService<Cliente>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {
@@ -29,7 +30,7 @@ export class MantenedorClientesGestionComponent
   }
 
   public cargarItems(): Observable<Cliente[]> {
-    return this.httpSvc.listarClientes();
+    return this.httpSvc.readAll();
   }
 
 }

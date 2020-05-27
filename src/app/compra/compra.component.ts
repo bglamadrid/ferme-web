@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -7,11 +7,12 @@ import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
+import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { DetalleVenta } from 'src/models/DetalleVenta';
 import { AuthService } from 'src/services/auth.service';
 import { CompraService } from 'src/services/compra.service';
 import { CompraLoginDialogComponent } from './login-dialog/login.component';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 @Component({
   selector: 'app-compra',
@@ -33,7 +34,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
 
   constructor(
     protected authSvc: AuthService,
-    protected auttHttpSvc: AuthHttpService,
+    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog,
@@ -56,7 +57,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
     }
 
     if (this.estaAutenticado) {
-      this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
+      this.authHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
         finalize(() => { this.authSvc.Sesion = null; })
       ).subscribe(
         () => {
@@ -112,7 +113,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
 
   public onClickEditarUsuario(): void {
     const sesion = this.authSvc.sesion;
-    this.auttHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
+    this.authHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
       perfil => {
         const dialogData: PerfilUsuarioFormDialogData = { persona: perfil };
         const dConf = {
@@ -131,7 +132,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
     this.solicitarConfirmacionCerrarSesion().subscribe(
       confirmado => {
         if (confirmado) {
-          this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
+          this.authHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
             finalize(() => { this.authSvc.Sesion = null; })
           ).subscribe(
             () => {

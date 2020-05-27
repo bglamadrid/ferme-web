@@ -1,17 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Empleado } from 'src/models/Empleado';
-import {
-  EmpleadoFormDialogGestionComponent,
-  EmpleadoFormDialogGestionData
-} from './form-dialog/empleado-form-dialog.component';
-import { ListadoEmpleadosGestionComponent } from './listado/listado-empleados.component';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { EmpleadoFormDialogGestionComponent, EmpleadoFormDialogGestionData } from './form-dialog/empleado-form-dialog.component';
+import { ListadoEmpleadosGestionComponent } from './listado/listado-empleados.component';
 
 @Component({
   selector: 'app-mantenedor-empleados-gestion',
@@ -26,7 +24,7 @@ export class MantenedorEmpleadosGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoEmpleadosGestionComponent;
 
   constructor(
-    protected httpSvc: EmpleadosHttpService,
+    @Inject(SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {
@@ -34,7 +32,7 @@ export class MantenedorEmpleadosGestionComponent
   }
 
   public cargarItems(): Observable<Empleado[]> {
-    return this.httpSvc.listarEmpleados();
+    return this.httpSvc.readAll();
   }
 
   public abrirDialogoEdicion(item: Empleado): Observable<Empleado> {
@@ -55,7 +53,7 @@ export class MantenedorEmpleadosGestionComponent
 
   public onClickBorrar(emp: Empleado) {
     this.ocupadoSource.next(true);
-    this.httpSvc.borrarEmpleado(emp.idEmpleado).pipe(
+    this.httpSvc.deleteById(emp.idEmpleado).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {

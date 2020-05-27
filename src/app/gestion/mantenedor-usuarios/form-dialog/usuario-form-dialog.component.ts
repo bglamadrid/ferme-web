@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
-import { Usuario } from 'src/models/Usuario';
-import { UsuariosHttpService } from 'src/http-services/usuarios-http.service';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Persona } from 'src/models/Persona';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
+import { Usuario } from 'src/models/Usuario';
 
 export interface UsuarioFormDialogGestionData {
   usuario: Usuario;
@@ -36,8 +37,8 @@ export class UsuarioFormDialogGestionComponent
     protected self: MatDialogRef<UsuarioFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    protected sharedSvc: GestionSharedHttpService,
-    protected httpSvc: UsuariosHttpService
+    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>
   ) {
     this.cargando = false;
 
@@ -83,16 +84,16 @@ export class UsuarioFormDialogGestionComponent
     this.usuarioForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.guardarUsuario(usr).subscribe(
-      (id: number) => {
-        if (id) {
+    this.httpSvc.create(usr).subscribe(
+      (usr2: Usuario) => {
+        // TODO: make sure prod2 is not actually prod
+        if (usr2.idUsuario) {
           if (usr.idUsuario) {
             this.snackBar.open('Usuario \'' + usr.nombreUsuario + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Usuario \'' + usr.nombreUsuario + '\' registrado/a exitosamente.');
+            this.snackBar.open('Usuario \'' + usr2.nombreUsuario + '\' registrado/a exitosamente.');
           }
-          usr.idUsuario = id;
-          this.self.close(usr);
+          this.self.close(usr2);
         } else {
           this.snackBar.open('Error al guardar usuario.');
         }

@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/services/auth.service';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
+import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { Sesion } from 'src/models/Sesion';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from '../shared/constantes';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 export interface Login {
   usuario: string;
@@ -33,7 +34,7 @@ export class LoginComponent {
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
-    protected authHttpSvc: AuthHttpService
+    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
   ) {
     this.cargando = true;
     this.esconderClave = true;

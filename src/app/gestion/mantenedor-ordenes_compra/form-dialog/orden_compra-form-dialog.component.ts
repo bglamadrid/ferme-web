@@ -7,15 +7,18 @@ import { Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
 import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-array-dialog/agregar-producto.component';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { OrdenesCompraHttpService } from 'src/http-services/ordenes_compra-http.service';
-import { ProveedoresHttpService } from 'src/http-services/proveedores-http.service';
+import { EmpleadosHttpDataService } from 'src/data/http/empleados.http-data.service';
+import { OrdenesCompraHttpDataService } from 'src/data/http/ordenes_compra.http-data.service';
+import { ProveedoresHttpDataService } from 'src/data/http/proveedores.http-data.service';
 import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
 import { Empleado } from 'src/models/Empleado';
 import { OrdenCompra } from 'src/models/OrdenCompra';
 import { Producto } from 'src/models/Producto';
 import { Proveedor } from 'src/models/Proveedor';
 import { AuthService } from 'src/services/auth.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 
 export interface OrdenCompraFormDialogGestionData {
   ordenCompra: OrdenCompra;
@@ -65,9 +68,9 @@ export class OrdenCompraFormDialogGestionComponent
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
     protected authSvc: AuthService,
-    protected httpSvc: OrdenesCompraHttpService,
-    protected empHttpSvc: EmpleadosHttpService,
-    protected prvHttpSvc: ProveedoresHttpService,
+    @Inject(SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
+    @Inject(SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>,
+    @Inject(SERVICE_ALIASES.providers) protected prvHttpSvc: EntityDataService<Proveedor>,
     protected dialog: MatDialog
   ) {
     this.cargando = true;
@@ -116,8 +119,8 @@ export class OrdenCompraFormDialogGestionComponent
   public get hayProductosSinCantidad() { return this.detallesOrdenCompra.some(dtl => dtl.cantidadProducto <= 0); }
 
   ngOnInit() {
-    this.proveedores$ = this.prvHttpSvc.listarProveedores();
-    this.empleados$ = this.empHttpSvc.listarEmpleados();
+    this.proveedores$ = this.prvHttpSvc.readAll();
+    this.empleados$ = this.empHttpSvc.readAll();
   }
 
   protected cargarOrdenCompra(oc: OrdenCompra): void {
@@ -134,7 +137,7 @@ export class OrdenCompraFormDialogGestionComponent
       this.proveedor.setValue(oc.idProveedor, REACTIVE_FORMS_ISOLATE);
     }
 
-    this.httpSvc.listarDetalles(oc).pipe(
+    this.httpSvc.readDetailsById(oc.idOrdenCompra).pipe(
       finalize(() => {
         this.cargando = false;
         this.ordenCompraForm.enable();
@@ -155,16 +158,16 @@ export class OrdenCompraFormDialogGestionComponent
     this.ordenCompraForm.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.guardarOrdenCompra(vnt).subscribe(
-      (id: number) => {
-        if (id) {
+    this.httpSvc.create(vnt).subscribe(
+      (vnt2: OrdenCompra) => {
+        // TODO: make sure vnt2 is not actually vnt
+        if (vnt2.idOrdenCompra) {
           if (vnt.idOrdenCompra) {
             this.snackBar.open('Orden de compra \'' + vnt.idOrdenCompra + '\' actualizada exitosamente.', 'OK', { duration: -1 });
           } else {
-            this.snackBar.open('Orden de compra \'' + id + '\' registrada exitosamente.', 'OK', { duration: -1 });
+            this.snackBar.open('Orden de compra \'' + vnt2.idOrdenCompra + '\' registrada exitosamente.', 'OK', { duration: -1 });
           }
-          vnt.idOrdenCompra = id;
-          this.self.close(vnt);
+          this.self.close(vnt2);
         } else {
           this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.guardando = false;

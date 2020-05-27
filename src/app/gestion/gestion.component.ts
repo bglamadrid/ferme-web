@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FERME_GESTION_ROUTES, FERME_AUTHORIZED_CARGOS } from 'src/routing/gestion.routes';
-import { AuthService } from 'src/services/auth.service';
-import { Router, ActivatedRoute, Event } from '@angular/router';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
-import { Subscription, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
+import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
+import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/routing/gestion.routes';
+import { AuthService } from 'src/services/auth.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 export interface NavegadorModuloItem {
   path: string;
@@ -63,7 +64,7 @@ export class GestionComponent
 
   constructor(
     protected authSvc: AuthService,
-    protected auttHttpSvc: AuthHttpService,
+    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected route: ActivatedRoute,
@@ -163,7 +164,7 @@ export class GestionComponent
 
   public onClickEditarUsuario(): void {
     const sesion = this.authSvc.sesion;
-    this.auttHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
+    this.authHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
       perfil => {
         const dialogData: PerfilUsuarioFormDialogData = { persona: perfil };
         const dConf = {
@@ -184,7 +185,7 @@ export class GestionComponent
       this.solicitarConfirmacionCerrarSesion().subscribe(
         confirmado => {
           if (confirmado) {
-            this.auttHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+            this.authHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
               () => {
                 this.authSvc.Sesion = null;
                 this.router.navigateByUrl('/login');

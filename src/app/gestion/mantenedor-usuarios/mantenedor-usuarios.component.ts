@@ -1,16 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { UsuariosHttpService } from 'src/http-services/usuarios-http.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Usuario } from 'src/models/Usuario';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
-import {
-  UsuarioFormDialogGestionComponent,
-  UsuarioFormDialogGestionData
-} from './form-dialog/usuario-form-dialog.component';
+import { UsuarioFormDialogGestionComponent, UsuarioFormDialogGestionData } from './form-dialog/usuario-form-dialog.component';
 import { ListadoUsuariosGestionComponent } from './listado/listado-usuarios.component';
 
 @Component({
@@ -26,7 +24,7 @@ export class MantenedorUsuariosGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoUsuariosGestionComponent;
 
   constructor(
-    protected httpSvc: UsuariosHttpService,
+    @Inject(SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {
@@ -34,7 +32,7 @@ export class MantenedorUsuariosGestionComponent
   }
 
   public cargarItems(): Observable<Usuario[]> {
-    return this.httpSvc.listarUsuarios();
+    return this.httpSvc.readAll();
   }
 
   public abrirDialogoEdicion(item: Usuario): Observable<Usuario> {
@@ -55,7 +53,7 @@ export class MantenedorUsuariosGestionComponent
 
   public onClickBorrar(usr: Usuario) {
     this.ocupadoSource.next(true);
-    this.httpSvc.borrarUsuario(usr.idUsuario).pipe(
+    this.httpSvc.deleteById(usr.idUsuario).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {

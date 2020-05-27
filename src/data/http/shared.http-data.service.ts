@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RootHttpService } from './root-http.service';
+import { HttpService } from './http.abstract-service';
 import { Observable } from 'rxjs';
 import { Cargo } from 'src/models/Cargo';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -9,9 +9,9 @@ import { FamiliaProducto } from 'src/models/FamiliaProducto';
 import { Persona } from 'src/models/Persona';
 import { retry } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
-export class GestionSharedHttpService extends RootHttpService {
-
+@Injectable()
+export class SharedHttpDataService
+  extends HttpService {
 
   protected baseURI: string = this.baseURI + '/gestion';
 

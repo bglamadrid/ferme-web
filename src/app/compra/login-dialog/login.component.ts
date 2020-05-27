@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from 'src/services/auth.service';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
+import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 
 import { LoginComponent, Login } from 'src/app/login/login.component';
 import { Sesion } from 'src/models/Sesion';
 import { finalize } from 'rxjs/operators';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 @Component({
   selector: 'app-compra-login',
@@ -23,7 +24,7 @@ export class CompraLoginDialogComponent extends LoginComponent {
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
-    protected authHttpSvc: AuthHttpService,
+    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected dialogRef: MatDialogRef<CompraLoginDialogComponent>
   ) {
     super(fb, router, snackBar, authSvc, authHttpSvc);

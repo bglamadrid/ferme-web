@@ -2,9 +2,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { RootHttpService } from 'src/http-services/root-http.service';
+import { HttpService } from 'src/data/http/http.abstract-service';
 import { ListadoGestionComponent } from './listado-gestion.abstract-component';
 import { AfterViewInit } from '@angular/core';
+import { EntityDataService } from 'src/data/entity.data.iservice';
 
 export abstract class MantenedorGestionComponent<T>
   implements AfterViewInit {
@@ -12,7 +13,7 @@ export abstract class MantenedorGestionComponent<T>
   protected ocupadoSource: BehaviorSubject<boolean>;
   protected itemsSource: BehaviorSubject<T[]>;
 
-  protected httpSvc: RootHttpService;
+  protected httpSvc: EntityDataService<T>;
   protected dialog: MatDialog;
   protected snackBar: MatSnackBar;
 

@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
-import { ProductosHttpService } from 'src/http-services/productos-http.service';
+import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
 import { Producto } from 'src/models/Producto';
 import { CompraService } from 'src/services/compra.service';
+import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
 
 @Component({
   selector: 'app-compra-catalogo',
@@ -25,7 +27,7 @@ export class CompraCatalogoComponent implements OnInit {
   public productoForm: FormGroup;
 
   constructor(
-    protected prodHttpSvc: ProductosHttpService,
+    @Inject(SERVICE_ALIASES.products) protected prodHttpSvc: EntityDataService<Producto>,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar,
     protected compraSvc: CompraService,
@@ -59,9 +61,9 @@ export class CompraCatalogoComponent implements OnInit {
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
-      obs = this.prodHttpSvc.listarProductosFiltrados(filtros);
+      obs = this.prodHttpSvc.readFiltered(filtros);
     } else {
-      obs = this.prodHttpSvc.listarProductos();
+      obs = this.prodHttpSvc.readAll();
     }
 
     obs.pipe(
