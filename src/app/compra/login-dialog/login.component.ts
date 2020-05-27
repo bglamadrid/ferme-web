@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AuthService } from 'src/services/auth.service';
+import { AuthService } from 'src/app/auth.service';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 
 import { LoginComponent, Login } from 'src/app/login/login.component';

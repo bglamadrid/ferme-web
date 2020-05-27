@@ -7,7 +7,7 @@ import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
 import { Producto } from 'src/models/Producto';
-import { CompraService } from 'src/services/compra.service';
+import { CompraService } from 'src/app/compra/compra.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 

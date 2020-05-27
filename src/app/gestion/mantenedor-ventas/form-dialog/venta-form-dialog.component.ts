@@ -16,7 +16,7 @@ import { DetalleVenta } from 'src/models/DetalleVenta';
 import { Empleado } from 'src/models/Empleado';
 import { Producto } from 'src/models/Producto';
 import { Venta } from 'src/models/Venta';
-import { AuthService } from 'src/services/auth.service';
+import { AuthService } from 'src/app/auth.service';
 
 export interface VentaFormDialogGestionData {
   venta: Venta;

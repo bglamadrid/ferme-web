@@ -15,7 +15,7 @@ import { Empleado } from 'src/models/Empleado';
 import { OrdenCompra } from 'src/models/OrdenCompra';
 import { Producto } from 'src/models/Producto';
 import { Proveedor } from 'src/models/Proveedor';
-import { AuthService } from 'src/services/auth.service';
+import { AuthService } from 'src/app/auth.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';

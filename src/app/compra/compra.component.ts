@@ -9,8 +9,8 @@ import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/sha
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { DetalleVenta } from 'src/models/DetalleVenta';
-import { AuthService } from 'src/services/auth.service';
-import { CompraService } from 'src/services/compra.service';
+import { AuthService } from 'src/app/auth.service';
+import { CompraService } from 'src/app/compra/compra.service';
 import { CompraLoginDialogComponent } from './login-dialog/login.component';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 

@@ -11,8 +11,8 @@ import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { Cliente } from 'src/models/Cliente';
 import { DetalleVenta } from 'src/models/DetalleVenta';
 import { Venta } from 'src/models/Venta';
-import { AuthService } from 'src/services/auth.service';
-import { CompraService } from 'src/services/compra.service';
+import { AuthService } from 'src/app/auth.service';
+import { CompraService } from 'src/app/compra/compra.service';
 
 @Component({
   selector: 'app-compra-resumen',
