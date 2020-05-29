@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CompraRoutingModule } from 'src/routing/compra-routing.module';
+import { CompraRoutingModule } from 'src/app/compra/compra.routing.module';
 
 import { CompraCatalogoComponent } from './catalogo/catalogo.component';
 import { CompraResumenComponent } from './resumen/resumen.component';

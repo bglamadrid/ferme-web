@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { GestionRoutingModule } from 'src/routing/gestion-routing.module';
+import { GestionRoutingModule } from 'src/app/gestion/gestion.routing.module';
 import { GestionComponent } from './gestion.component';
 import { AgregarProductoDialogComponent } from './get-productos-array-dialog/agregar-producto.component';
 import { ClienteFormDialogGestionComponent } from './mantenedor-clientes/form-dialog/cliente-form-dialog.component';

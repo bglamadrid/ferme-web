@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/routing/gestion.routes';
+import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
 import { AuthService } from 'src/app/auth.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
