@@ -8,8 +8,8 @@ import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/dat
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Cargo } from 'src/models/Cargo';
-import { Empleado } from 'src/models/Empleado';
+import { Cargo } from 'src/models/entities/Cargo';
+import { Empleado } from 'src/models/entities/Empleado';
 
 
 export interface EmpleadoFormDialogGestionData {
@@ -60,7 +60,7 @@ export class EmpleadoFormDialogGestionComponent
     return this.fb.group(group);
   }
 
-  public get esNuevo() { return this.empleado ? isNaN(this.empleado.idEmpleado) : true; }
+  public get esNuevo() { return this.empleado ? isNaN(this.empleado.id) : true; }
 
   ngOnInit() {
     this.cargos$ = this.sharedSvc.cargos();
@@ -80,8 +80,8 @@ export class EmpleadoFormDialogGestionComponent
     this.httpSvc.create(emp).subscribe(
       (emp2: Empleado) => {
         // TODO: make sure emp2 is not actually emp
-        if (emp2.idEmpleado) {
-          if (emp.idEmpleado) {
+        if (emp2.id) {
+          if (emp.id) {
             this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' actualizado/a exitosamente.');
           } else {
             this.snackBar.open('Empleado \'' + emp2.nombreCompletoPersona + '\' registrado/a exitosamente.');
@@ -103,7 +103,7 @@ export class EmpleadoFormDialogGestionComponent
 
   public onClickAceptar(): void {
     const datosEmpleado = {
-      idEmpleado: this.empleado.idEmpleado ? this.empleado.idEmpleado : null,
+      id: this.empleado.id ? this.empleado.id : null,
       idPersona: this.empleado.idPersona ? this.empleado.idPersona : null,
       idCargo: this.cargo.value
     };

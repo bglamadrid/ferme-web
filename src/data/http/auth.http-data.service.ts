@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Sesion } from 'src/models/Sesion';
-import { Persona } from 'src/models/Persona';
+import { Sesion } from 'src/models/entities/Sesion';
+import { Persona } from 'src/models/entities/Persona';
 import { retry } from 'rxjs/operators';
 
 @Injectable()

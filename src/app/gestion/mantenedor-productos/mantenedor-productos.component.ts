@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Producto } from 'src/models/Producto';
+import { Producto } from 'src/models/entities/Producto';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { ProductoFormDialogGestionComponent, ProductoFormDialogGestionData } from './form-dialog/producto-form-dialog.component';
 import { ListadoProductosGestionComponent } from './listado/listado-productos.component';
@@ -53,7 +53,7 @@ export class MantenedorProductosGestionComponent
 
   public onClickBorrar(prod: Producto) {
     this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(prod.idProducto).pipe(
+    this.httpSvc.deleteById(prod.id).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {

@@ -2,8 +2,8 @@ import { Component, OnInit, Output, EventEmitter, OnDestroy, Inject } from '@ang
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription, Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { TipoProducto } from 'src/models/TipoProducto';
+import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
+import { TipoProducto } from 'src/models/entities/TipoProducto';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 

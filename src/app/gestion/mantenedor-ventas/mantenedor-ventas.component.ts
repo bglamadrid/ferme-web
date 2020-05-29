@@ -6,8 +6,8 @@ import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Venta } from 'src/models/Venta';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Venta } from 'src/models/entities/Venta';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { VentaFormDialogGestionComponent, VentaFormDialogGestionData } from './form-dialog/venta-form-dialog.component';
 import { ListadoVentasGestionComponent } from './listado/listado-ventas.component';
@@ -55,12 +55,12 @@ export class MantenedorVentasGestionComponent
 
   public onClickBorrar(vnt: Venta) {
     this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(vnt.idVenta).pipe(
+    this.httpSvc.deleteById(vnt.id).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Venta N°' + vnt.idVenta + ' (' + vnt.fechaVenta + ') eliminada.');
+          this.snackBar.open('Venta N°' + vnt.id + ' (' + vnt.fechaVenta + ') eliminada.');
           this.onCargar();
         } else {
           this.snackBar.open('Hubo un problema al borrar la venta.');

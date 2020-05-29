@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { OrdenCompra } from 'src/models/OrdenCompra';
+import { OrdenCompra } from 'src/models/entities/OrdenCompra';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import {
   OrdenCompraFormDialogGestionComponent,
@@ -13,7 +13,7 @@ import {
 import { ListadoOrdenesCompraGestionComponent } from './listado/listado-ordenes_compra.component';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
-import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
+import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
 
 @Component({
   selector: 'app-gestion-ordenes_compra',
@@ -59,7 +59,7 @@ export class MantenedorOrdenesCompraGestionComponent
 
   public onClickBorrar(oc: OrdenCompra) {
     this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(oc.idOrdenCompra).pipe(
+    this.httpSvc.deleteById(oc.id).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {

@@ -7,8 +7,8 @@ import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Persona } from 'src/models/Persona';
-import { Usuario } from 'src/models/Usuario';
+import { Persona } from 'src/models/entities/Persona';
+import { Usuario } from 'src/models/entities/Usuario';
 
 export interface UsuarioFormDialogGestionData {
   usuario: Usuario;
@@ -68,8 +68,8 @@ export class UsuarioFormDialogGestionComponent
     this.usuarioForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    if (usr.idUsuario) {
-      this.privIdUsuario = usr.idUsuario;
+    if (usr.id) {
+      this.privIdUsuario = usr.id;
       this.clave.setValidators(null);
     }
 
@@ -87,8 +87,8 @@ export class UsuarioFormDialogGestionComponent
     this.httpSvc.create(usr).subscribe(
       (usr2: Usuario) => {
         // TODO: make sure prod2 is not actually prod
-        if (usr2.idUsuario) {
-          if (usr.idUsuario) {
+        if (usr2.id) {
+          if (usr.id) {
             this.snackBar.open('Usuario \'' + usr.nombreUsuario + '\' actualizado/a exitosamente.');
           } else {
             this.snackBar.open('Usuario \'' + usr2.nombreUsuario + '\' registrado/a exitosamente.');
@@ -108,7 +108,7 @@ export class UsuarioFormDialogGestionComponent
 
   public onClickAceptar(): void {
     const nuevo: Usuario = new Usuario();
-    nuevo.idUsuario = this.privIdUsuario ? this.privIdUsuario : null,
+    nuevo.id = this.privIdUsuario ? this.privIdUsuario : null,
     nuevo.nombreUsuario = this.nombre.value;
     if (this.clave.value) {
       nuevo.claveUsuario =  this.clave.value;

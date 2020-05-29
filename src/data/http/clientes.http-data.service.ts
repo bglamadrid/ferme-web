@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/data/http/http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cliente } from 'src/models/Cliente';
+import { Cliente } from 'src/models/entities/Cliente';
 import { retry, map } from 'rxjs/operators';
 import { EntityDataService } from '../entity.data.iservice';
 
@@ -42,7 +42,7 @@ export class ClientesHttpDataService
       cli
     ).pipe(
       map(id => {
-        cli.idCliente = id;
+        cli.id = id;
         return cli;
       })
     );

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/data/http/http.abstract-service';
-import { Producto } from 'src/models/Producto';
+import { Producto } from 'src/models/entities/Producto';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { retry, map } from 'rxjs/operators';
 import { EntityDataService } from '../entity.data.iservice';
@@ -61,7 +61,7 @@ export class ProductosHttpDataService
       prod
     ).pipe(
       map(id => {
-        prod.idProducto = id;
+        prod.id = id;
         return prod;
       })
     );

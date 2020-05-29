@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs/operators';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { Persona } from 'src/models/Persona';
+import { Persona } from 'src/models/entities/Persona';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 
 export interface PerfilUsuarioFormDialogData {

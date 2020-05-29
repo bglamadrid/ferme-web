@@ -1,7 +1,8 @@
 import { DetalleVenta } from './DetalleVenta';
+import { AbstractEntity } from '../AbstractEntity';
 
-export class Venta {
-  public idVenta: number;
+export class Venta extends AbstractEntity {
+  public id: number;
   public tipoVenta: string;
   public fechaVenta: string;
   public subtotalVenta: number;

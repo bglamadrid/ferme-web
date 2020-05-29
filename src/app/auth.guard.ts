@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/models/entities/Sesion';
 import { FERME_AUTHORIZED_CARGOS } from './gestion/gestion.routes';
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';

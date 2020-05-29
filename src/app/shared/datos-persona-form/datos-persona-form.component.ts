@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Persona } from 'src/models/Persona';
+import { Persona } from 'src/models/entities/Persona';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 
 @Component({

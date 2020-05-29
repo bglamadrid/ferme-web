@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Empleado } from 'src/models/Empleado';
+import { Empleado } from 'src/models/entities/Empleado';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { EmpleadoFormDialogGestionComponent, EmpleadoFormDialogGestionData } from './form-dialog/empleado-form-dialog.component';
 import { ListadoEmpleadosGestionComponent } from './listado/listado-empleados.component';
@@ -53,7 +53,7 @@ export class MantenedorEmpleadosGestionComponent
 
   public onClickBorrar(emp: Empleado) {
     this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(emp.idEmpleado).pipe(
+    this.httpSvc.deleteById(emp.id).pipe(
       finalize(() => { this.ocupadoSource.next(false); })
     ).subscribe(
       (exito: boolean) => {

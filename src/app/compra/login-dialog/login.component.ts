@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/auth.service';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 
 import { LoginComponent, Login } from 'src/app/login/login.component';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/models/entities/Sesion';
 import { finalize } from 'rxjs/operators';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 

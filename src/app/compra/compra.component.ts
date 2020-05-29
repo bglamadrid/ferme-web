@@ -8,7 +8,7 @@ import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { DetalleVenta } from 'src/models/DetalleVenta';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { AuthService } from 'src/app/auth.service';
 import { CompraService } from 'src/app/compra/compra.service';
 import { CompraLoginDialogComponent } from './login-dialog/login.component';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/data/http/http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Usuario } from 'src/models/Usuario';
+import { Usuario } from 'src/models/entities/Usuario';
 import { retry, map } from 'rxjs/operators';
 import { EntityDataService } from '../entity.data.iservice';
 
@@ -42,7 +42,7 @@ export class UsuariosHttpDataService
       usr
     ).pipe(
       map(id => {
-        usr.idUsuario = id;
+        usr.id = id;
         return usr;
       })
     );

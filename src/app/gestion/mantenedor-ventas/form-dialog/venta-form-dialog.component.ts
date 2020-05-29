@@ -11,11 +11,11 @@ import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Cliente } from 'src/models/Cliente';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Empleado } from 'src/models/Empleado';
-import { Producto } from 'src/models/Producto';
-import { Venta } from 'src/models/Venta';
+import { Cliente } from 'src/models/entities/Cliente';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Empleado } from 'src/models/entities/Empleado';
+import { Producto } from 'src/models/entities/Producto';
+import { Venta } from 'src/models/entities/Venta';
 import { AuthService } from 'src/app/auth.service';
 
 export interface VentaFormDialogGestionData {
@@ -123,7 +123,7 @@ export class VentaFormDialogGestionComponent
     this.ventaForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.idVenta = vnt.idVenta;
+    this.idVenta = vnt.id;
 
     this.tipo.setValue(vnt.tipoVenta, REACTIVE_FORMS_ISOLATE);
     this.cliente.setValue(vnt.idCliente, REACTIVE_FORMS_ISOLATE);
@@ -134,7 +134,7 @@ export class VentaFormDialogGestionComponent
 
     this.fechaVenta = vnt.fechaVenta;
 
-    this.httpSvc.readDetailsById(vnt.idVenta).pipe(
+    this.httpSvc.readDetailsById(vnt.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ventaForm.enable();
@@ -180,11 +180,11 @@ export class VentaFormDialogGestionComponent
     this.httpSvc.create(vt).subscribe(
       (vt2: Venta) => {
         // TODO: make sure vt2 is not actually vt
-        if (vt2.idVenta) {
-          if (vt.idVenta) {
-            this.snackBar.open('Venta N° \'' + vt.idVenta + '\' actualizada exitosamente.');
+        if (vt2.id) {
+          if (vt.id) {
+            this.snackBar.open('Venta N° \'' + vt.id + '\' actualizada exitosamente.');
           } else {
-            this.snackBar.open('Venta N° \'' + vt2.idVenta + '\' registrada exitosamente.');
+            this.snackBar.open('Venta N° \'' + vt2.id + '\' registrada exitosamente.');
           }
           this.self.close(vt2);
         } else {
@@ -248,7 +248,7 @@ export class VentaFormDialogGestionComponent
 
   public onClickAceptar(): void {
     const nuevo: Venta = {
-      idVenta: this.idVenta ? this.idVenta : null,
+      id: this.idVenta ? this.idVenta : null,
       tipoVenta: this.tipo.value,
       fechaVenta: this.fechaVenta ? this.fechaVenta : null,
       idCliente: this.cliente.value,

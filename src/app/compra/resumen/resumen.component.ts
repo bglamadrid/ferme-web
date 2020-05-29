@@ -8,9 +8,9 @@ import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { PerfilUsuarioFormDialogComponent } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Cliente } from 'src/models/Cliente';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Venta } from 'src/models/Venta';
+import { Cliente } from 'src/models/entities/Cliente';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Venta } from 'src/models/entities/Venta';
 import { AuthService } from 'src/app/auth.service';
 import { CompraService } from 'src/app/compra/compra.service';
 
@@ -155,8 +155,8 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
 
       cliDialog.afterClosed().subscribe(
         (cli: Cliente) => {
-          if (cli && cli.idCliente > 1) {
-            const vta: Venta = this.compraSvc.generarVentaConCliente(cli.idCliente);
+          if (cli && cli.id > 1) {
+            const vta: Venta = this.compraSvc.generarVentaConCliente(cli.id);
             this.ingresarVenta(vta);
           }
         }

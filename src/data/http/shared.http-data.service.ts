@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.abstract-service';
 import { Observable } from 'rxjs';
-import { Cargo } from 'src/models/Cargo';
+import { Cargo } from 'src/models/entities/Cargo';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Rubro } from 'src/models/Rubro';
-import { TipoProducto } from 'src/models/TipoProducto';
-import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { Persona } from 'src/models/Persona';
+import { Rubro } from 'src/models/entities/Rubro';
+import { TipoProducto } from 'src/models/entities/TipoProducto';
+import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
+import { Persona } from 'src/models/entities/Persona';
 import { retry } from 'rxjs/operators';
 
 @Injectable()

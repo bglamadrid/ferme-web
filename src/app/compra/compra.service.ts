@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Producto } from 'src/models/Producto';
-import { Venta } from 'src/models/Venta';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Producto } from 'src/models/entities/Producto';
+import { Venta } from 'src/models/entities/Venta';
 
 @Injectable({ providedIn: 'root' })
 export class CompraService {
@@ -26,7 +26,7 @@ export class CompraService {
   }
 
   private obtenerIndiceDetallesVentaSegunProducto(prod: Producto): number {
-    return this.detalles.findIndex(d => d.idProducto === prod.idProducto);
+    return this.detalles.findIndex(d => d.idProducto === prod.id);
   }
 
   public agregarProducto(prod: Producto): void {

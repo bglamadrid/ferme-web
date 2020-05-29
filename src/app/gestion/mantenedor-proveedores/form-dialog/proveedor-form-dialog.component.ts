@@ -8,8 +8,8 @@ import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/dat
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Cargo } from 'src/models/Cargo';
-import { Proveedor } from 'src/models/Proveedor';
+import { Cargo } from 'src/models/entities/Cargo';
+import { Proveedor } from 'src/models/entities/Proveedor';
 
 export interface ProveedorFormDialogGestionData {
   proveedor: Proveedor;
@@ -58,7 +58,7 @@ export class ProveedorFormDialogGestionComponent {
     return this.fb.group(group);
   }
 
-  public get esNuevo() { return this.proveedor ? isNaN(this.proveedor.idProveedor) : true; }
+  public get esNuevo() { return this.proveedor ? isNaN(this.proveedor.id) : true; }
 
 
   protected cargarProveedor(prov: Proveedor): void {
@@ -75,8 +75,8 @@ export class ProveedorFormDialogGestionComponent {
     this.httpSvc.create(prov).subscribe(
       (prov2: Proveedor) => {
         // TODO: make sure prod2 is not actually prod
-        if (prov2.idProveedor) {
-          if (prov.idProveedor) {
+        if (prov2.id) {
+          if (prov.id) {
             this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' actualizado/a exitosamente.');
           } else {
             this.snackBar.open('Proveedor \'' + prov2.nombreCompletoPersona + '\' registrado/a exitosamente.');
@@ -97,7 +97,7 @@ export class ProveedorFormDialogGestionComponent {
 
   public onClickAceptar(): void {
     const datosProveedor = {
-      idProveedor: this.proveedor.idProveedor ? this.proveedor.idProveedor : null,
+      idProveedor: this.proveedor.id ? this.proveedor.id : null,
       idPersona: this.proveedor.idPersona ? this.proveedor.idPersona : null,
       razonSocialProveedor: this.razonSocial.value
     };

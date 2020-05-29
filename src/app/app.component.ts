@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/models/entities/Sesion';
 import { AuthService } from 'src/app/auth.service';
-import { Usuario } from 'src/models/Usuario';
+import { Usuario } from 'src/models/entities/Usuario';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

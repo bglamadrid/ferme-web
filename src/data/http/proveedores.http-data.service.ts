@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/data/http/http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Proveedor } from 'src/models/Proveedor';
+import { Proveedor } from 'src/models/entities/Proveedor';
 import { retry, map } from 'rxjs/operators';
 import { EntityDataService } from '../entity.data.iservice';
 
@@ -42,7 +42,7 @@ export class ProveedoresHttpDataService
       prov
     ).pipe(
       map(id => {
-        prov.idProveedor = id;
+        prov.id = id;
         return prov;
       })
     );

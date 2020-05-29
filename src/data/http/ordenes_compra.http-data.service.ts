@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map, retry } from 'rxjs/operators';
 import { HttpService } from 'src/data/http/http.abstract-service';
-import { OrdenCompra } from 'src/models/OrdenCompra';
-import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
-import { retry, map } from 'rxjs/operators';
-import { EntityDataService } from '../entity.data.iservice';
+import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
+import { OrdenCompra } from 'src/models/entities/OrdenCompra';
 import { CompositeEntityDataService } from '../composite-entity.data.iservice';
 
 @Injectable()
@@ -51,7 +50,7 @@ export class OrdenesCompraHttpDataService
       oc
     ).pipe(
       map(id => {
-        oc.idOrdenCompra = id;
+        oc.id = id;
         return oc;
       })
     );

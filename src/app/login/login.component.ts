@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/auth.service';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/models/entities/Sesion';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from '../shared/constantes';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';

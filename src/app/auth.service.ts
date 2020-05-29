@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Sesion } from 'src/models/Sesion';
+import { Sesion } from 'src/models/entities/Sesion';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { finalize } from 'rxjs/operators';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';

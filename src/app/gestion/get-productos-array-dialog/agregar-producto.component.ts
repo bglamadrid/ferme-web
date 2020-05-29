@@ -4,7 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
-import { Producto } from 'src/models/Producto';
+import { Producto } from 'src/models/entities/Producto';
 import { FormBuilder } from '@angular/forms';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';

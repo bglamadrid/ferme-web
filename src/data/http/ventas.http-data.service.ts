@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/data/http/http.abstract-service';
-import { Venta } from 'src/models/Venta';
-import { DetalleVenta } from 'src/models/DetalleVenta';
+import { Venta } from 'src/models/entities/Venta';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { retry, map } from 'rxjs/operators';
 import { CompositeEntityDataService } from '../composite-entity.data.iservice';
 
@@ -50,7 +50,7 @@ export class VentasHttpDataService
       vt
     ).pipe(
       map(id => {
-        vt.idVenta = id;
+        vt.id = id;
         return vt;
       })
     );

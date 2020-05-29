@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ListadoGestionComponent } from 'src/app/gestion/listado-gestion.abstract-component';
-import { Cliente } from 'src/models/Cliente';
+import { Cliente } from 'src/models/entities/Cliente';
 
 @Component({
   selector: 'app-listado-clientes-gestion',

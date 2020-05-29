@@ -1,7 +1,7 @@
 import { Component, EventEmitter, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ListadoGestionComponent } from 'src/app/gestion/listado-gestion.abstract-component';
-import { Venta } from 'src/models/Venta';
+import { Venta } from 'src/models/entities/Venta';
 
 @Component({
   selector: 'app-listado-ventas-gestion',

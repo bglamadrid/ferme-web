@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { Cliente } from 'src/models/Cliente';
+import { Cliente } from 'src/models/entities/Cliente';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { ListadoClientesGestionComponent } from './listado/listado-clientes.component';
 

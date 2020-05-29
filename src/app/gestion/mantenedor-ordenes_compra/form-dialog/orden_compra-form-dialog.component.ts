@@ -10,11 +10,11 @@ import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-ar
 import { EmpleadosHttpDataService } from 'src/data/http/empleados.http-data.service';
 import { OrdenesCompraHttpDataService } from 'src/data/http/ordenes_compra.http-data.service';
 import { ProveedoresHttpDataService } from 'src/data/http/proveedores.http-data.service';
-import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
-import { Empleado } from 'src/models/Empleado';
-import { OrdenCompra } from 'src/models/OrdenCompra';
-import { Producto } from 'src/models/Producto';
-import { Proveedor } from 'src/models/Proveedor';
+import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
+import { Empleado } from 'src/models/entities/Empleado';
+import { OrdenCompra } from 'src/models/entities/OrdenCompra';
+import { Producto } from 'src/models/entities/Producto';
+import { Proveedor } from 'src/models/entities/Proveedor';
 import { AuthService } from 'src/app/auth.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
@@ -104,7 +104,7 @@ export class OrdenCompraFormDialogGestionComponent
       return null;
     } else {
       return {
-        idOrdenCompra: this.idOrdenCompra ? this.idOrdenCompra : null,
+        id: this.idOrdenCompra ? this.idOrdenCompra : null,
         idEmpleado: this.empleado.value,
         estadoOrdenCompra: null,
         fechaSolicitudOrdenCompra: this.fechaSolicitud,
@@ -127,7 +127,7 @@ export class OrdenCompraFormDialogGestionComponent
     this.ordenCompraForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.idOrdenCompra = oc.idOrdenCompra;
+    this.idOrdenCompra = oc.id;
 
     if (oc.idEmpleado) {
       this.empleado.setValue(oc.idEmpleado, REACTIVE_FORMS_ISOLATE);
@@ -137,7 +137,7 @@ export class OrdenCompraFormDialogGestionComponent
       this.proveedor.setValue(oc.idProveedor, REACTIVE_FORMS_ISOLATE);
     }
 
-    this.httpSvc.readDetailsById(oc.idOrdenCompra).pipe(
+    this.httpSvc.readDetailsById(oc.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ordenCompraForm.enable();
@@ -161,11 +161,11 @@ export class OrdenCompraFormDialogGestionComponent
     this.httpSvc.create(vnt).subscribe(
       (vnt2: OrdenCompra) => {
         // TODO: make sure vnt2 is not actually vnt
-        if (vnt2.idOrdenCompra) {
-          if (vnt.idOrdenCompra) {
-            this.snackBar.open('Orden de compra \'' + vnt.idOrdenCompra + '\' actualizada exitosamente.', 'OK', { duration: -1 });
+        if (vnt2.id) {
+          if (vnt.id) {
+            this.snackBar.open('Orden de compra \'' + vnt.id + '\' actualizada exitosamente.', 'OK', { duration: -1 });
           } else {
-            this.snackBar.open('Orden de compra \'' + vnt2.idOrdenCompra + '\' registrada exitosamente.', 'OK', { duration: -1 });
+            this.snackBar.open('Orden de compra \'' + vnt2.id + '\' registrada exitosamente.', 'OK', { duration: -1 });
           }
           this.self.close(vnt2);
         } else {
@@ -193,7 +193,7 @@ export class OrdenCompraFormDialogGestionComponent
             productos.forEach(
               (prod: Producto, i: number) => {
                 const dtl: DetalleOrdenCompra = new DetalleOrdenCompra();
-                dtl.idProducto = prod.idProducto;
+                dtl.idProducto = prod.id;
                 dtl.nombreProducto = prod.nombreProducto;
                 dtl.precioProducto = prod.precioProducto;
                 dtl.cantidadProducto = 1;

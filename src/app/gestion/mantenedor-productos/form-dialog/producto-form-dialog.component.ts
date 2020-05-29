@@ -7,9 +7,9 @@ import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { SERVICE_ALIASES } from 'src/data/service-aliases';
-import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { Producto } from 'src/models/Producto';
-import { TipoProducto } from 'src/models/TipoProducto';
+import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
+import { Producto } from 'src/models/entities/Producto';
+import { TipoProducto } from 'src/models/entities/TipoProducto';
 
 export interface ProductoFormDialogGestionData {
   producto: Producto;
@@ -89,8 +89,8 @@ export class ProductoFormDialogGestionComponent
     this.productoForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    if (prod.idProducto) {
-      this.privIdProducto = prod.idProducto;
+    if (prod.id) {
+      this.privIdProducto = prod.id;
       this.codigoProducto = prod.codigoProducto;
     } else {
       this.privIdProducto = null;
@@ -119,8 +119,8 @@ export class ProductoFormDialogGestionComponent
     this.httpSvc.create(prod).subscribe(
       (prod2: Producto) => {
         // TODO: make sure prod2 is not actually prod
-        if (prod2.idProducto) {
-          if (prod.idProducto) {
+        if (prod2.id) {
+          if (prod.id) {
             this.snackBar.open('Producto \'' + prod.nombreProducto + '\' actualizado/a exitosamente.');
           } else {
             this.snackBar.open('Producto \'' + prod2.nombreProducto + '\' registrado/a exitosamente.');
@@ -168,7 +168,7 @@ export class ProductoFormDialogGestionComponent
 
   public onClickAceptar(): void {
     const nuevo: Producto = {
-      idProducto: this.privIdProducto ? this.privIdProducto : null,
+      id: this.privIdProducto ? this.privIdProducto : null,
       idTipoProducto: this.tipo.value,
       nombreProducto: this.nombre.value,
       precioProducto: this.precio.value,
