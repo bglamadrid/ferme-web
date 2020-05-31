@@ -1,6 +1,6 @@
 export class TipoProducto {
   public idTipoProducto: number;
-  public nombreTipoProducto: number;
+  public descripcionTipoProducto?: string;
   public idFamiliaProducto: number;
-  public nombreFamiliaProducto: string;
+  public descripcionFamiliaProducto?: string;
 }
