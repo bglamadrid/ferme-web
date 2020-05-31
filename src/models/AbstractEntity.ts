@@ -3,5 +3,7 @@
  */
 export abstract class AbstractEntity {
 
-  public id: number | string;
+  public abstract id: number | string;
+  public nombre?: string;
+  public descripcion?: string;
 }

@@ -1,13 +1,13 @@
 <table mat-table #tabla class="full-width">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let proveedor" class="left"> 
-      {{proveedor.nombreCompletoPersona}}
+    <td mat-cell *matCellDef="let proveedor" class="left">
+      {{proveedor.nombrePersona}}
     </td>
   </ng-container>
   <ng-container matColumnDef="rut">
     <th mat-header-cell *matHeaderCellDef> Rut </th>
-    <td mat-cell *matCellDef="let proveedor" class="left"> 
+    <td mat-cell *matCellDef="let proveedor" class="left">
       {{proveedor.rutPersona}}
     </td>
   </ng-container>
@@ -15,19 +15,19 @@
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let proveedor">
       <div class="acciones">
-        <button mat-button mat-icon-button 
+        <button mat-button mat-icon-button
           color="primary" class="details"
-          [disabled]="ocupado$ | async" 
+          [disabled]="ocupado$ | async"
           (click)="onClickEditar(proveedor)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button mat-icon-button 
+        <button mat-button mat-icon-button
           color="warn" class="delete"
-          [disabled]="ocupado$ | async" 
+          [disabled]="ocupado$ | async"
           (click)="onClickBorrar(proveedor)">
           <mat-icon>delete</mat-icon>
         </button>
-      </div> 
+      </div>
     </td>
   </ng-container>
 

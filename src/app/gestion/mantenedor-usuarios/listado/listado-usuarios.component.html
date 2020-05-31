@@ -1,25 +1,25 @@
 <table mat-table #tabla class="full-width">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef> Nombre de Usuario </th>
-    <td mat-cell *matCellDef="let usuario" class="left"> 
+    <td mat-cell *matCellDef="let usuario" class="left">
       {{usuario.nombreUsuario}}
     </td>
   </ng-container>
   <ng-container matColumnDef="fechaCreacion">
     <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
-    <td mat-cell *matCellDef="let usuario" class="left"> 
+    <td mat-cell *matCellDef="let usuario" class="left">
       {{usuario.fechaCreacionUsuario}}
     </td>
   </ng-container>
   <ng-container matColumnDef="nombreCompleto">
     <th mat-header-cell *matHeaderCellDef> Nombre Completo </th>
-    <td mat-cell *matCellDef="let usuario" class="left"> 
-      {{usuario.nombreCompletoPersona}}
+    <td mat-cell *matCellDef="let usuario" class="left">
+      {{usuario.nombrePersona}}
     </td>
   </ng-container>
   <ng-container matColumnDef="rut">
     <th mat-header-cell *matHeaderCellDef> Rut </th>
-    <td mat-cell *matCellDef="let usuario" class="left"> 
+    <td mat-cell *matCellDef="let usuario" class="left">
       {{usuario.rutPersona}}
     </td>
   </ng-container>
@@ -27,19 +27,19 @@
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let usuario">
       <div class="acciones">
-        <button mat-button mat-icon-button 
+        <button mat-button mat-icon-button
           color="primary" class="details"
-          [disabled]="ocupado$ | async" 
+          [disabled]="ocupado$ | async"
           (click)="onClickEditar(usuario)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button mat-icon-button 
+        <button mat-button mat-icon-button
           color="warn" class="delete"
-          [disabled]="ocupado$ | async" 
+          [disabled]="ocupado$ | async"
           (click)="onClickBorrar(usuario)">
           <mat-icon>delete</mat-icon>
         </button>
-      </div> 
+      </div>
     </td>
   </ng-container>
 

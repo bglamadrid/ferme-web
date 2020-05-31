@@ -59,7 +59,7 @@ extends MantenedorGestionComponent<Proveedor> {
     ).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' eliminado.');
+          this.snackBar.open('Proveedor \'' + prov.nombre + '\' eliminado.');
           this.onCargar();
         } else {
           this.snackBar.open('Hubo un problema al borrar el empleado.');

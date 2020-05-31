@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { Sesion } from 'src/models/entities/Sesion';
-import { FERME_AUTHORIZED_CARGOS } from './gestion/gestion.routes';
+import { FERME_GESION_ROUTES_AUTH_CARGOS } from './gestion/gestion.routes';
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { CargosEnum } from 'src/enums/CargosEnum';
 
 @Injectable()
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard
+  implements CanActivate, CanActivateChild {
 
   public path: ActivatedRouteSnapshot[];
   public route: ActivatedRouteSnapshot;
@@ -37,7 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (modulos.length > 1) {
               const idCargo = sesionActual.idCargo;
               const subModule = modulos[1];
-              const cargosAutorizados = FERME_AUTHORIZED_CARGOS[subModule];
+              const cargosAutorizados = FERME_GESION_ROUTES_AUTH_CARGOS[subModule];
 
               if (cargosAutorizados) {
                 return cargosAutorizados.includes(idCargo);

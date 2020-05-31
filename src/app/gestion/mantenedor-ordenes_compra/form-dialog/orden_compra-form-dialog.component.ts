@@ -194,7 +194,7 @@ export class OrdenCompraFormDialogGestionComponent
               (prod: Producto, i: number) => {
                 const dtl: DetalleOrdenCompra = new DetalleOrdenCompra();
                 dtl.idProducto = prod.id;
-                dtl.nombreProducto = prod.nombreProducto;
+                dtl.nombreProducto = prod.nombre;
                 dtl.precioProducto = prod.precioProducto;
                 dtl.cantidadProducto = 1;
 

@@ -1,5 +1,10 @@
-export class DetalleOrdenCompra {
-  public idDetalleOrdenCompra: number;
+import { AbstractEntity } from '../AbstractEntity';
+
+export class DetalleOrdenCompra
+  extends AbstractEntity {
+
+  public id: number;
+
   public idOrdenCompra: number;
   public idProducto: number;
   public cantidadProducto: number;

@@ -58,7 +58,7 @@ export class MantenedorEmpleadosGestionComponent
     ).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' eliminado.');
+          this.snackBar.open('Empleado \'' + emp.nombre + '\' eliminado.');
           this.onCargar();
         } else {
           this.snackBar.open('Hubo un problema al borrar el empleado.');

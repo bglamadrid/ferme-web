@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 
 @Component({
@@ -53,7 +53,7 @@ export class DatosPersonaFormComponent {
     } else {
       return {
         idPersona: null,
-        nombreCompletoPersona: this.nombre.value,
+        nombrePersona: this.nombre.value,
         rutPersona: this.rut.value,
         direccionPersona: this.direccion.value,
         emailPersona: this.email.value,
@@ -70,7 +70,7 @@ export class DatosPersonaFormComponent {
 
   @Input() public set Persona(prs: Persona) {
 
-    this.nombre.setValue(prs.nombreCompletoPersona, REACTIVE_FORMS_ISOLATE);
+    this.nombre.setValue(prs.nombrePersona, REACTIVE_FORMS_ISOLATE);
     this.rut.setValue(prs.rutPersona, REACTIVE_FORMS_ISOLATE);
 
     if (prs.direccionPersona) {

@@ -63,8 +63,8 @@ export class ProveedorFormDialogGestionComponent {
 
   protected cargarProveedor(prov: Proveedor): void {
     this.proveedor = prov;
-    if (prov.razonSocialProveedor) {
-      this.razonSocial.setValue(prov.razonSocialProveedor, REACTIVE_FORMS_ISOLATE);
+    if (prov.razonSocial) {
+      this.razonSocial.setValue(prov.razonSocial, REACTIVE_FORMS_ISOLATE);
     }
   }
 
@@ -77,9 +77,9 @@ export class ProveedorFormDialogGestionComponent {
         // TODO: make sure prod2 is not actually prod
         if (prov2.id) {
           if (prov.id) {
-            this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' actualizado/a exitosamente.');
+            this.snackBar.open('Proveedor \'' + prov.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Proveedor \'' + prov2.nombreCompletoPersona + '\' registrado/a exitosamente.');
+            this.snackBar.open('Proveedor \'' + prov2.nombre + '\' registrado/a exitosamente.');
           }
           this.self.close(prov2);
         } else {
@@ -99,7 +99,7 @@ export class ProveedorFormDialogGestionComponent {
     const datosProveedor = {
       id: this.proveedor.id ? this.proveedor.id : null,
       idPersona: this.proveedor.idPersona ? this.proveedor.idPersona : null,
-      razonSocialProveedor: this.razonSocial.value
+      razonSocial: this.razonSocial.value
     };
     const prov: Proveedor = Object.assign(
       this.personaForm.persona,

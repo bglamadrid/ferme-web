@@ -18,7 +18,7 @@
       <mat-form-field style="grid-area: c">
         <mat-select placeholder="Persona" formControlName="persona">
           <mat-option *ngFor="let persona of (personas$ | async)" [value]="persona.idPersona">
-            {{ persona.nombreCompletoPersona + " (" + persona.rutPersona + ")" }}
+            {{ persona.nombrePersona + " (" + persona.rutPersona + ")" }}
           </mat-option>
         </mat-select>
       </mat-form-field>

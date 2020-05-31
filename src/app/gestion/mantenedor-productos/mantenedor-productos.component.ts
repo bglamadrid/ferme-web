@@ -58,7 +58,7 @@ export class MantenedorProductosGestionComponent
     ).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Producto \'' + prod.nombreProducto + '\' eliminado.');
+          this.snackBar.open('Producto \'' + prod.nombre + '\' eliminado.');
           this.onCargar();
         } else {
           this.snackBar.open('Hubo un problema al borrar el producto.');

@@ -3,29 +3,29 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cargo } from 'src/models/entities/Cargo';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { Rubro } from 'src/models/entities/Rubro';
 import { TipoProducto } from 'src/models/entities/TipoProducto';
 import { SharedDataService } from '../shared.data.iservice';
 
 export const MOCK_CARGOS: Cargo[] = [
-  { idCargo: 1, descripcionCargo: 'Administrador' }
+  { id: 1, nombre: 'Administrador' }
 ];
 
 export const MOCK_RUBROS: Rubro[] = [
-  { idRubro: 1, descripcionRubro: '' }
+  { id: 1, nombre: '' }
 ];
 
 export const MOCK_PEOPLE: Persona[] = [
-  { idPersona: 1, nombreCompletoPersona: 'Anónimo' }
+  { idPersona: 1, nombrePersona: 'Anónimo' }
 ];
 
 export const MOCK_PRODUCT_FAMILIES: FamiliaProducto[] = [
-  { idFamiliaProducto: 1, descripcionFamiliaProducto: 'Familia de producto 1', idProveedor: 1 }
+  { id: 1, descripcion: 'Familia de producto 1', idProveedor: 1 }
 ];
 
 export const MOCK_PRODUCT_TYPES: TipoProducto[] = [
-  { idTipoProducto: 1, descripcionTipoProducto: 'Tipo de producto 1', idFamiliaProducto: 1 }
+  { id: 1, descripcion: 'Tipo de producto 1', idFamiliaProducto: 1 }
 ];
 
 @Injectable()

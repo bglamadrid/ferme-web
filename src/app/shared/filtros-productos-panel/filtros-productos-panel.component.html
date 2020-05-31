@@ -8,8 +8,8 @@
       <mat-select placeholder="Familia de Productos"
         formControlName="familia">
         <mat-option *ngFor="let fml of (familias$ | async)"
-          [value]="fml.idFamiliaProducto">
-          {{ fml.descripcionFamiliaProducto }}
+          [value]="fml.id">
+          {{ fml.descripcion }}
         </mat-option>
       </mat-select>
       <button matSuffix mat-button mat-icon-button *ngIf="familia.value"
@@ -22,8 +22,8 @@
       <mat-select placeholder="Tipo de Producto"
         formControlName="tipo">
         <mat-option *ngFor="let tp of (tipos$ | async)"
-          [value]="tp.idTipoProducto">
-          {{ tp.descripcionTipoProducto }}
+          [value]="tp.id">
+          {{ tp.descripcion }}
         </mat-option>
       </mat-select>
       <button matSuffix mat-button mat-icon-button *ngIf="tipo.value"

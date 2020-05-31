@@ -5,7 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
 import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 
 export interface PerfilUsuarioFormDialogData {
   persona: Partial<Persona>;

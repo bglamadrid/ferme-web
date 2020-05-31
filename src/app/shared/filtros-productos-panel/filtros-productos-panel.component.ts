@@ -104,7 +104,7 @@ export class FiltrosProductosPanelComponent
             if (tipos && tipos.length > 0) {
               this.tipos$ = of(tipos);
               this.tipo.enable();
-              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.idTipoProducto === idTipoProductoSeleccionado)) {
+              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.id === idTipoProductoSeleccionado)) {
                 this.tipo.reset();
               }
             } else {

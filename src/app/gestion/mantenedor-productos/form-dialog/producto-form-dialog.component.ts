@@ -97,14 +97,14 @@ export class ProductoFormDialogGestionComponent
       this.codigoProducto =  null;
     }
 
-    this.nombre.setValue(prod.nombreProducto, REACTIVE_FORMS_ISOLATE);
+    this.nombre.setValue(prod.nombre, REACTIVE_FORMS_ISOLATE);
     this.familia.setValue(prod.idFamiliaProducto, REACTIVE_FORMS_ISOLATE);
     this.tipo.setValue(prod.idTipoProducto, REACTIVE_FORMS_ISOLATE);
     this.precio.setValue(prod.precioProducto, REACTIVE_FORMS_ISOLATE);
     this.stockActual.setValue(prod.stockActualProducto, REACTIVE_FORMS_ISOLATE);
     this.stockCritico.setValue(String(prod.stockCriticoProducto), REACTIVE_FORMS_ISOLATE);
-    if (prod.descripcionProducto) {
-      this.descripcion.setValue(prod.descripcionProducto, REACTIVE_FORMS_ISOLATE);
+    if (prod.descripcion) {
+      this.descripcion.setValue(prod.descripcion, REACTIVE_FORMS_ISOLATE);
     }
     this.onChangeFamilia();
 
@@ -121,9 +121,9 @@ export class ProductoFormDialogGestionComponent
         // TODO: make sure prod2 is not actually prod
         if (prod2.id) {
           if (prod.id) {
-            this.snackBar.open('Producto \'' + prod.nombreProducto + '\' actualizado/a exitosamente.');
+            this.snackBar.open('Producto \'' + prod.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Producto \'' + prod2.nombreProducto + '\' registrado/a exitosamente.');
+            this.snackBar.open('Producto \'' + prod2.nombre + '\' registrado/a exitosamente.');
           }
           this.self.close(prod2);
         } else {
@@ -148,7 +148,7 @@ export class ProductoFormDialogGestionComponent
         if (idTipoProductoSeleccionado) {
           this.tipos$.subscribe(
             (tipos: TipoProducto[]) => {
-              if (!(tipos && tipos.length > 0 && tipos.find(tp => tp.idTipoProducto === idTipoProductoSeleccionado))) {
+              if (!(tipos && tipos.length > 0 && tipos.find(tp => tp.id === idTipoProductoSeleccionado))) {
                 this.tipo.reset();
               }
             },
@@ -170,11 +170,11 @@ export class ProductoFormDialogGestionComponent
     const nuevo: Producto = {
       id: this.privIdProducto ? this.privIdProducto : null,
       idTipoProducto: this.tipo.value,
-      nombreProducto: this.nombre.value,
+      nombre: this.nombre.value,
       precioProducto: this.precio.value,
       stockActualProducto: this.stockActual.value,
       stockCriticoProducto: this.stockCritico.value,
-      descripcionProducto: this.descripcion.value ? this.descripcion.value : null,
+      descripcion: this.descripcion.value ? this.descripcion.value : null,
       codigoProducto: undefined,
       descripcionTipoProducto: undefined
     };

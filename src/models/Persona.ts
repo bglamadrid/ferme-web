@@ -1,6 +1,6 @@
 export interface Persona {
   idPersona: number;
-  nombreCompletoPersona?: string;
+  nombrePersona?: string;
   rutPersona?: string;
   direccionPersona?: string;
   emailPersona?: string;

@@ -5,7 +5,7 @@ import { Empleado } from 'src/models/entities/Empleado';
 export const MOCK_EMPLOYEES: Partial<Empleado>[] = [
   {
     id: 1,
-    nombreCompletoPersona: 'Sujeto de prueba',
+    nombre: 'Sujeto de prueba',
     rutPersona: '1111111-1',
     direccionPersona: 'Calle Sin Salida 47',
     emailPersona: 'example@test.org'

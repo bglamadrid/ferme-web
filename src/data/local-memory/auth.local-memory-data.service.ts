@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { Sesion } from 'src/models/entities/Sesion';
 import { AuthDataService } from '../auth.data.iservice';
+import { CargosEnum } from 'src/enums/CargosEnum';
 
 @Injectable()
 export class AuthLocalMemoryDataService
@@ -18,11 +19,13 @@ export class AuthLocalMemoryDataService
     this.latestSessionId++;
 
     const sesion: Partial<Sesion> = {
-      idSesion: this.latestSessionId,
+      id: this.latestSessionId,
       fechaAbiertaSesion: Date.now().toLocaleString(),
-      hashSesion: '',
-      idUsuario: 0,
-    }
+      hashSesion: 'test',
+      idUsuario: 1,
+      idEmpleado: 1,
+      idCargo: CargosEnum.Administrador
+    };
 
     return of(sesion);
   }

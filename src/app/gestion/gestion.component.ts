@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
+import { FERME_GESION_ROUTES_AUTH_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthDataService } from 'src/data/auth.data.iservice';
@@ -112,7 +112,7 @@ export class GestionComponent
   public puedeVerModulo(nombreModulo: string): boolean {
 
     const sesionActual = this.authSvc.sesion;
-    const cargosAutorizados = FERME_AUTHORIZED_CARGOS[nombreModulo];
+    const cargosAutorizados = FERME_GESION_ROUTES_AUTH_CARGOS[nombreModulo];
     if (cargosAutorizados && sesionActual) {
       const puede = cargosAutorizados.includes(sesionActual.idCargo);
       return puede;

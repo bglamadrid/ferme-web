@@ -1,6 +1,10 @@
-export class TipoProducto {
-  public idTipoProducto: number;
-  public descripcionTipoProducto?: string;
+import { AbstractEntity } from '../AbstractEntity';
+
+export class TipoProducto
+  extends AbstractEntity {
+
+  public id: number;
+  public descripcion: string;
   public idFamiliaProducto: number;
   public descripcionFamiliaProducto?: string;
 }

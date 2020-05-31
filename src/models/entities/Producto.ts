@@ -1,9 +1,12 @@
 import { AbstractEntity } from '../AbstractEntity';
 
-export class Producto extends AbstractEntity {
+export class Producto
+  extends AbstractEntity {
+
   public id: number;
-  public nombreProducto: string;
-  public descripcionProducto: string;
+  public nombre: string;
+  public descripcion?: string;
+
   public precioProducto: number;
   public stockActualProducto: number;
   public stockCriticoProducto: number;

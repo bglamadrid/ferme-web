@@ -7,7 +7,7 @@ import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { Usuario } from 'src/models/entities/Usuario';
 
 export interface UsuarioFormDialogGestionData {
@@ -73,7 +73,7 @@ export class UsuarioFormDialogGestionComponent
       this.clave.setValidators(null);
     }
 
-    this.nombre.setValue(usr.nombreUsuario, REACTIVE_FORMS_ISOLATE);
+    this.nombre.setValue(usr.nombre, REACTIVE_FORMS_ISOLATE);
     this.persona.setValue(usr.idPersona, REACTIVE_FORMS_ISOLATE);
 
     this.cargando = false;
@@ -89,9 +89,9 @@ export class UsuarioFormDialogGestionComponent
         // TODO: make sure prod2 is not actually prod
         if (usr2.id) {
           if (usr.id) {
-            this.snackBar.open('Usuario \'' + usr.nombreUsuario + '\' actualizado/a exitosamente.');
+            this.snackBar.open('Usuario \'' + usr.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Usuario \'' + usr2.nombreUsuario + '\' registrado/a exitosamente.');
+            this.snackBar.open('Usuario \'' + usr2.nombre + '\' registrado/a exitosamente.');
           }
           this.self.close(usr2);
         } else {
@@ -109,7 +109,7 @@ export class UsuarioFormDialogGestionComponent
   public onClickAceptar(): void {
     const nuevo: Usuario = new Usuario();
     nuevo.id = this.privIdUsuario ? this.privIdUsuario : null,
-    nuevo.nombreUsuario = this.nombre.value;
+    nuevo.nombre = this.nombre.value;
     if (this.clave.value) {
       nuevo.claveUsuario =  this.clave.value;
     }

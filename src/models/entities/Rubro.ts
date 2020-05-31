@@ -1,4 +1,8 @@
-export class Rubro {
-  public idRubro: number;
-  public descripcionRubro: string;
+import { AbstractEntity } from '../AbstractEntity';
+
+export class Rubro
+  extends AbstractEntity {
+
+  public id: number;
+  public nombre: string;
 }

@@ -9,7 +9,7 @@ import { MantenedorOrdenesCompraGestionComponent } from 'src/app/gestion/mantene
 import { MantenedorUsuariosGestionComponent } from 'src/app/gestion/mantenedor-usuarios/mantenedor-usuarios.component';
 import { ResumenGestionComponent } from 'src/app/gestion/resumen/resumen.component';
 
-export const FERME_AUTHORIZED_CARGOS: { [key: string]: CargosEnum[] } = {
+export const FERME_GESION_ROUTES_AUTH_CARGOS: { [key: string]: CargosEnum[] } = {
   resumen: [CargosEnum.Administrador, CargosEnum.Encargado, CargosEnum.Vendedor],
   clientes: [CargosEnum.Administrador],
   empleados: [CargosEnum.Administrador],

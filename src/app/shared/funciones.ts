@@ -5,7 +5,7 @@ export function crearDetalleVentaDesdeProducto(prod: Producto): DetalleVenta {
     const detalleConEsteProducto = new DetalleVenta();
     detalleConEsteProducto.unidadesProducto = 1;
     detalleConEsteProducto.idProducto = prod.id;
-    detalleConEsteProducto.nombreProducto = prod.nombreProducto;
+    detalleConEsteProducto.nombreProducto = prod.nombre;
     detalleConEsteProducto.codigoProducto = prod.codigoProducto;
     detalleConEsteProducto.precioProducto = prod.precioProducto;
     return detalleConEsteProducto;

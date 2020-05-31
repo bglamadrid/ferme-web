@@ -1,12 +1,17 @@
-export class Sesion {
-  public idSesion: number;
+import { AbstractEntity } from '../AbstractEntity';
+
+export class Sesion
+  extends AbstractEntity {
+
+  public id: number;
+
   public fechaAbiertaSesion: string;
   public hashSesion: string;
   public idUsuario: number;
   public nombreUsuario: string;
 
-  public idCargo: number;
-  public idPersona: number;
-  public idEmpleado: number;
-  public idCliente: number;
+  public idPersona?: number;
+  public idEmpleado?: number;
+  public idCargo?: number;
+  public idCliente?: number;
 }

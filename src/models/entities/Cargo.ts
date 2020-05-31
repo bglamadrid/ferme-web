@@ -1,4 +1,7 @@
-export class Cargo {
-  public idCargo: number;
-  public descripcionCargo: string;
+import { AbstractEntity } from '../AbstractEntity';
+
+export class Cargo
+  extends AbstractEntity {
+  public id: number;
+  public nombre: string;
 }

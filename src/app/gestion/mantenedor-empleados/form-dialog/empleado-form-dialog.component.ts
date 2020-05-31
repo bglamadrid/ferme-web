@@ -68,8 +68,8 @@ export class EmpleadoFormDialogGestionComponent
 
   protected cargarEmpleado(emp: Empleado): void {
     this.empleado = emp;
-    if (emp.idCargo) {
-      this.cargo.setValue(emp.idCargo);
+    if (emp.id) {
+      this.cargo.setValue(emp.id);
     }
   }
 
@@ -82,9 +82,9 @@ export class EmpleadoFormDialogGestionComponent
         // TODO: make sure emp2 is not actually emp
         if (emp2.id) {
           if (emp.id) {
-            this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' actualizado/a exitosamente.');
+            this.snackBar.open('Empleado \'' + emp.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Empleado \'' + emp2.nombreCompletoPersona + '\' registrado/a exitosamente.');
+            this.snackBar.open('Empleado \'' + emp2.nombre + '\' registrado/a exitosamente.');
           }
           this.dialogRef.close(emp2);
         } else {
@@ -105,7 +105,8 @@ export class EmpleadoFormDialogGestionComponent
     const datosEmpleado = {
       id: this.empleado.id ? this.empleado.id : null,
       idPersona: this.empleado.idPersona ? this.empleado.idPersona : null,
-      idCargo: this.cargo.value
+      idCargo: this.cargo.value,
+      nombre: this.personaForm.nombre.value
     };
     const emp: Empleado = Object.assign(
       this.personaForm.persona,

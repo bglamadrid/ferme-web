@@ -3,7 +3,7 @@ import { HttpService } from './http.abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Sesion } from 'src/models/entities/Sesion';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { retry } from 'rxjs/operators';
 import { AuthDataService } from '../auth.data.iservice';
 

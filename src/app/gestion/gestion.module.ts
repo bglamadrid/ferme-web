@@ -62,6 +62,9 @@ const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
     SharedModule,
     GestionRoutingModule
   ],
+  exports: [
+    GestionRoutingModule
+  ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS }
   ]

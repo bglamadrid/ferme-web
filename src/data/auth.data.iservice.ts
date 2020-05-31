@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Persona } from 'src/models/entities/Persona';
+import { Persona } from 'src/models/Persona';
 import { Sesion } from 'src/models/entities/Sesion';
 
 export interface AuthDataService {
