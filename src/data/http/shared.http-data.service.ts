@@ -23,7 +23,7 @@ export class SharedHttpDataService
     super();
   }
 
-  public cargos(): Observable<Cargo[]> {
+  public readAllCargos(): Observable<Cargo[]> {
     return this.http.get<Cargo[]>(
       this.baseURI + '/cargos'
     ).pipe(
@@ -31,7 +31,7 @@ export class SharedHttpDataService
     );
   }
 
-  public rubros(): Observable<Rubro[]> {
+  public readAllRubros(): Observable<Rubro[]> {
     return this.http.get<Rubro[]>(
       this.baseURI + '/rubros'
     ).pipe(
@@ -39,7 +39,7 @@ export class SharedHttpDataService
     );
   }
 
-  public personas(): Observable<Persona[]> {
+  public readAllPersonas(): Observable<Persona[]> {
     return this.http.get<Persona[]>(
       this.baseURI + '/personas'
     ).pipe(
@@ -47,7 +47,7 @@ export class SharedHttpDataService
     );
   }
 
-  public familiasProducto(): Observable<FamiliaProducto[]> {
+  public readAllFamiliasProducto(): Observable<FamiliaProducto[]> {
     return this.http.get<FamiliaProducto[]>(
       this.baseURI + '/familias_producto'
     ).pipe(
@@ -55,7 +55,7 @@ export class SharedHttpDataService
     );
   }
 
-  public tiposProducto(): Observable<TipoProducto[]> {
+  public readAllTiposProducto(): Observable<TipoProducto[]> {
     return this.http.get<TipoProducto[]>(
       this.baseURI + '/tipos_producto'
     ).pipe(
@@ -63,7 +63,7 @@ export class SharedHttpDataService
     );
   }
 
-  public tiposProductoByFamilia(idFamilia: number): Observable<TipoProducto[]> {
+  public readAllTiposProductoByFamiliaId(idFamilia: number): Observable<TipoProducto[]> {
     return this.http.get<TipoProducto[]>(
       this.baseURI + '/tipos_producto',
       this.parametrosHttp({

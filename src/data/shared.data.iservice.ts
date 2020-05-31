@@ -7,10 +7,10 @@ import { TipoProducto } from 'src/models/entities/TipoProducto';
 
 export interface SharedDataService {
 
-  cargos(): Observable<Cargo[]>;
-  rubros(): Observable<Rubro[]>;
-  personas(): Observable<Persona[]>;
-  familiasProducto(): Observable<FamiliaProducto[]>;
-  tiposProducto(): Observable<TipoProducto[]>;
-  tiposProductoByFamilia(idFamilia: number): Observable<TipoProducto[]>;
+  readAllCargos(): Observable<Cargo[]>;
+  readAllRubros(): Observable<Rubro[]>;
+  readAllPersonas(): Observable<Persona[]>;
+  readAllFamiliasProducto(): Observable<FamiliaProducto[]>;
+  readAllTiposProducto(): Observable<TipoProducto[]>;
+  readAllTiposProductoByFamiliaId(idFamilia: number): Observable<TipoProducto[]>;
 }

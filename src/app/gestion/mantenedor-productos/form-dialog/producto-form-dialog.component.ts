@@ -77,7 +77,7 @@ export class ProductoFormDialogGestionComponent
   public get esNuevo() { return isNaN(this.privIdProducto); }
 
   ngOnInit() {
-    this.familias$ = this.sharedSvc.familiasProducto();
+    this.familias$ = this.sharedSvc.readAllFamiliasProducto();
     this.privChangeFamiliaSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
   }
 
@@ -144,7 +144,7 @@ export class ProductoFormDialogGestionComponent
 
       const idFamilia: number = Number(this.familia.value);
       if (!isNaN(idFamilia)) {
-        this.tipos$ = this.sharedSvc.tiposProductoByFamilia(idFamilia);
+        this.tipos$ = this.sharedSvc.readAllTiposProductoByFamiliaId(idFamilia);
         if (idTipoProductoSeleccionado) {
           this.tipos$.subscribe(
             (tipos: TipoProducto[]) => {

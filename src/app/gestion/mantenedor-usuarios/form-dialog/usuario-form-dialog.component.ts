@@ -61,7 +61,7 @@ export class UsuarioFormDialogGestionComponent
   public get esNuevo() { return isNaN(this.privIdUsuario); }
 
   ngOnInit() {
-    this.sharedSvc.personas().subscribe(prs => { this.personas$ = of(prs); });
+    this.sharedSvc.readAllPersonas().subscribe(prs => { this.personas$ = of(prs); });
   }
 
   protected cargarUsuario(usr: Usuario): void {

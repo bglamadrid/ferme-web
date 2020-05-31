@@ -63,7 +63,7 @@ export class EmpleadoFormDialogGestionComponent
   public get esNuevo() { return this.empleado ? isNaN(this.empleado.id) : true; }
 
   ngOnInit() {
-    this.cargos$ = this.sharedSvc.cargos();
+    this.cargos$ = this.sharedSvc.readAllCargos();
   }
 
   protected cargarEmpleado(emp: Empleado): void {

@@ -52,7 +52,7 @@ export class FiltrosProductosPanelComponent
   public get nombre() { return this.productoForm.get('nombre'); }
 
   ngOnInit() {
-    this.familias$ = this.sharedSvc.familiasProducto();
+    this.familias$ = this.sharedSvc.readAllFamiliasProducto();
 
     this._changeFamiliasSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
     this._changeTipoSub = this.tipo.valueChanges.subscribe(() => { this.emitirFiltros(); });
@@ -99,7 +99,7 @@ export class FiltrosProductosPanelComponent
       const idFamilia: number = Number(this.familia.value);
       if (!isNaN(idFamilia)) {
         this.emitirFiltros();
-        this.sharedSvc.tiposProductoByFamilia(idFamilia).subscribe(
+        this.sharedSvc.readAllTiposProductoByFamiliaId(idFamilia).subscribe(
           (tipos: TipoProducto[]) => {
             if (tipos && tipos.length > 0) {
               this.tipos$ = of(tipos);
