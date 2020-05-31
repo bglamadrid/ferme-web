@@ -5,7 +5,7 @@ import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { Venta } from 'src/models/entities/Venta';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
@@ -25,7 +25,7 @@ export class MantenedorVentasGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoVentasGestionComponent;
 
   constructor(
-    @Inject(SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
+    @Inject(DATA_SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {

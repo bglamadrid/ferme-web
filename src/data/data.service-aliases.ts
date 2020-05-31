@@ -1,4 +1,4 @@
-export const SERVICE_ALIASES = {
+export const DATA_SERVICE_ALIASES = {
   auth: 'AuthData',
   shared: 'SharedData',
   clients: 'ClientsData',

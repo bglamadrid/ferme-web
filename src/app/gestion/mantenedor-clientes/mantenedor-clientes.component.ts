@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cliente } from 'src/models/entities/Cliente';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { ListadoClientesGestionComponent } from './listado/listado-clientes.component';
@@ -21,7 +21,7 @@ export class MantenedorClientesGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoClientesGestionComponent;
 
   constructor(
-    @Inject(SERVICE_ALIASES.clients) protected httpSvc: EntityDataService<Cliente>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected httpSvc: EntityDataService<Cliente>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {

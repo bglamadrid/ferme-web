@@ -10,7 +10,7 @@ import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { LoginComponent, Login } from 'src/app/login/login.component';
 import { Sesion } from 'src/models/entities/Sesion';
 import { finalize } from 'rxjs/operators';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 @Component({
   selector: 'app-compra-login',
@@ -24,7 +24,7 @@ export class CompraLoginDialogComponent extends LoginComponent {
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
-    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected dialogRef: MatDialogRef<CompraLoginDialogComponent>
   ) {
     super(fb, router, snackBar, authSvc, authHttpSvc);

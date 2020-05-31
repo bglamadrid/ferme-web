@@ -7,7 +7,7 @@ import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/shared/const
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cargo } from 'src/models/entities/Cargo';
 import { Empleado } from 'src/models/entities/Empleado';
 
@@ -42,8 +42,8 @@ export class EmpleadoFormDialogGestionComponent
     protected dialogRef: MatDialogRef<EmpleadoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
-    @Inject(SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
   ) {
     this.cargando = true;
     this.guardando = false;

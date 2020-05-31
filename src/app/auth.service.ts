@@ -3,7 +3,7 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Sesion } from 'src/models/entities/Sesion';
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { finalize } from 'rxjs/operators';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
   protected validandoSesion$: Observable<boolean>;
 
   constructor(
-    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
   ) {
     const ssn = this.sesion;
     this.cambioSesionSource = new BehaviorSubject(ssn);

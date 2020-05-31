@@ -10,7 +10,7 @@ import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TI
 import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cliente } from 'src/models/entities/Cliente';
 import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { Empleado } from 'src/models/entities/Empleado';
@@ -72,11 +72,11 @@ export class VentaFormDialogGestionComponent
     protected self: MatDialogRef<VentaFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
-    @Inject(SERVICE_ALIASES.clients) protected clHttpSvc: EntityDataService<Cliente>,
+    @Inject(DATA_SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected clHttpSvc: EntityDataService<Cliente>,
     protected authSvc: AuthService,
     protected dialog: MatDialog,
-    @Inject(SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>
+    @Inject(DATA_SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>
   ) {
     this.cargando = true;
     this.guardando = true;

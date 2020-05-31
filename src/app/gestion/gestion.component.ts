@@ -8,7 +8,7 @@ import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 's
 import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
 import { AuthService } from 'src/app/auth.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 export interface NavegadorModuloItem {
   path: string;
@@ -64,7 +64,7 @@ export class GestionComponent
 
   constructor(
     protected authSvc: AuthService,
-    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected route: ActivatedRoute,

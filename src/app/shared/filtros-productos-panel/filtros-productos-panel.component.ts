@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
 import { TipoProducto } from 'src/models/entities/TipoProducto';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 export interface FiltrosProductos {
   nombre?: string;
@@ -36,7 +36,7 @@ export class FiltrosProductosPanelComponent
 
   constructor(
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService
   ) {
     this.filtrosChange = new EventEmitter<FiltrosProductos>();
 

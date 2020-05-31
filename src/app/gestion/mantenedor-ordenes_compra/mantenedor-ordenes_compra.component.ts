@@ -11,7 +11,7 @@ import {
   OrdenCompraFormDialogGestionData
 } from './form-dialog/orden_compra-form-dialog.component';
 import { ListadoOrdenesCompraGestionComponent } from './listado/listado-ordenes_compra.component';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
 
@@ -28,7 +28,7 @@ export class MantenedorOrdenesCompraGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoOrdenesCompraGestionComponent;
 
   constructor(
-    @Inject(SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
+    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {

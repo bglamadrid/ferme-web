@@ -7,7 +7,7 @@ import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/shared/const
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cargo } from 'src/models/entities/Cargo';
 import { Proveedor } from 'src/models/entities/Proveedor';
 
@@ -39,8 +39,8 @@ export class ProveedorFormDialogGestionComponent {
     protected self: MatDialogRef<ProveedorFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
-    @Inject(SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>
   ) {
     this.cargando = true;
     this.guardando = false;
@@ -97,7 +97,7 @@ export class ProveedorFormDialogGestionComponent {
 
   public onClickAceptar(): void {
     const datosProveedor = {
-      idProveedor: this.proveedor.id ? this.proveedor.id : null,
+      id: this.proveedor.id ? this.proveedor.id : null,
       idPersona: this.proveedor.idPersona ? this.proveedor.idPersona : null,
       razonSocialProveedor: this.razonSocial.value
     };

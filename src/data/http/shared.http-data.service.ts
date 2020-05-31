@@ -1,17 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpService } from './http.abstract-service';
 import { Observable } from 'rxjs';
+import { retry } from 'rxjs/operators';
 import { Cargo } from 'src/models/entities/Cargo';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Rubro } from 'src/models/entities/Rubro';
-import { TipoProducto } from 'src/models/entities/TipoProducto';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
 import { Persona } from 'src/models/entities/Persona';
-import { retry } from 'rxjs/operators';
+import { Rubro } from 'src/models/entities/Rubro';
+import { TipoProducto } from 'src/models/entities/TipoProducto';
+import { SharedDataService } from '../shared.data.iservice';
+import { HttpService } from './http.abstract-service';
 
 @Injectable()
 export class SharedHttpDataService
-  extends HttpService {
+  extends HttpService
+  implements SharedDataService {
 
   protected baseURI: string = this.baseURI + '/gestion';
 

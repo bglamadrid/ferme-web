@@ -8,7 +8,7 @@ import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros
 import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
 import { Producto } from 'src/models/entities/Producto';
 import { CompraService } from 'src/app/compra/compra.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 
 @Component({
@@ -27,7 +27,7 @@ export class CompraCatalogoComponent implements OnInit {
   public productoForm: FormGroup;
 
   constructor(
-    @Inject(SERVICE_ALIASES.products) protected prodHttpSvc: EntityDataService<Producto>,
+    @Inject(DATA_SERVICE_ALIASES.products) protected prodHttpSvc: EntityDataService<Producto>,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar,
     protected compraSvc: CompraService,

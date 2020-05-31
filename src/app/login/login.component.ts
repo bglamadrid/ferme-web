@@ -8,7 +8,7 @@ import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
 import { Sesion } from 'src/models/entities/Sesion';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from '../shared/constantes';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 export interface Login {
   usuario: string;
@@ -34,7 +34,7 @@ export class LoginComponent {
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
-    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
   ) {
     this.cargando = true;
     this.esconderClave = true;

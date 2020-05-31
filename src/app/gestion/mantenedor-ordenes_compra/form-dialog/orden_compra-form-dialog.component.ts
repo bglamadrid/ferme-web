@@ -16,7 +16,7 @@ import { OrdenCompra } from 'src/models/entities/OrdenCompra';
 import { Producto } from 'src/models/entities/Producto';
 import { Proveedor } from 'src/models/entities/Proveedor';
 import { AuthService } from 'src/app/auth.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 
@@ -68,9 +68,9 @@ export class OrdenCompraFormDialogGestionComponent
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
     protected authSvc: AuthService,
-    @Inject(SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
-    @Inject(SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>,
-    @Inject(SERVICE_ALIASES.providers) protected prvHttpSvc: EntityDataService<Proveedor>,
+    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>,
+    @Inject(DATA_SERVICE_ALIASES.providers) protected prvHttpSvc: EntityDataService<Proveedor>,
     protected dialog: MatDialog
   ) {
     this.cargando = true;

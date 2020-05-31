@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Persona } from 'src/models/entities/Persona';
 import { Usuario } from 'src/models/entities/Usuario';
 
@@ -37,8 +37,8 @@ export class UsuarioFormDialogGestionComponent
     protected self: MatDialogRef<UsuarioFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
-    @Inject(SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>
   ) {
     this.cargando = false;
 

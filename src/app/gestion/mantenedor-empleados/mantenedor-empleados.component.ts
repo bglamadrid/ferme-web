@@ -5,7 +5,7 @@ import { from, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Empleado } from 'src/models/entities/Empleado';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
 import { EmpleadoFormDialogGestionComponent, EmpleadoFormDialogGestionData } from './form-dialog/empleado-form-dialog.component';
@@ -24,7 +24,7 @@ export class MantenedorEmpleadosGestionComponent
   @ViewChild('listado', { static: true }) public listado: ListadoEmpleadosGestionComponent;
 
   constructor(
-    @Inject(SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {

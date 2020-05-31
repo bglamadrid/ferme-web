@@ -12,7 +12,7 @@ import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { AuthService } from 'src/app/auth.service';
 import { CompraService } from 'src/app/compra/compra.service';
 import { CompraLoginDialogComponent } from './login-dialog/login.component';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 @Component({
   selector: 'app-compra',
@@ -34,7 +34,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
 
   constructor(
     protected authSvc: AuthService,
-    @Inject(SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog,

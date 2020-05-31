@@ -5,10 +5,12 @@ import { Observable } from 'rxjs';
 import { Sesion } from 'src/models/entities/Sesion';
 import { Persona } from 'src/models/entities/Persona';
 import { retry } from 'rxjs/operators';
+import { AuthDataService } from '../auth.data.iservice';
 
 @Injectable()
 export class AuthHttpDataService
-  extends HttpService {
+  extends HttpService
+  implements AuthDataService {
 
   protected baseURI = this.baseURI + '/sesiones';
 

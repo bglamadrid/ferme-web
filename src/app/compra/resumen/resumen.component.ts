@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { PerfilUsuarioFormDialogComponent } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cliente } from 'src/models/entities/Cliente';
 import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { Venta } from 'src/models/entities/Venta';
@@ -43,8 +43,8 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
     protected compraSvc: CompraService,
-    @Inject(SERVICE_ALIASES.sales) protected vtaHttpSvc: EntityDataService<Venta>,
-    @Inject(SERVICE_ALIASES.clients) protected cliHttpSvc: EntityDataService<Cliente>
+    @Inject(DATA_SERVICE_ALIASES.sales) protected vtaHttpSvc: EntityDataService<Venta>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected cliHttpSvc: EntityDataService<Cliente>
   ) {
     this.detallesVentaSource = new BehaviorSubject([]);
     this.cantidadItemsSource = new BehaviorSubject(0);

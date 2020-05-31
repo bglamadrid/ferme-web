@@ -10,7 +10,7 @@ import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 
 export interface AgregarProductoDialogData {
@@ -39,8 +39,8 @@ export class AgregarProductoDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
     protected self: MatDialogRef<AgregarProductoDialogComponent>,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
-    @Inject(SERVICE_ALIASES.products) protected prodSvc: EntityDataService<Producto>,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.products) protected prodSvc: EntityDataService<Producto>,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar
   ) {

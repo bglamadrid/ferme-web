@@ -6,7 +6,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { SERVICE_ALIASES } from 'src/data/service-aliases';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
 import { Producto } from 'src/models/entities/Producto';
 import { TipoProducto } from 'src/models/entities/TipoProducto';
@@ -43,8 +43,8 @@ export class ProductoFormDialogGestionComponent
     protected self: MatDialogRef<ProductoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
-    @Inject(SERVICE_ALIASES.products) protected httpSvc: EntityDataService<Producto>
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.products) protected httpSvc: EntityDataService<Producto>
   ) {
     this.productoForm = this.fb.group({
       nombre: [null, Validators.required],
