@@ -9,7 +9,7 @@ export class Producto extends AbstractEntity {
   public stockCriticoProducto: number;
   public idTipoProducto: number;
   public codigoProducto?: string;
-  public nombreTipoProducto?: string;
+  public descripcionTipoProducto?: string;
   public idFamiliaProducto?: number;
   public descripcionFamiliaProducto?: string;
 }

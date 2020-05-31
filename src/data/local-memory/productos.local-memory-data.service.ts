@@ -8,7 +8,7 @@ export const MOCK_PRODUCTS: Partial<Producto>[] = [
     idTipoProducto: 1,
     idFamiliaProducto: 1,
     nombreProducto: 'Producto de ejemplo 1',
-    nombreTipoProducto: 'Productos de ejemplo',
+    descripcionTipoProducto: 'Productos de ejemplo'
   }
 ];
 

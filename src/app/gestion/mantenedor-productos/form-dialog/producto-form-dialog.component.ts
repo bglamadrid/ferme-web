@@ -176,7 +176,7 @@ export class ProductoFormDialogGestionComponent
       stockCriticoProducto: this.stockCritico.value,
       descripcionProducto: this.descripcion.value ? this.descripcion.value : null,
       codigoProducto: undefined,
-      nombreTipoProducto: undefined
+      descripcionTipoProducto: undefined
     };
 
     this.guardarProducto(nuevo);
