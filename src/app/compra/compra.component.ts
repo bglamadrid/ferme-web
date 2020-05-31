@@ -1,18 +1,18 @@
-import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
-import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
-import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { AuthService } from 'src/app/auth.service';
 import { CompraService } from 'src/app/compra/compra.service';
-import { CompraLoginDialogComponent } from './login-dialog/login.component';
+import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
+import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
+import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
+import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { CompraLoginDialogComponent } from './login-dialog/login.component';
 
 @Component({
   selector: 'app-compra',
@@ -22,7 +22,8 @@ import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
     './compra.component.css'
 ]
 })
-export class CompraNavegadorComponent implements OnInit, OnDestroy {
+export class CompraNavegadorComponent
+  implements OnInit, OnDestroy {
 
   protected detallesSub: Subscription;
   protected sesionCambiaSub: Subscription;
@@ -34,7 +35,7 @@ export class CompraNavegadorComponent implements OnInit, OnDestroy {
 
   constructor(
     protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog,

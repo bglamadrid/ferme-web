@@ -14,6 +14,7 @@ import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 import { HttpDataModule } from 'src/data/http/http-data.module';
+import { LocalMemoryDataModule } from 'src/data/local-memory/local-memory-data.module';
 
 const DEBUG_ROUTES = false;
 
@@ -30,7 +31,7 @@ const DEBUG_ROUTES = false;
     GestionModule,
     CompraModule,
     FallbackRoutingModule,
-    HttpDataModule
+    LocalMemoryDataModule
   ],
   providers: [
     AuthGuard

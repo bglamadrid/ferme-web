@@ -3,12 +3,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs/operators';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
-import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { Persona } from 'src/models/entities/Persona';
+import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Persona } from 'src/models/entities/Persona';
 
 export interface PerfilUsuarioFormDialogData {
-  persona: Persona;
+  persona: Partial<Persona>;
 }
 
 export const TIEMPO_CONFIRMACION_SALIR = 2000;
@@ -29,7 +29,7 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
     @Inject(MAT_DIALOG_DATA) public data: PerfilUsuarioFormDialogData,
     protected dialogRef: MatDialogRef<PerfilUsuarioFormDialogComponent<T>>,
     protected snackBar: MatSnackBar,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected httpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected httpSvc: AuthDataService,
   ) {
     this.cancelar = false;
     this.guardando = false;

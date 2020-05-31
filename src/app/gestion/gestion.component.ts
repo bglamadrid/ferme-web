@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
+import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
-import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-import { FERME_AUTHORIZED_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
-import { AuthService } from 'src/app/auth.service';
+import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 export interface NavegadorModuloItem {
@@ -64,7 +64,7 @@ export class GestionComponent
 
   constructor(
     protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected route: ActivatedRoute,

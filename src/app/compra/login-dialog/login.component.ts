@@ -1,30 +1,31 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { AuthService } from 'src/app/auth.service';
-import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
-
-import { LoginComponent, Login } from 'src/app/login/login.component';
-import { Sesion } from 'src/models/entities/Sesion';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth.service';
+import { Login, LoginComponent } from 'src/app/login/login.component';
+import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Sesion } from 'src/models/entities/Sesion';
+
+
 
 @Component({
   selector: 'app-compra-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class CompraLoginDialogComponent extends LoginComponent {
+export class CompraLoginDialogComponent
+  extends LoginComponent {
 
   constructor(
     protected fb: FormBuilder,
     protected router: Router,
     protected snackBar: MatSnackBar,
     protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
     protected dialogRef: MatDialogRef<CompraLoginDialogComponent>
   ) {
     super(fb, router, snackBar, authSvc, authHttpSvc);

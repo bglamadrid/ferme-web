@@ -1,9 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Sesion } from 'src/models/entities/Sesion';
-import { AuthHttpDataService } from 'src/data/http/auth.http-data.service';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Sesion } from 'src/models/entities/Sesion';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
   protected validandoSesion$: Observable<boolean>;
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
   ) {
     const ssn = this.sesion;
     this.cambioSesionSource = new BehaviorSubject(ssn);
