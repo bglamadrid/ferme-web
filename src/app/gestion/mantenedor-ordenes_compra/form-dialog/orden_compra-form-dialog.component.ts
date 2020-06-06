@@ -5,20 +5,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { AuthService } from 'src/app/auth.service';
 import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-array-dialog/agregar-producto.component';
-import { EmpleadosHttpDataService } from 'src/data/http/empleados.http-data.service';
-import { OrdenesCompraHttpDataService } from 'src/data/http/ordenes_compra.http-data.service';
-import { ProveedoresHttpDataService } from 'src/data/http/proveedores.http-data.service';
+import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
 import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
 import { Empleado } from 'src/models/entities/Empleado';
 import { OrdenCompra } from 'src/models/entities/OrdenCompra';
 import { Producto } from 'src/models/entities/Producto';
 import { Proveedor } from 'src/models/entities/Proveedor';
-import { AuthService } from 'src/app/auth.service';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
 
 export interface OrdenCompraFormDialogGestionData {
   ordenCompra: OrdenCompra;

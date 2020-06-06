@@ -1,15 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { CompraService } from 'src/app/compra/compra.service';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
-import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
-import { Producto } from 'src/models/entities/Producto';
-import { CompraService } from 'src/app/compra/compra.service';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
+import { Producto } from 'src/models/entities/Producto';
 
 @Component({
   selector: 'app-compra-catalogo',
