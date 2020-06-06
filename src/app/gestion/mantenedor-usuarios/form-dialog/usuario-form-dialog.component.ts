@@ -4,11 +4,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { Persona } from 'src/models/Persona';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedDataService } from 'src/data/shared.data.iservice';
 import { Usuario } from 'src/models/entities/Usuario';
+import { Persona } from 'src/models/Persona';
 
 export interface UsuarioFormDialogGestionData {
   usuario: Usuario;
@@ -37,7 +37,7 @@ export class UsuarioFormDialogGestionComponent
     protected self: MatDialogRef<UsuarioFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>
   ) {
     this.cargando = false;

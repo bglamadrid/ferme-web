@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription, Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { SharedDataService } from 'src/data/shared.data.iservice';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
 import { TipoProducto } from 'src/models/entities/TipoProducto';
-import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 
 export interface FiltrosProductos {
   nombre?: string;
@@ -36,7 +36,7 @@ export class FiltrosProductosPanelComponent
 
   constructor(
     protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService
   ) {
     this.filtrosChange = new EventEmitter<FiltrosProductos>();
 

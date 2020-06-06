@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
-import { Producto } from 'src/models/entities/Producto';
-import { FormBuilder } from '@angular/forms';
-import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
-import { ProductosHttpDataService } from 'src/data/http/productos.http-data.service';
-import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
+import { Observable, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
+import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedDataService } from 'src/data/shared.data.iservice';
+import { Producto } from 'src/models/entities/Producto';
 
 export interface AgregarProductoDialogData {
   proveedor: number;
@@ -39,7 +38,7 @@ export class AgregarProductoDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
     protected self: MatDialogRef<AgregarProductoDialogComponent>,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.products) protected prodSvc: EntityDataService<Producto>,
     protected fb: FormBuilder,
     protected snackBar: MatSnackBar

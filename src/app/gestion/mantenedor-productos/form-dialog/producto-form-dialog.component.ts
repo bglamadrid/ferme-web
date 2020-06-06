@@ -4,9 +4,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, Subscription } from 'rxjs';
 import { REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedDataService } from 'src/data/shared.data.iservice';
 import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
 import { Producto } from 'src/models/entities/Producto';
 import { TipoProducto } from 'src/models/entities/TipoProducto';
@@ -43,7 +43,7 @@ export class ProductoFormDialogGestionComponent
     protected self: MatDialogRef<ProductoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.products) protected httpSvc: EntityDataService<Producto>
   ) {
     this.productoForm = this.fb.group({

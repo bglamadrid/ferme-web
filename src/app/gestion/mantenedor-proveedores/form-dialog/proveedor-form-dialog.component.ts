@@ -5,9 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE } from 'src/app/shared/constantes';
 import { DatosPersonaFormComponent } from 'src/app/shared/datos-persona-form/datos-persona-form.component';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { SharedHttpDataService } from 'src/data/http/shared.http-data.service';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { SharedDataService } from 'src/data/shared.data.iservice';
 import { Cargo } from 'src/models/entities/Cargo';
 import { Proveedor } from 'src/models/entities/Proveedor';
 
@@ -39,7 +39,7 @@ export class ProveedorFormDialogGestionComponent {
     protected self: MatDialogRef<ProveedorFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedHttpDataService,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>
   ) {
     this.cargando = true;
