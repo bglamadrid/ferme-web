@@ -1,24 +1,27 @@
-import { Output, Input, EventEmitter, Directive } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { of } from 'rxjs';
+import { Output, Input, EventEmitter } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
-@Directive()
 export abstract class ListadoGestionComponent<T> {
 
-  @Output() public cargar: EventEmitter<void>;
+  protected itemsSource: Subject<T[]> = new Subject();
+  protected ocupadoSource: Subject<boolean> = new Subject();
+
+
+  public items$: Observable<T[]> = this.itemsSource.asObservable();
+  public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();
+  public abstract columnasTabla: string[];
+
+  @Output() public cargar: EventEmitter<void> = new EventEmitter();
   @Output() public editar: EventEmitter<T>;
   @Output() public borrar: EventEmitter<T>;
 
-  public tabla: MatTable<T>;
-  @Input() public ocupado: boolean;
-  public columnasTabla: string[];
 
-  constructor() {
-    this.columnasTabla = [];
-    this.cargar = new EventEmitter();
-    this.editar = new EventEmitter();
-    this.borrar = new EventEmitter();
-    this.ocupado = false;
+  @Input() public set items(i: T[]) {
+    this.itemsSource.next(i);
+  }
+
+  @Input() public set ocupado(o: boolean) {
+    this.ocupadoSource.next(o);
   }
 
   public onClickEditar(item: T) {
@@ -30,16 +33,6 @@ export abstract class ListadoGestionComponent<T> {
   public onClickBorrar(item: T) {
     if (this.borrar) {
       this.borrar.emit(item);
-    }
-  }
-
-  @Input() public set Items(input: T[]) {
-    if (this.tabla) {
-      if (input) {
-        this.tabla.dataSource = of(input);
-      } else {
-        this.tabla.dataSource = of([]);
-      }
     }
   }
 

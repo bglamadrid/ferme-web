@@ -15,14 +15,11 @@ export class ListadoProveedoresGestionComponent
   extends ListadoGestionComponent<Proveedor> {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<Proveedor>;
+  public columnasTabla: string[] = [ 'nombre', 'rut', 'acciones' ];
 
-  constructor(
-
-  ) {
+  constructor() {
     super();
     this.editar = new EventEmitter<Proveedor>();
     this.borrar = new EventEmitter<Proveedor>();
-
-    this.columnasTabla = [ 'nombre', 'rut', 'acciones' ];
   }
 }

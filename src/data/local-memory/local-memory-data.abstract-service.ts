@@ -8,7 +8,7 @@ import { Observable, of } from 'rxjs';
 export abstract class EntityLocalMemoryDataService<T extends AbstractEntity>
   implements EntityDataService<AbstractEntity> {
 
-  protected items: T[];
+  protected abstract items: T[];
 
   protected filterItems(filter: any): Set<T> {
     let matchingItems = this.items;

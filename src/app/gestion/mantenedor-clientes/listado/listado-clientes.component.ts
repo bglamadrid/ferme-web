@@ -15,11 +15,9 @@ export class ListadoClientesGestionComponent
   extends ListadoGestionComponent<Cliente>  {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<Cliente>;
+  public columnasTabla: string[] = [ 'nombre', 'rut' ];
 
-  constructor(
-
-  ) {
+  constructor() {
     super();
-    this.columnasTabla = [ 'nombre', 'rut' ];
   }
 }

@@ -6,7 +6,6 @@ import { EntityDataService } from 'src/data/entity.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cliente } from 'src/models/entities/Cliente';
 import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
-import { ListadoClientesGestionComponent } from './listado/listado-clientes.component';
 
 @Component({
   selector: 'app-mantenedor-clientes-gestion',
@@ -18,19 +17,20 @@ import { ListadoClientesGestionComponent } from './listado/listado-clientes.comp
 export class MantenedorClientesGestionComponent
   extends MantenedorGestionComponent<Cliente> {
 
-  @ViewChild('listado', { static: true }) public listado: ListadoClientesGestionComponent;
-
   constructor(
     @Inject(DATA_SERVICE_ALIASES.clients) protected httpSvc: EntityDataService<Cliente>,
     protected dialog: MatDialog,
     protected snackBar: MatSnackBar
   ) {
     super();
-
   }
 
   public cargarItems(): Observable<Cliente[]> {
     return this.httpSvc.readAll();
+  }
+
+  public abrirDialogoEdicion(item: Cliente): Observable<Cliente> {
+    throw new Error("Method not implemented.");
   }
 
 }

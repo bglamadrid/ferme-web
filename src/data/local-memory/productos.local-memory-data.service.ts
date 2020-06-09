@@ -17,8 +17,9 @@ export const MOCK_PRODUCTS: Partial<Producto>[] = [
 export class ProductosLocalMemoryDataService
   extends EntityLocalMemoryDataService<Producto> {
 
+  protected items: Producto[] = MOCK_PRODUCTS.map(n => Object.assign(new Producto(), n));
+
   constructor() {
     super();
-    this.items = MOCK_PRODUCTS.map(n => Object.assign(new Producto(), n));
   }
 }

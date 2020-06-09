@@ -15,14 +15,11 @@ export class ListadoOrdenesCompraGestionComponent
   extends ListadoGestionComponent<OrdenCompra> {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<OrdenCompra>;
+  public columnasTabla: string[] = [ 'numero', 'fechaSolicitud', 'fechaRecepcion', 'acciones' ];
 
-  constructor(
-
-  ) {
+  constructor() {
     super();
     this.editar = new EventEmitter<OrdenCompra>();
     this.borrar = new EventEmitter<OrdenCompra>();
-
-    this.columnasTabla = [ 'numero', 'fechaSolicitud', 'fechaRecepcion', 'acciones' ];
   }
 }

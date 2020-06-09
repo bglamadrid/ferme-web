@@ -15,12 +15,11 @@ export class ListadoProductosGestionComponent
   extends ListadoGestionComponent<Producto> {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<Producto>;
+  public columnasTabla: string[] = [ 'nombre', 'codigo', 'precio', 'stockActual', 'stockCritico', 'tipo', 'acciones' ];
 
   constructor() {
     super();
     this.editar = new EventEmitter<Producto>();
     this.borrar = new EventEmitter<Producto>();
-
-    this.columnasTabla = [ 'nombre', 'codigo', 'precio', 'stockActual', 'stockCritico', 'tipo', 'acciones' ];
   }
 }

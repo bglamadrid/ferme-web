@@ -15,14 +15,11 @@ export class ListadoUsuariosGestionComponent
   extends ListadoGestionComponent<Usuario> {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<Usuario>;
+  public columnasTabla: string[] = [ 'nombre', 'fechaCreacion', 'nombreCompleto', 'rut', 'acciones' ];
 
-  constructor(
-
-  ) {
+  constructor() {
     super();
     this.editar = new EventEmitter<Usuario>();
     this.borrar = new EventEmitter<Usuario>();
-
-    this.columnasTabla = [ 'nombre', 'fechaCreacion', 'nombreCompleto', 'rut', 'acciones' ];
   }
 }

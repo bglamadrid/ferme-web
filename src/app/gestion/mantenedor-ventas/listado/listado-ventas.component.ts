@@ -15,14 +15,11 @@ export class ListadoVentasGestionComponent
   extends ListadoGestionComponent<Venta> {
 
   @ViewChild('tabla', { static: true }) public tabla: MatTable<Venta>;
+  public columnasTabla: string[] = [ 'numero', 'fecha', 'acciones' ];
 
-  constructor(
-
-  ) {
+  constructor() {
     super();
     this.editar = new EventEmitter<Venta>();
     this.borrar = new EventEmitter<Venta>();
-
-    this.columnasTabla = [ 'numero', 'fecha', 'acciones' ];
   }
 }

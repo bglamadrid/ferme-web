@@ -13,8 +13,9 @@ export const MOCK_PURCHASE_ORDERS: Partial<OrdenCompra>[] = [
 export class OrdenCompraLocalMemoryDataService
   extends EntityLocalMemoryDataService<OrdenCompra> {
 
+  protected items: OrdenCompra[] = MOCK_PURCHASE_ORDERS.map(n => Object.assign(new OrdenCompra(), n));;
+
   constructor() {
     super();
-    this.items = MOCK_PURCHASE_ORDERS.map(n => Object.assign(new OrdenCompra(), n));
   }
 }
