@@ -39,7 +39,7 @@ export class ProductoFormDialogGestionComponent
   protected privChangeFamiliaSub: Subscription;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: ProductoFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: ProductoFormDialogGestionData,
     protected self: MatDialogRef<ProductoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
@@ -55,15 +55,10 @@ export class ProductoFormDialogGestionComponent
       stockCritico: [null, Validators.required],
       descripcion: ['']
     });
-    this.cargando = true;
+    this.cargando = false;
 
-    if (this.dialogData) {
-      const prod: Producto = this.dialogData.producto;
-      if (prod) { this.cargarProducto(prod); }
-    } else {
-      this.privIdProducto = null;
-      this.codigoProducto =  null;
-    }
+    const item: Producto = (dialogData?.producto) ? dialogData.producto : new Producto();
+    this.cargarProducto(item);
   }
 
   public get nombre() { return this.productoForm.get('nombre'); }

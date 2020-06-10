@@ -60,7 +60,7 @@ export class OrdenCompraFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: OrdenCompraFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: OrdenCompraFormDialogGestionData,
     protected self: MatDialogRef<OrdenCompraFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
@@ -70,7 +70,7 @@ export class OrdenCompraFormDialogGestionComponent
     @Inject(DATA_SERVICE_ALIASES.providers) protected prvHttpSvc: EntityDataService<Proveedor>,
     protected dialog: MatDialog
   ) {
-    this.cargando = true;
+    this.cargando = false;
     this.guardando = false;
 
     this.fechaSolicitud = (new Date()).toLocaleDateString();
@@ -84,13 +84,8 @@ export class OrdenCompraFormDialogGestionComponent
     this.subtotalOrdenCompra = 0;
     this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'acciones' ];
 
-    if (this.dialogData) {
-      const oc: OrdenCompra = this.dialogData.ordenCompra;
-      if (oc) { this.cargarOrdenCompra(oc); }
-    } else {
-      this.idEmpleadoUsuario = this.authSvc.sesion.idEmpleado;
-      this.cargando = false;
-    }
+    const oc: OrdenCompra = (dialogData?.ordenCompra) ? dialogData.ordenCompra : new OrdenCompra();
+    this.cargarOrdenCompra(oc);
   }
 
   public get empleado() { return this.ordenCompraForm.get('empleado'); }

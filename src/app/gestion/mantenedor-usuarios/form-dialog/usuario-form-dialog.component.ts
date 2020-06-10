@@ -33,7 +33,7 @@ export class UsuarioFormDialogGestionComponent
   public usuarioForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: UsuarioFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: UsuarioFormDialogGestionData,
     protected self: MatDialogRef<UsuarioFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
@@ -48,10 +48,8 @@ export class UsuarioFormDialogGestionComponent
       persona: [undefined, Validators.required]
     });
 
-    if (this.dialogData) {
-      const usr: Usuario = this.dialogData.usuario;
-      if (usr) { this.cargarUsuario(usr); }
-    }
+    const item: Usuario = (dialogData?.usuario) ? dialogData.usuario : new Usuario();
+    this.cargarUsuario(item);
   }
 
   public get nombre() { return this.usuarioForm.get('nombre'); }

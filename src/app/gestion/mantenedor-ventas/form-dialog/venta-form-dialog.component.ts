@@ -68,7 +68,7 @@ export class VentaFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: VentaFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: VentaFormDialogGestionData,
     protected self: MatDialogRef<VentaFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
@@ -78,8 +78,9 @@ export class VentaFormDialogGestionComponent
     protected dialog: MatDialog,
     @Inject(DATA_SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>
   ) {
-    this.cargando = true;
-    this.guardando = true;
+    this.cargando = false;
+    this.guardando = false;
+
     this.detallesVenta = [];
     this.detallesVentaSource = new BehaviorSubject([]);
     this.subtotalVentaSource = new BehaviorSubject(0);
@@ -97,14 +98,8 @@ export class VentaFormDialogGestionComponent
       cliente: [null, Validators.required]
     });
 
-
-    if (this.dialogData && this.dialogData.venta) {
-      const vnt: Venta = this.dialogData.venta;
-      this.cargarVenta(vnt);
-    } else {
-      this.empleado.setValue(this.authSvc.sesion.idEmpleado);
-      this.cargando = false;
-    }
+    const item: Venta = (dialogData?.venta) ? dialogData.venta : new Venta();
+    this.cargarVenta(item);
   }
 
   public get tipo() { return this.ventaForm.get('tipo'); }

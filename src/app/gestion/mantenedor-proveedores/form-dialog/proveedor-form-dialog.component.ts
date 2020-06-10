@@ -35,22 +35,20 @@ export class ProveedorFormDialogGestionComponent {
   @ViewChild('personaForm', { static: true }) public personaForm: DatosPersonaFormComponent;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected data: ProveedorFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: ProveedorFormDialogGestionData,
     protected self: MatDialogRef<ProveedorFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
     protected fb: FormBuilder,
     @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>
   ) {
-    this.cargando = true;
+    this.cargando = false;
     this.guardando = false;
 
     this.razonSocial = this.fb.control('', Validators.required);
 
-    const prov = (this.data && this.data.proveedor) ? this.data.proveedor : new Proveedor();
-    this.Proveedor = prov;
-
-    this.cargando = false;
+    const item: Proveedor = (dialogData?.proveedor) ? dialogData.proveedor : new Proveedor();
+    this.cargarProveedor(item);
   }
 
   public get formularioCompleto(): FormGroup {
@@ -111,14 +109,6 @@ export class ProveedorFormDialogGestionComponent {
 
   public onClickCancelar(): void {
     this.self.close();
-  }
-
-  @Input() public set Proveedor(prov: Proveedor) {
-    if (prov) {
-      this.cargarProveedor(prov);
-    } else {
-      this.formularioCompleto.reset();
-    }
   }
 
 }

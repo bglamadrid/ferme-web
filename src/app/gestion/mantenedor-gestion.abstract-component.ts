@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap, delay } from 'rxjs/operators';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 
 export abstract class MantenedorGestionComponent<T>
@@ -12,13 +12,15 @@ export abstract class MantenedorGestionComponent<T>
 
   protected cargandoItemsSource: Subject<boolean> = new BehaviorSubject(false);
   protected ocupadoSource: Subject<boolean> = new BehaviorSubject(true);
-  protected itemsSource: Subject<T[]> = new Subject();
+  protected itemsSource: Subject<T[]> = new BehaviorSubject([]);
 
   public cargandoItems$: Observable<boolean> = this.cargandoItemsSource.asObservable();
   public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();
   public items$: Observable<T[]> = this.itemsSource.asObservable();
 
   ngOnInit() {
+    console.log('oninit');
+
     this.onCargar();
   }
 
@@ -40,6 +42,7 @@ export abstract class MantenedorGestionComponent<T>
   public onCargar(): void {
     this.cargandoItemsSource.next(true);
     this.cargarItems().pipe(
+      delay(0),
       tap(items => this.itemsSource.next(items)),
       finalize(() => { this.cargandoItemsSource.next(false); })
     ).subscribe();

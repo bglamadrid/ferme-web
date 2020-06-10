@@ -37,7 +37,7 @@ export class EmpleadoFormDialogGestionComponent
   @ViewChild('personaForm', { static: true }) public personaForm: DatosPersonaFormComponent;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected data: EmpleadoFormDialogGestionData,
+    @Inject(MAT_DIALOG_DATA) dialogData: EmpleadoFormDialogGestionData,
     protected appRef: ApplicationRef,
     protected dialogRef: MatDialogRef<EmpleadoFormDialogGestionComponent>,
     protected snackBar: MatSnackBar,
@@ -45,14 +45,14 @@ export class EmpleadoFormDialogGestionComponent
     @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
     @Inject(DATA_SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
   ) {
-    this.cargando = true;
+    this.cargando = false;
     this.guardando = false;
 
     this.cargo = this.fb.control(undefined, Validators.required);
 
-    this.Empleado = (this.data && this.data.empleado) ? this.data.empleado : new Empleado();
 
-    this.cargando = false;
+    const item: Empleado = (dialogData?.empleado) ? dialogData.empleado : new Empleado();
+    this.cargarEmpleado(item);
   }
 
   public get formularioCompleto(): FormGroup {
@@ -118,14 +118,6 @@ export class EmpleadoFormDialogGestionComponent
 
   public onClickCancelar(): void {
     this.dialogRef.close();
-  }
-
-  @Input() public set Empleado(emp: Empleado) {
-    if (emp) {
-      this.cargarEmpleado(emp);
-    } else {
-      this.formularioCompleto.reset();
-    }
   }
 
 }
