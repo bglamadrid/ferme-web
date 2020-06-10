@@ -1,11 +1,10 @@
-import { Output, Input, EventEmitter } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 export abstract class ListadoGestionComponent<T> {
 
   protected itemsSource: Subject<T[]> = new Subject();
   protected ocupadoSource: Subject<boolean> = new Subject();
-
 
   public items$: Observable<T[]> = this.itemsSource.asObservable();
   public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();

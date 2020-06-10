@@ -1,8 +1,7 @@
+import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { finalize, tap, catchError, delay, take } from 'rxjs/operators';
-import { AfterViewInit, OnInit } from '@angular/core';
+import { finalize, tap } from 'rxjs/operators';
 import { EntityDataService } from 'src/data/entity.data.iservice';
 
 export abstract class MantenedorGestionComponent<T>
@@ -11,23 +10,13 @@ export abstract class MantenedorGestionComponent<T>
   protected abstract httpSvc: EntityDataService<T>;
   protected abstract dialog: MatDialog;
 
-  protected cargandoItemsSource: Subject<boolean>;
-  protected ocupadoSource: Subject<boolean>;
-  protected itemsSource: Subject<T[]>;
+  protected cargandoItemsSource: Subject<boolean> = new BehaviorSubject(false);
+  protected ocupadoSource: Subject<boolean> = new BehaviorSubject(true);
+  protected itemsSource: Subject<T[]> = new Subject();
 
-  public cargandoItems$: Observable<boolean>;
-  public ocupado$: Observable<boolean>;
-  public items$: Observable<T[]>;
-
-  constructor() {
-    this.cargandoItemsSource = new BehaviorSubject(false);
-    this.ocupadoSource = new BehaviorSubject(true);
-    this.itemsSource = new Subject();
-
-    this.cargandoItems$ = this.cargandoItemsSource.asObservable();
-    this.ocupado$ = this.ocupadoSource.asObservable();
-    this.items$ = this.itemsSource.asObservable();
-  }
+  public cargandoItems$: Observable<boolean> = this.cargandoItemsSource.asObservable();
+  public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();
+  public items$: Observable<T[]> = this.itemsSource.asObservable();
 
   ngOnInit() {
     this.onCargar();
