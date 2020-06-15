@@ -1,15 +1,12 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Proveedor } from 'src/models/entities/Proveedor';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
 import { ProveedorFormDialogGestionComponent, ProveedorFormDialogGestionData } from './form-dialog/proveedor-form-dialog.component';
-import { ListadoProveedoresGestionComponent } from './listado/listado-proveedores.component';
+import { MantenedorProveedoresGestionService } from './mantenedor-proveedores.service';
 
 @Component({
   selector: 'app-mantenedor-proveedores-gestion',
@@ -19,22 +16,15 @@ import { ListadoProveedoresGestionComponent } from './listado/listado-proveedore
   ]
 })
 export class MantenedorProveedoresGestionComponent
-extends MantenedorGestionComponent<Proveedor> {
-
-  @ViewChild('listado', { static: true }) public listado: ListadoProveedoresGestionComponent;
+extends MantenedorGestionAbstractComponent<Proveedor> {
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.providers) protected httpSvc: EntityDataService<Proveedor>,
-    protected dialog: MatDialog,
+    protected service: MantenedorProveedoresGestionService,
+    protected dialogService: MatDialog,
     protected snackBar: MatSnackBar
   ) {
     super();
   }
-
-  public cargarItems(): Observable<Proveedor[]> {
-    return this.httpSvc.readAll();
-  }
-
 
   public abrirDialogoEdicion(item: Proveedor): Observable<Proveedor> {
 
@@ -47,16 +37,13 @@ extends MantenedorGestionComponent<Proveedor> {
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(ProveedorFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(ProveedorFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(prov: Proveedor) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(prov.id).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([prov]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open('Proveedor \'' + prov.nombre + '\' eliminado.');

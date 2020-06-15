@@ -26,6 +26,13 @@ import { VentaFormDialogGestionComponent } from './mantenedor-ventas/form-dialog
 import { ListadoVentasGestionComponent } from './mantenedor-ventas/listado/listado-ventas.component';
 import { MantenedorVentasGestionComponent } from './mantenedor-ventas/mantenedor-ventas.component';
 import { ResumenGestionComponent } from './resumen/resumen.component';
+import { MantenedorClientesGestionService } from './mantenedor-clientes/mantenedor-clientes.service';
+import { MantenedorEmpleadosGestionService } from './mantenedor-empleados/mantenedor-empleados.service';
+import { MantenedorProductosGestionService } from './mantenedor-productos/mantenedor-productos.service';
+import { MantenedorProveedoresGestionService } from './mantenedor-proveedores/mantenedor-proveedores.service';
+import { MantenedorVentasGestionService } from './mantenedor-ventas/mantenedor-ventas.service';
+import { MantenedorUsuariosGestionService } from './mantenedor-usuarios/mantenedor-usuarios.service';
+import { MantenedorOrdenesCompraGestionService } from './mantenedor-ordenes_compra/mantenedor-ordenes-compra.service';
 
 const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
   duration: 5000
@@ -66,7 +73,14 @@ const SNACKBAR_DEFAULTS: MatSnackBarConfig = {
     GestionRoutingModule
   ],
   providers: [
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: SNACKBAR_DEFAULTS },
+    MantenedorClientesGestionService,
+    MantenedorEmpleadosGestionService,
+    MantenedorOrdenesCompraGestionService,
+    MantenedorProductosGestionService,
+    MantenedorProveedoresGestionService,
+    MantenedorUsuariosGestionService,
+    MantenedorVentasGestionService
   ]
 })
 export class GestionModule { }

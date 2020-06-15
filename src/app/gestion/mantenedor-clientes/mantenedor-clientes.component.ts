@@ -1,11 +1,9 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Cliente } from 'src/models/entities/Cliente';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorClientesGestionService } from './mantenedor-clientes.service';
 
 @Component({
   selector: 'app-mantenedor-clientes-gestion',
@@ -15,22 +13,17 @@ import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-compo
   ]
 })
 export class MantenedorClientesGestionComponent
-  extends MantenedorGestionComponent<Cliente> {
+  extends MantenedorGestionAbstractComponent<Cliente> {
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.clients) protected httpSvc: EntityDataService<Cliente>,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar
+    protected service: MantenedorClientesGestionService,
+    protected dialogService: MatDialog
   ) {
     super();
   }
 
-  public cargarItems(): Observable<Cliente[]> {
-    return this.httpSvc.readAll();
-  }
-
   public abrirDialogoEdicion(item: Cliente): Observable<Cliente> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
 }

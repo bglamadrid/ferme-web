@@ -1,19 +1,15 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { OrdenCompra } from 'src/models/entities/OrdenCompra';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
 import {
   OrdenCompraFormDialogGestionComponent,
   OrdenCompraFormDialogGestionData
 } from './form-dialog/orden_compra-form-dialog.component';
-import { ListadoOrdenesCompraGestionComponent } from './listado/listado-ordenes_compra.component';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
-import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
+import { MantenedorOrdenesCompraGestionService } from './mantenedor-ordenes-compra.service';
 
 @Component({
   selector: 'app-gestion-ordenes_compra',
@@ -23,23 +19,15 @@ import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
   ]
 })
 export class MantenedorOrdenesCompraGestionComponent
-  extends MantenedorGestionComponent<OrdenCompra> {
-
-  @ViewChild('listado', { static: true }) public listado: ListadoOrdenesCompraGestionComponent;
+  extends MantenedorGestionAbstractComponent<OrdenCompra> {
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
-    protected dialog: MatDialog,
+    protected service: MantenedorOrdenesCompraGestionService,
+    protected dialogService: MatDialog,
     protected snackBar: MatSnackBar
   ) {
     super();
   }
-
-  public cargarItems(): Observable<OrdenCompra[]> {
-    return this.httpSvc.readAll();
-  }
-
-
 
   public abrirDialogoEdicion(item: OrdenCompra): Observable<OrdenCompra> {
 
@@ -52,16 +40,13 @@ export class MantenedorOrdenesCompraGestionComponent
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(OrdenCompraFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(OrdenCompraFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(oc: OrdenCompra) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(oc.id).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([oc]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open('Orden de compra eliminada.');

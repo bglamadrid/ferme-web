@@ -1,16 +1,12 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
-import { DetalleVenta } from 'src/models/entities/DetalleVenta';
 import { Venta } from 'src/models/entities/Venta';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
 import { VentaFormDialogGestionComponent, VentaFormDialogGestionData } from './form-dialog/venta-form-dialog.component';
-import { ListadoVentasGestionComponent } from './listado/listado-ventas.component';
+import { MantenedorVentasGestionService } from './mantenedor-ventas.service';
 
 @Component({
   selector: 'app-mantenedor-ventas-gestion',
@@ -20,21 +16,14 @@ import { ListadoVentasGestionComponent } from './listado/listado-ventas.componen
   ]
 })
 export class MantenedorVentasGestionComponent
-  extends MantenedorGestionComponent<Venta> {
-
-  @ViewChild('listado', { static: true }) public listado: ListadoVentasGestionComponent;
+  extends MantenedorGestionAbstractComponent<Venta> {
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
-    protected dialog: MatDialog,
+    protected service: MantenedorVentasGestionService,
+    protected dialogService: MatDialog,
     protected snackBar: MatSnackBar
   ) {
     super();
-
-  }
-
-  public cargarItems(): Observable<Venta[]> {
-    return this.httpSvc.readAll();
   }
 
   public abrirDialogoEdicion(item: Venta): Observable<Venta> {
@@ -48,16 +37,13 @@ export class MantenedorVentasGestionComponent
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(VentaFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(VentaFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(vnt: Venta) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(vnt.id).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([vnt]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open('Venta N°' + vnt.id + ' (' + vnt.fechaVenta + ') eliminada.');

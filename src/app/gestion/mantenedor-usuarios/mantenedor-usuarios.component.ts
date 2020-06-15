@@ -1,15 +1,12 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { EntityDataService } from 'src/data/entity.data.iservice';
-import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Usuario } from 'src/models/entities/Usuario';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
 import { UsuarioFormDialogGestionComponent, UsuarioFormDialogGestionData } from './form-dialog/usuario-form-dialog.component';
-import { ListadoUsuariosGestionComponent } from './listado/listado-usuarios.component';
+import { MantenedorUsuariosGestionService } from './mantenedor-usuarios.service';
 
 @Component({
   selector: 'app-mantenedor-usuarios-gestion',
@@ -19,20 +16,14 @@ import { ListadoUsuariosGestionComponent } from './listado/listado-usuarios.comp
   ]
 })
 export class MantenedorUsuariosGestionComponent
-  extends MantenedorGestionComponent<Usuario> {
-
-  @ViewChild('listado', { static: true }) public listado: ListadoUsuariosGestionComponent;
+  extends MantenedorGestionAbstractComponent<Usuario> {
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>,
-    protected dialog: MatDialog,
+    protected service: MantenedorUsuariosGestionService,
+    protected dialogService: MatDialog,
     protected snackBar: MatSnackBar
   ) {
     super();
-  }
-
-  public cargarItems(): Observable<Usuario[]> {
-    return this.httpSvc.readAll();
   }
 
   public abrirDialogoEdicion(item: Usuario): Observable<Usuario> {
@@ -46,16 +37,13 @@ export class MantenedorUsuariosGestionComponent
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(UsuarioFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(UsuarioFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(usr: Usuario) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.deleteById(usr.id).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([usr]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
           this.snackBar.open('Usuario \'' + usr.nombre + '\' eliminado.');

@@ -1,7 +1,8 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { AbstractEntity } from 'src/models/AbstractEntity';
 
-export abstract class ListadoGestionComponent<T> {
+export abstract class ListadoGestionComponent<T extends AbstractEntity> {
 
   protected itemsSource: Subject<T[]> = new Subject();
   protected ocupadoSource: Subject<boolean> = new Subject();

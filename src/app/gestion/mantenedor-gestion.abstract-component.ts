@@ -1,59 +1,46 @@
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { finalize, tap, delay } from 'rxjs/operators';
-import { EntityDataService } from 'src/data/entity.data.iservice';
+import { Observable } from 'rxjs';
+import { delay, finalize, map, tap } from 'rxjs/operators';
+import { MantenedorGestionAbstractService } from './mantenedor-gestion.abstract-service';
+import { AbstractEntity } from 'src/models/AbstractEntity';
 
-export abstract class MantenedorGestionComponent<T>
+export abstract class MantenedorGestionAbstractComponent<T extends AbstractEntity>
   implements OnInit {
 
-  protected abstract httpSvc: EntityDataService<T>;
-  protected abstract dialog: MatDialog;
+  protected abstract service: MantenedorGestionAbstractService<T>;
+  protected abstract dialogService: MatDialog;
 
-  protected cargandoItemsSource: Subject<boolean> = new BehaviorSubject(false);
-  protected ocupadoSource: Subject<boolean> = new BehaviorSubject(true);
-  protected itemsSource: Subject<T[]> = new BehaviorSubject([]);
-
-  public cargandoItems$: Observable<boolean> = this.cargandoItemsSource.asObservable();
-  public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();
-  public items$: Observable<T[]> = this.itemsSource.asObservable();
+  public cargandoItems$: Observable<boolean>;
+  public ocupado$: Observable<boolean>;
+  public items$: Observable<T[]>;
 
   ngOnInit() {
-    console.log('oninit');
+    this.cargandoItems$ = this.service.cargandoItems$.pipe();
+    this.ocupado$ = this.service.focusedItems$.pipe(map(items => items.length === 0));
+    this.items$ = this.service.items$.pipe();
 
     this.onCargar();
   }
 
-  public abstract cargarItems(): Observable<T[]>;
   public abstract abrirDialogoEdicion(item: T): Observable<T>;
 
-  protected terminarEdicion(): void {
-    this.ocupadoSource.next(false);
-    this.onCargar();
-  }
-
-  protected intentarEdicion(item: T): Observable<T> {
-    this.ocupadoSource.next(true);
+  protected editar(item: T): Observable<T> {
     return this.abrirDialogoEdicion(item).pipe(
-      finalize(() => { this.terminarEdicion(); })
+      finalize(() => { this.onCargar(); })
     );
   }
 
   public onCargar(): void {
-    this.cargandoItemsSource.next(true);
-    this.cargarItems().pipe(
-      delay(0),
-      tap(items => this.itemsSource.next(items)),
-      finalize(() => { this.cargandoItemsSource.next(false); })
-    ).subscribe();
+    this.service.recargarItems();
   }
 
   public onClickEditar(item: T): void {
-    this.intentarEdicion(item).subscribe();
+    this.editar(item).subscribe();
   }
 
   public onClickAgregar(): void {
-    this.intentarEdicion(undefined).subscribe();
+    this.editar(undefined).subscribe();
   }
 
   public onClickBorrar(item: T): void {
