@@ -1,7 +1,7 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component } from '@angular/core';
 import { ListadoGestionComponent } from 'src/app/gestion/listado-gestion.abstract-component';
 import { OrdenCompra } from 'src/models/entities/OrdenCompra';
+import { MantenedorOrdenesCompraGestionService } from '../mantenedor-ordenes-compra.service';
 
 @Component({
   selector: 'app-listado-ordenes_compra-gestion',
@@ -14,12 +14,11 @@ import { OrdenCompra } from 'src/models/entities/OrdenCompra';
 export class ListadoOrdenesCompraGestionComponent
   extends ListadoGestionComponent<OrdenCompra> {
 
-  @ViewChild('tabla', { static: true }) public tabla: MatTable<OrdenCompra>;
   public columnasTabla: string[] = [ 'numero', 'fechaSolicitud', 'fechaRecepcion', 'acciones' ];
 
-  constructor() {
+  constructor(
+    protected service: MantenedorOrdenesCompraGestionService
+  ) {
     super();
-    this.editar = new EventEmitter<OrdenCompra>();
-    this.borrar = new EventEmitter<OrdenCompra>();
   }
 }

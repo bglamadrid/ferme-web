@@ -9,7 +9,7 @@
     <mat-form-field>
       <mat-select placeholder="Cargo" [formControl]="cargo">
         <mat-option *ngFor="let cargo of (cargos$ | async)" [value]="cargo.id">
-          {{cargo.descripcion}}
+          {{cargo.nombre}}
         </mat-option>
       </mat-select>
     </mat-form-field>

@@ -5,10 +5,7 @@
 
   <div class="contenedor" [hidden]="cargandoItems$ | async">
     <div class="pagina overflow">
-      <app-listado-usuarios-gestion #listado
-        [items]="items$ | async"
-        [ocupado]="ocupado$ | async"
-        (cargar)="onCargar()"
+      <app-listado-usuarios-gestion
         (editar)="onClickEditar($event)"
         (borrar)="onClickBorrar($event)">
       </app-listado-usuarios-gestion>

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component } from '@angular/core';
 import { ListadoGestionComponent } from 'src/app/gestion/listado-gestion.abstract-component';
 import { Producto } from 'src/models/entities/Producto';
+import { MantenedorProductosGestionService } from '../mantenedor-productos.service';
 
 @Component({
   selector: 'app-listado-productos-gestion',
@@ -14,12 +14,11 @@ import { Producto } from 'src/models/entities/Producto';
 export class ListadoProductosGestionComponent
   extends ListadoGestionComponent<Producto> {
 
-  @ViewChild('tabla', { static: true }) public tabla: MatTable<Producto>;
   public columnasTabla: string[] = [ 'nombre', 'codigo', 'precio', 'stockActual', 'stockCritico', 'tipo', 'acciones' ];
 
-  constructor() {
+  constructor(
+    protected service: MantenedorProductosGestionService
+  ) {
     super();
-    this.editar = new EventEmitter<Producto>();
-    this.borrar = new EventEmitter<Producto>();
   }
 }

@@ -39,7 +39,7 @@ export class MantenedorEmpleadosGestionComponent
 
     const dialog = this.dialogService.open(EmpleadoFormDialogGestionComponent, dialogConfig);
 
-    return from(dialog.afterClosed());
+    return dialog.afterClosed();
   }
 
   public onClickBorrar(emp: Empleado) {

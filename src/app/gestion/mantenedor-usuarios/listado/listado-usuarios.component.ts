@@ -1,7 +1,7 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component } from '@angular/core';
 import { ListadoGestionComponent } from 'src/app/gestion/listado-gestion.abstract-component';
 import { Usuario } from 'src/models/entities/Usuario';
+import { MantenedorUsuariosGestionService } from '../mantenedor-usuarios.service';
 
 @Component({
   selector: 'app-listado-usuarios-gestion',
@@ -14,12 +14,11 @@ import { Usuario } from 'src/models/entities/Usuario';
 export class ListadoUsuariosGestionComponent
   extends ListadoGestionComponent<Usuario> {
 
-  @ViewChild('tabla', { static: true }) public tabla: MatTable<Usuario>;
   public columnasTabla: string[] = [ 'nombre', 'fechaCreacion', 'nombreCompleto', 'rut', 'acciones' ];
 
-  constructor() {
+  constructor(
+    protected service: MantenedorUsuariosGestionService
+  ) {
     super();
-    this.editar = new EventEmitter<Usuario>();
-    this.borrar = new EventEmitter<Usuario>();
   }
 }

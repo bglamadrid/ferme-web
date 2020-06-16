@@ -1,27 +1,25 @@
-import { EventEmitter, Input, Output } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AbstractEntity } from 'src/models/AbstractEntity';
+import { MantenedorGestionAbstractService } from './mantenedor-gestion.abstract-service';
 
-export abstract class ListadoGestionComponent<T extends AbstractEntity> {
+export abstract class ListadoGestionComponent<T extends AbstractEntity>
+  implements OnInit {
 
-  protected itemsSource: Subject<T[]> = new Subject();
-  protected ocupadoSource: Subject<boolean> = new Subject();
+  protected abstract service: MantenedorGestionAbstractService<T>;
 
-  public items$: Observable<T[]> = this.itemsSource.asObservable();
-  public ocupado$: Observable<boolean> = this.ocupadoSource.asObservable();
   public abstract columnasTabla: string[];
+  public items$: Observable<T[]>;
+  public ocupado$: Observable<boolean>;
 
   @Output() public cargar: EventEmitter<void> = new EventEmitter();
-  @Output() public editar: EventEmitter<T>;
-  @Output() public borrar: EventEmitter<T>;
+  @Output() public editar: EventEmitter<T> = new EventEmitter();
+  @Output() public borrar: EventEmitter<T> = new EventEmitter();
 
-
-  @Input() public set items(i: T[]) {
-    this.itemsSource.next(i);
-  }
-
-  @Input() public set ocupado(o: boolean) {
-    this.ocupadoSource.next(o);
+  ngOnInit() {
+    this.ocupado$ = this.service.focusedItems$.pipe(map(items => items.length === 0));
+    this.items$ = this.service.items$.pipe();
   }
 
   public onClickEditar(item: T) {
