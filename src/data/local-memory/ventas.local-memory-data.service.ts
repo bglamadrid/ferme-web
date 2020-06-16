@@ -8,6 +8,7 @@ import { Observable, of } from 'rxjs';
 export const MOCK_SALES: Partial<Venta>[] = [
   {
     id: 1,
+    fechaVenta: '2020-06-16',
     idEmpleado: 1
   }
 ];

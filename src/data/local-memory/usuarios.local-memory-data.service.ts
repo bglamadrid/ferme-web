@@ -4,7 +4,11 @@ import { Usuario } from 'src/models/entities/Usuario';
 
 export const MOCK_USERS: Partial<Usuario>[] = [
   {
-    id: 1
+    id: 1,
+    nombre: 'Usuario de prueba 1',
+    fechaCreacionUsuario: '2020-06-16',
+    nombrePersona: 'Benjamin Guillermo',
+    rutPersona: '1111111-1'
   }
 ];
 

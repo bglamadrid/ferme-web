@@ -4,7 +4,9 @@ import { Proveedor } from 'src/models/entities/Proveedor';
 
 export const MOCK_EMPLOYEES: Partial<Proveedor>[] = [
   {
-    id: 1
+    id: 1,
+    nombre: 'Sujeto de pruebas',
+    rutPersona: '1111111-1'
   }
 ];
 
