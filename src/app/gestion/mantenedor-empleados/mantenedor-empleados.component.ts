@@ -5,8 +5,8 @@ import { from, Observable } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { Empleado } from 'src/models/entities/Empleado';
 import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
-import { MantenedorGestionAbstractService } from '../mantenedor-gestion.abstract-service';
 import { EmpleadoFormDialogGestionComponent, EmpleadoFormDialogGestionData } from './form-dialog/empleado-form-dialog.component';
+import { MantenedorEmpleadosGestionService } from './mantenedor-empleados.service';
 
 @Component({
   selector: 'app-mantenedor-empleados-gestion',
@@ -19,7 +19,7 @@ export class MantenedorEmpleadosGestionComponent
   extends MantenedorGestionAbstractComponent<Empleado> {
 
   constructor(
-    protected service: MantenedorGestionAbstractService<Empleado>,
+    protected service: MantenedorEmpleadosGestionService,
     protected dialogService: MatDialog,
     protected snackBarService: MatSnackBar
   ) {
