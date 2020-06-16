@@ -1,13 +1,13 @@
-<table mat-table #tabla class="full-width">
+<table mat-table #tabla class="full-width" [dataSource]="items$">
   <ng-container matColumnDef="numero">
     <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let venta" class="left"> 
+    <td mat-cell *matCellDef="let venta" class="left">
       {{venta.idVenta}}
     </td>
   </ng-container>
   <ng-container matColumnDef="fecha">
     <th mat-header-cell *matHeaderCellDef> Fecha </th>
-    <td mat-cell *matCellDef="let venta" class="left"> 
+    <td mat-cell *matCellDef="let venta" class="left">
       {{venta.fechaVenta}}
     </td>
   </ng-container>
@@ -15,19 +15,19 @@
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let venta">
       <div class="acciones">
-        <button mat-button mat-icon-button 
-          color="primary" class="details" 
-          [disabled]="ocupado$ | async" 
+        <button mat-button mat-icon-button
+          color="primary" class="details"
+          [disabled]="ocupado$ | async"
           (click)="onClickEditar(venta)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button mat-icon-button 
-          color="warn" class="delete" 
-          [disabled]="ocupado$ | async" 
+        <button mat-button mat-icon-button
+          color="warn" class="delete"
+          [disabled]="ocupado$ | async"
           (click)="onClickBorrar(venta)">
           <mat-icon>delete</mat-icon>
         </button>
-      </div> 
+      </div>
     </td>
   </ng-container>
 
