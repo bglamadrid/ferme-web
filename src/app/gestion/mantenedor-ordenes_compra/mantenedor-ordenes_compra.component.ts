@@ -21,6 +21,8 @@ import { MantenedorOrdenesCompraGestionService } from './mantenedor-ordenes-comp
 export class MantenedorOrdenesCompraGestionComponent
   extends MantenedorGestionAbstractComponent<OrdenCompra> {
 
+  public columnasTabla: string[] = [ 'numero', 'fechaSolicitud', 'fechaRecepcion', 'acciones' ];
+
   constructor(
     protected service: MantenedorOrdenesCompraGestionService,
     protected dialogService: MatDialog,

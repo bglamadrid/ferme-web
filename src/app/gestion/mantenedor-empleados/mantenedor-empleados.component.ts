@@ -18,6 +18,8 @@ import { MantenedorEmpleadosGestionService } from './mantenedor-empleados.servic
 export class MantenedorEmpleadosGestionComponent
   extends MantenedorGestionAbstractComponent<Empleado> {
 
+  public columnasTabla: string[] = [ 'nombre', 'rut', 'acciones' ];
+
   constructor(
     protected service: MantenedorEmpleadosGestionService,
     protected dialogService: MatDialog,

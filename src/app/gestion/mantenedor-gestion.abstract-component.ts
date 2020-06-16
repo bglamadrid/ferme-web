@@ -10,6 +10,7 @@ export abstract class MantenedorGestionAbstractComponent<T extends AbstractEntit
 
   protected abstract service: MantenedorGestionAbstractService<T>;
   protected abstract dialogService: MatDialog;
+  public abstract columnasTabla: string[];
 
   public cargandoItems$: Observable<boolean>;
   public ocupado$: Observable<boolean>;

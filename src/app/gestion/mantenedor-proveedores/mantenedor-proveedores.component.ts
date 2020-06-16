@@ -18,6 +18,8 @@ import { MantenedorProveedoresGestionService } from './mantenedor-proveedores.se
 export class MantenedorProveedoresGestionComponent
 extends MantenedorGestionAbstractComponent<Proveedor> {
 
+  public columnasTabla: string[] = [ 'nombre', 'rut', 'acciones' ];
+
   constructor(
     protected service: MantenedorProveedoresGestionService,
     protected dialogService: MatDialog,

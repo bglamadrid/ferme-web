@@ -18,6 +18,7 @@ import { MantenedorProductosGestionService } from './mantenedor-productos.servic
 export class MantenedorProductosGestionComponent
   extends MantenedorGestionAbstractComponent<Producto> {
 
+  public columnasTabla: string[] = [ 'nombre', 'codigo', 'precio', 'stockActual', 'stockCritico', 'tipo', 'acciones' ];
 
   constructor(
     protected service: MantenedorProductosGestionService,

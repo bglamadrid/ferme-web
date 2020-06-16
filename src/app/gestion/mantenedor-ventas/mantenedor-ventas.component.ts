@@ -18,6 +18,8 @@ import { MantenedorVentasGestionService } from './mantenedor-ventas.service';
 export class MantenedorVentasGestionComponent
   extends MantenedorGestionAbstractComponent<Venta> {
 
+  public columnasTabla: string[] = [ 'numero', 'fecha', 'acciones' ];
+
   constructor(
     protected service: MantenedorVentasGestionService,
     protected dialogService: MatDialog,

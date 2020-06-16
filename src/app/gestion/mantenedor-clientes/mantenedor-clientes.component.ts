@@ -15,6 +15,8 @@ import { MantenedorClientesGestionService } from './mantenedor-clientes.service'
 export class MantenedorClientesGestionComponent
   extends MantenedorGestionAbstractComponent<Cliente> {
 
+  public columnasTabla: string[] = [ 'nombre', 'rut' ];
+
   constructor(
     protected service: MantenedorClientesGestionService,
     protected dialogService: MatDialog

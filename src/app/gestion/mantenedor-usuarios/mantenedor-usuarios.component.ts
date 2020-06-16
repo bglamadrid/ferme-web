@@ -18,6 +18,8 @@ import { MantenedorUsuariosGestionService } from './mantenedor-usuarios.service'
 export class MantenedorUsuariosGestionComponent
   extends MantenedorGestionAbstractComponent<Usuario> {
 
+  public columnasTabla: string[] = [ 'nombre', 'fechaCreacion', 'nombreCompleto', 'rut', 'acciones' ];
+
   constructor(
     protected service: MantenedorUsuariosGestionService,
     protected dialogService: MatDialog,
