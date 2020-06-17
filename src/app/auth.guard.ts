@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { Sesion } from 'src/models/entities/Sesion';
-import { FERME_GESION_ROUTES_AUTH_CARGOS } from './gestion/gestion.routes';
+import { GESTION_ROUTES_AUTH } from './gestion/gestion.routes.auth';
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { CargosEnum } from 'src/enums/CargosEnum';
@@ -38,7 +38,7 @@ export class AuthGuard
             if (modulos.length > 1) {
               const idCargo = sesionActual.idCargo;
               const subModule = modulos[1];
-              const cargosAutorizados = FERME_GESION_ROUTES_AUTH_CARGOS[subModule];
+              const cargosAutorizados = GESTION_ROUTES_AUTH[subModule];
 
               if (cargosAutorizados) {
                 return cargosAutorizados.includes(idCargo);

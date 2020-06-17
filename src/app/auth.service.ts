@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { Sesion } from 'src/models/entities/Sesion';
+import { GESTION_ROUTES_AUTH } from './gestion/gestion.routes.auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -33,6 +34,18 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+
+  public puedeVerModulo(nombreModulo: string): boolean {
+
+    if (this.sesion) {
+      const cargosAutorizados = GESTION_ROUTES_AUTH[nombreModulo];
+      if (cargosAutorizados) {
+        const puede = cargosAutorizados.includes(this.sesion.idCargo);
+        return puede;
+      }
+    }
+    return false;
   }
 
   protected JSONToSesion(json: string): Sesion {

@@ -1,33 +1,7 @@
 <div class="contenedor">
-  <div class="cabecera">
-    <button mat-button color="warn" class="cabecera-alternar-navegacion" title="Alternar menú lateral"
-      (click)="sidenavOpened = !sidenavOpened">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <div class="logo">
-      <img src="assets/img/logo.png" alt="FERME">
-      <h1>FERME</h1>
-    </div>
-    <div class="cabecera-contenido">
-      <span>{{ nombreModulo }}</span>
-    </div>
-    <mat-menu #menuCabecera class="cabecera-menu">
-      <span mat-menu-item disabled>{{ nombreUsuario }}</span>
-      <button mat-menu-item class="cabecera-editar-usuario" title="Editar Perfil" (click)="onClickEditarUsuario()">
-        <mat-icon>edit</mat-icon>
-        Editar Perfil
-      </button>
-      <button mat-menu-item class="cabecera-cerrar-sesion" title="Cerrar Sesion" (click)="onClickCerrarSesion()">
-        <mat-icon>exit_to_app</mat-icon>
-        Cerrar sesion
-      </button>
-    </mat-menu>
-    <button mat-button class="cabecera-abrir-menu" [matMenuTriggerFor]="menuCabecera">
-      <mat-icon>person</mat-icon>
-    </button>
-  </div>
+  <app-cabecera-gestion></app-cabecera-gestion>
   <mat-sidenav-container>
-    <mat-sidenav [opened]="sidenavOpened" mode="side" role="navigation">
+    <mat-sidenav [opened]="isSidenavOpen$ | async" mode="side" role="navigation">
       <mat-nav-list role="navigation-links">
         <a mat-list-item *ngFor="let modulo of modulos; let i = index" (click)="onClickNavegar(i)"
           [class.active]="modulo.activo" [routerLink]="['/gestion', modulo.path]">

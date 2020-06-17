@@ -1,14 +1,17 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { FERME_GESION_ROUTES_AUTH_CARGOS, FERME_GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
+import { GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
+import { GESTION_ROUTES_AUTH } from 'src/app/gestion/gestion.routes.auth';
 import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { GestionService } from './gestion.service';
+import { filter, map } from 'rxjs/operators';
 
 export interface NavegadorModuloItem {
   path: string;
@@ -18,32 +21,41 @@ export interface NavegadorModuloItem {
 }
 
 export interface ItemListaEnlaceMetadata {
+  titulo: string;
   codigoMaterialIcon: string;
 }
 
-export const MODULOS_ICONOS: { [key: string]: ItemListaEnlaceMetadata } = {
+export const META_MODULOS: { [key: string]: ItemListaEnlaceMetadata } = {
   resumen: {
+    titulo: 'Resumen',
     codigoMaterialIcon: 'home'
   },
   clientes: {
+    titulo: 'Clientes',
     codigoMaterialIcon: 'person'
   },
   empleados: {
+    titulo: 'Empleados',
     codigoMaterialIcon: 'work'
   },
   productos: {
+    titulo: 'Productos',
     codigoMaterialIcon: 'store'
   },
   proveedores: {
+    titulo: 'Proveedores',
     codigoMaterialIcon: 'rv_hookup'
   },
   ventas: {
+    titulo: 'Ventas',
     codigoMaterialIcon: 'attach_money'
   },
   ordenes_compra: {
+    titulo: 'Ords. Compra',
     codigoMaterialIcon: 'assignment'
   },
   usuarios: {
+    titulo: 'Usuarios',
     codigoMaterialIcon: 'perm_identity'
   }
 };
@@ -51,15 +63,15 @@ export const MODULOS_ICONOS: { [key: string]: ItemListaEnlaceMetadata } = {
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
-  styleUrls: ['../../assets/styles/navegadores.css']
+  styleUrls: ['./gestion.component.css']
 })
 export class GestionComponent
   implements OnInit, OnDestroy {
 
   protected suscrCambioSesion: Subscription;
 
+  public isSidenavOpen$: Observable<boolean>;
   public modulos: NavegadorModuloItem[];
-  public sidenavOpened = true;
   public nombreModulo: string;
 
   constructor(
@@ -67,8 +79,8 @@ export class GestionComponent
     @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
     protected router: Router,
     protected snackBar: MatSnackBar,
-    protected route: ActivatedRoute,
-    protected dialog: MatDialog
+    protected dialog: MatDialog,
+    protected service: GestionService
   ) {
     this.nombreModulo = '';
   }
@@ -76,18 +88,10 @@ export class GestionComponent
   public get nombreUsuario(): string { return this.authSvc.sesion.nombreUsuario; }
 
   ngOnInit(): void {
+    this.isSidenavOpen$ = this.service.isSidenavOpen$.pipe();
     this.suscrCambioSesion = this.authSvc.cambioSesion.subscribe(() => { this.alCambiarSesion(); });
 
     this.modulos = this.generarListadoModulos();
-
-    const rutaActual = this.route.firstChild;
-    if (rutaActual) {
-      const moduloRuta = rutaActual.routeConfig.path;
-      const moduloIndex = this.modulos.findIndex(m => m.path === moduloRuta);
-      const modulo = this.modulos[moduloIndex];
-      this.onClickNavegar(moduloIndex);
-      this.router.navigate([modulo.path], { relativeTo: this.route });
-    }
   }
 
   ngOnDestroy(): void {
@@ -102,35 +106,17 @@ export class GestionComponent
     }
   }
 
-  public onClickNavegar(indice: number) {
-    const item = this.modulos[indice];
-    this.modulos.forEach(m => m.activo = false);
-    this.nombreModulo = item.texto;
-    item.activo = true;
-  }
-
-  public puedeVerModulo(nombreModulo: string): boolean {
-
-    const sesionActual = this.authSvc.sesion;
-    const cargosAutorizados = FERME_GESION_ROUTES_AUTH_CARGOS[nombreModulo];
-    if (cargosAutorizados && sesionActual) {
-      const puede = cargosAutorizados.includes(sesionActual.idCargo);
-      return puede;
-    }
-    return false;
-  }
-
   protected generarListadoModulos(): NavegadorModuloItem[] {
 
-    return FERME_GESTION_ROUTES.filter(
-      route => this.puedeVerModulo(route.path)
+    return GESTION_ROUTES.filter(
+      route => this.authSvc.puedeVerModulo(route.path)
     ).map(
       (route) => {
-        const metadatos = MODULOS_ICONOS[route.path];
+        const meta = META_MODULOS[route.path];
         const protoModulo: NavegadorModuloItem = {
           path: route.path,
-          texto: this.routePathToText(route.path),
-          icono: metadatos.codigoMaterialIcon,
+          texto: meta.titulo,
+          icono: meta.codigoMaterialIcon,
           activo: false
         };
         return protoModulo;
@@ -153,13 +139,11 @@ export class GestionComponent
     ).afterClosed();
   }
 
-  /** Convierte el identificador o ruta (URL) de tipo en un string de encabezado.
-   * Separa el string por guiones bajos, deja la primera letra de cada palabra separada en mayúscula, y las vuelve a unir con espacios.
-   * Ej: modulo_de_aplicacion = Modulo De Aplicacion
-   * @param path La ruta (URL) del modulo
-   */
-  public routePathToText(path: string): string {
-    return path.split('_').map((palabra) => palabra.charAt(0).toUpperCase() + palabra.substring(1)).join(' ');
+  public onClickNavegar(indice: number) {
+    const item = this.modulos[indice];
+    this.modulos.forEach(m => m.activo = false);
+    this.nombreModulo = item.texto;
+    item.activo = true;
   }
 
   public onClickEditarUsuario(): void {
