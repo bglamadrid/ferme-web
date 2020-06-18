@@ -97,7 +97,7 @@ export class ProductoFormDialogGestionComponent
     this.tipo.setValue(prod.idTipoProducto, REACTIVE_FORMS_ISOLATE);
     this.precio.setValue(prod.precioProducto, REACTIVE_FORMS_ISOLATE);
     this.stockActual.setValue(prod.stockActualProducto, REACTIVE_FORMS_ISOLATE);
-    this.stockCritico.setValue(String(prod.stockCriticoProducto), REACTIVE_FORMS_ISOLATE);
+    this.stockCritico.setValue(prod.stockCriticoProducto, REACTIVE_FORMS_ISOLATE);
     if (prod.descripcion) {
       this.descripcion.setValue(prod.descripcion, REACTIVE_FORMS_ISOLATE);
     }
