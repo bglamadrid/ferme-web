@@ -3,10 +3,10 @@
   <mat-spinner-centrado *ngIf="cargandoItems$ | async">
   </mat-spinner-centrado>
 
-  <div class="contenedor" [hidden]="cargandoItems$ | async">
+  <div class="full-width" [hidden]="cargandoItems$ | async">
     <div class="pagina overflow">
 
-      <table mat-table #tabla class="full-width" [dataSource]="items$">
+      <table mat-table class="full-width-min" [dataSource]="items$">
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef> Nombre de Usuario </th>
           <td mat-cell *matCellDef="let usuario" class="left">
