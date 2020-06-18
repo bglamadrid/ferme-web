@@ -25,9 +25,9 @@ export class DatosPersonaFormComponent {
   }
 
   constructor(
-    protected fb: FormBuilder
+    protected formBuilder: FormBuilder
   ) {
-    this.formGroup = this.fb.group({
+    this.formGroup = this.formBuilder.group({
       nombre: ['', Validators.required],
       rut: ['', Validators.required],
       direccion: [''],

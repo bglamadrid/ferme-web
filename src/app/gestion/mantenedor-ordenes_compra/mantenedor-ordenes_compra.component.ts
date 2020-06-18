@@ -26,7 +26,7 @@ export class MantenedorOrdenesCompraGestionComponent
   constructor(
     protected service: MantenedorOrdenesCompraGestionService,
     protected dialogService: MatDialog,
-    protected snackBar: MatSnackBar
+    protected snackBarService: MatSnackBar
   ) {
     super();
   }
@@ -51,14 +51,14 @@ export class MantenedorOrdenesCompraGestionComponent
     this.service.eliminarItems([oc]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Orden de compra eliminada.');
+          this.snackBarService.open('Orden de compra eliminada.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar la orden de compra.');
+          this.snackBarService.open('Hubo un problema al borrar la orden de compra.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

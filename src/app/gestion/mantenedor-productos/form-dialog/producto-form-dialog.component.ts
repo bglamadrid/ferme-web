@@ -39,14 +39,14 @@ export class ProductoFormDialogGestionComponent
   protected privChangeFamiliaSub: Subscription;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) dialogData: ProductoFormDialogGestionData,
-    protected self: MatDialogRef<ProductoFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
-    @Inject(DATA_SERVICE_ALIASES.products) protected httpSvc: EntityDataService<Producto>
+    @Inject(MAT_DIALOG_DATA) data: ProductoFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.products) protected dataService: EntityDataService<Producto>,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedDataService: SharedDataService,
+    protected dialog: MatDialogRef<ProductoFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder
   ) {
-    this.productoForm = this.fb.group({
+    this.productoForm = this.formBuilder.group({
       nombre: [null, Validators.required],
       familia: [null, Validators.required],
       tipo: [{value: null, disabled: true}, Validators.required],
@@ -57,7 +57,7 @@ export class ProductoFormDialogGestionComponent
     });
     this.cargando = false;
 
-    const item: Producto = (dialogData?.producto) ? dialogData.producto : new Producto();
+    const item: Producto = (data?.producto) ? data.producto : new Producto();
     this.cargarProducto(item);
   }
 
@@ -72,7 +72,7 @@ export class ProductoFormDialogGestionComponent
   public get esNuevo() { return isNaN(this.privIdProducto); }
 
   ngOnInit() {
-    this.familias$ = this.sharedSvc.readAllFamiliasProducto();
+    this.familias$ = this.sharedDataService.readAllFamiliasProducto();
     this.privChangeFamiliaSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
   }
 
@@ -111,21 +111,21 @@ export class ProductoFormDialogGestionComponent
     this.productoForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.create(prod).subscribe(
+    this.dataService.create(prod).subscribe(
       (prod2: Producto) => {
         // TODO: make sure prod2 is not actually prod
         if (prod2.id) {
           if (prod.id) {
-            this.snackBar.open('Producto \'' + prod.nombre + '\' actualizado/a exitosamente.');
+            this.snackBarService.open('Producto \'' + prod.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Producto \'' + prod2.nombre + '\' registrado/a exitosamente.');
+            this.snackBarService.open('Producto \'' + prod2.nombre + '\' registrado/a exitosamente.');
           }
-          this.self.close(prod2);
+          this.dialog.close(prod2);
         } else {
-          this.snackBar.open('Error al guardar producto.');
+          this.snackBarService.open('Error al guardar producto.');
         }
       }, err => {
-        this.snackBar.open('Error al guardar producto.');
+        this.snackBarService.open('Error al guardar producto.');
         this.cargando = false;
         this.productoForm.enable(REACTIVE_FORMS_ISOLATE);
       }
@@ -139,7 +139,7 @@ export class ProductoFormDialogGestionComponent
 
       const idFamilia: number = Number(this.familia.value);
       if (!isNaN(idFamilia)) {
-        this.tipos$ = this.sharedSvc.readAllTiposProductoByFamiliaId(idFamilia);
+        this.tipos$ = this.sharedDataService.readAllTiposProductoByFamiliaId(idFamilia);
         if (idTipoProductoSeleccionado) {
           this.tipos$.subscribe(
             (tipos: TipoProducto[]) => {
@@ -178,7 +178,7 @@ export class ProductoFormDialogGestionComponent
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set Producto(prod: Producto) {

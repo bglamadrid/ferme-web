@@ -33,22 +33,22 @@ export class UsuarioFormDialogGestionComponent
   public usuarioForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) dialogData: UsuarioFormDialogGestionData,
-    protected self: MatDialogRef<UsuarioFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
-    @Inject(DATA_SERVICE_ALIASES.users) protected httpSvc: EntityDataService<Usuario>
+    @Inject(MAT_DIALOG_DATA) data: UsuarioFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedDataService: SharedDataService,
+    @Inject(DATA_SERVICE_ALIASES.users) protected dataService: EntityDataService<Usuario>,
+    protected dialog: MatDialogRef<UsuarioFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder
   ) {
     this.cargando = false;
 
-    this.usuarioForm = this.fb.group({
+    this.usuarioForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       clave: [''],
       persona: [undefined, Validators.required]
     });
 
-    const item: Usuario = (dialogData?.usuario) ? dialogData.usuario : new Usuario();
+    const item: Usuario = (data?.usuario) ? data.usuario : new Usuario();
     this.cargarUsuario(item);
   }
 
@@ -59,7 +59,7 @@ export class UsuarioFormDialogGestionComponent
   public get esNuevo() { return isNaN(this.privIdUsuario); }
 
   ngOnInit() {
-    this.sharedSvc.readAllPersonas().subscribe(prs => { this.personas$ = of(prs); });
+    this.sharedDataService.readAllPersonas().subscribe(prs => { this.personas$ = of(prs); });
   }
 
   protected cargarUsuario(usr: Usuario): void {
@@ -82,22 +82,22 @@ export class UsuarioFormDialogGestionComponent
     this.usuarioForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.create(usr).subscribe(
+    this.dataService.create(usr).subscribe(
       (usr2: Usuario) => {
         // TODO: make sure prod2 is not actually prod
         if (usr2.id) {
           if (usr.id) {
-            this.snackBar.open('Usuario \'' + usr.nombre + '\' actualizado/a exitosamente.');
+            this.snackBarService.open('Usuario \'' + usr.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Usuario \'' + usr2.nombre + '\' registrado/a exitosamente.');
+            this.snackBarService.open('Usuario \'' + usr2.nombre + '\' registrado/a exitosamente.');
           }
-          this.self.close(usr2);
+          this.dialog.close(usr2);
         } else {
-          this.snackBar.open('Error al guardar usuario.');
+          this.snackBarService.open('Error al guardar usuario.');
         }
       }, err => {
         console.log(err);
-        this.snackBar.open('Error al guardar usuario.');
+        this.snackBarService.open('Error al guardar usuario.');
         this.cargando = false;
         this.usuarioForm.enable(REACTIVE_FORMS_ISOLATE);
       }
@@ -117,7 +117,7 @@ export class UsuarioFormDialogGestionComponent
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set Usuario(usr: Usuario) {

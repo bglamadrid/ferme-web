@@ -1,17 +1,15 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { GESTION_ROUTES } from 'src/app/gestion/gestion.routes';
-import { GESTION_ROUTES_AUTH } from 'src/app/gestion/gestion.routes.auth';
-import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthDataService } from 'src/data/auth.data.iservice';
 import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
 import { GestionService } from './gestion.service';
-import { filter, map } from 'rxjs/operators';
 
 export interface NavegadorModuloItem {
   path: string;
@@ -74,22 +72,22 @@ export class GestionComponent
   public modulos: NavegadorModuloItem[];
   public nombreModulo: string;
 
+  public get nombreUsuario(): string { return this.authService.sesion.nombreUsuario; }
+
   constructor(
-    protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected service: GestionService,
+    protected authService: AuthService,
     protected router: Router,
-    protected snackBar: MatSnackBar,
-    protected dialog: MatDialog,
-    protected service: GestionService
+    protected snackBarService: MatSnackBar,
+    protected dialogService: MatDialog
   ) {
     this.nombreModulo = '';
   }
 
-  public get nombreUsuario(): string { return this.authSvc.sesion.nombreUsuario; }
-
   ngOnInit(): void {
     this.isSidenavOpen$ = this.service.isSidenavOpen$.pipe();
-    this.suscrCambioSesion = this.authSvc.cambioSesion.subscribe(() => { this.alCambiarSesion(); });
+    this.suscrCambioSesion = this.authService.cambioSesion$.subscribe(() => { this.alCambiarSesion(); });
 
     this.modulos = this.generarListadoModulos();
   }
@@ -101,7 +99,7 @@ export class GestionComponent
   }
 
   protected alCambiarSesion(): void {
-    if (!this.authSvc.sesion) {
+    if (!this.authService.sesion) {
       this.router.navigateByUrl('/login');
     }
   }
@@ -109,7 +107,7 @@ export class GestionComponent
   protected generarListadoModulos(): NavegadorModuloItem[] {
 
     return GESTION_ROUTES.filter(
-      route => this.authSvc.puedeVerModulo(route.path)
+      route => this.authService.puedeVerModulo(route.path)
     ).map(
       (route) => {
         const meta = META_MODULOS[route.path];
@@ -130,8 +128,8 @@ export class GestionComponent
       mensaje: 'Si esta realizando una transaccion, perdera la informacion que no haya guardado.'
     };
 
-    return this.dialog.open(
-      ConfirmacionDialogComponent,
+    return this.dialogService.open(
+      ConfirmationDialogComponent,
       {
         width: '24rem',
         data: dialogData
@@ -147,43 +145,43 @@ export class GestionComponent
   }
 
   public onClickEditarUsuario(): void {
-    const sesion = this.authSvc.sesion;
-    this.authHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
+    const sesion = this.authService.sesion;
+    this.authDataService.obtenerDatosPersonaSesion(sesion).subscribe(
       perfil => {
         const dialogData: PerfilUsuarioFormDialogData = { persona: perfil };
         const dConf = {
           width: '40rem',
           data: dialogData
         };
-        this.dialog.open(PerfilUsuarioFormDialogComponent, dConf);
+        this.dialogService.open(PerfilUsuarioFormDialogComponent, dConf);
       },
       err => {
-        this.snackBar.open('No se pudieron obtener los datos de su perfil. Por favor, vuelva a intentarlo.', 'OK', { duration: -1 });
+        this.snackBarService.open('No se pudieron obtener los datos de su perfil. Por favor, vuelva a intentarlo.', 'OK', { duration: -1 });
       }
     );
   }
 
   public onClickCerrarSesion(): void {
     const mensajeConfirmacion = 'Su sesión ha sido cerrada';
-    if (this.authSvc.sesion) {
+    if (this.authService.sesion) {
       this.solicitarConfirmacionCerrarSesion().subscribe(
         confirmado => {
           if (confirmado) {
-            this.authHttpSvc.cerrarSesion(this.authSvc.sesion).subscribe(
+            this.authDataService.cerrarSesion(this.authService.sesion).subscribe(
               () => {
-                this.authSvc.Sesion = null;
+                this.authService.sesion = null;
                 this.router.navigateByUrl('/login');
-                this.snackBar.open(mensajeConfirmacion);
+                this.snackBarService.open(mensajeConfirmacion);
               },
               err => {
-                this.snackBar.open('Su sesión no pudo ser cerrada. Por favor, vuelva a intentarlo.', 'OK', { duration: -1 });
+                this.snackBarService.open('Su sesión no pudo ser cerrada. Por favor, vuelva a intentarlo.', 'OK', { duration: -1 });
               }
             );
           }
         }
       );
     } else {
-      this.snackBar.open(mensajeConfirmacion);
+      this.snackBarService.open(mensajeConfirmacion);
       this.router.navigateByUrl('/login');
     }
   }

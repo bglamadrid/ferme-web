@@ -13,7 +13,8 @@ export interface ConfirmationDialogData {
   templateUrl: './confirmacion.component.html',
   styleUrls: ['./confirmacion.component.css']
 })
-export class ConfirmacionDialogComponent implements OnInit {
+export class ConfirmationDialogComponent
+  implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData

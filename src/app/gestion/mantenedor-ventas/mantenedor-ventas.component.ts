@@ -23,7 +23,7 @@ export class MantenedorVentasGestionComponent
   constructor(
     protected service: MantenedorVentasGestionService,
     protected dialogService: MatDialog,
-    protected snackBar: MatSnackBar
+    protected snackBarService: MatSnackBar
   ) {
     super();
   }
@@ -48,14 +48,14 @@ export class MantenedorVentasGestionComponent
     this.service.eliminarItems([vnt]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Venta N°' + vnt.id + ' (' + vnt.fechaVenta + ') eliminada.');
+          this.snackBarService.open('Venta N°' + vnt.id + ' (' + vnt.fechaVenta + ') eliminada.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar la venta.');
+          this.snackBarService.open('Hubo un problema al borrar la venta.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

@@ -10,22 +10,10 @@ import { GESTION_ROUTES_AUTH } from './gestion/gestion.routes.auth';
 export class AuthService {
 
   protected cambioSesionSource: Subject<Sesion>;
-  protected cambioSesion$: Observable<Sesion>;
-
   protected validandoSesionSource: Subject<boolean>;
-  protected validandoSesion$: Observable<boolean>;
 
-  constructor(
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
-  ) {
-    const ssn = this.sesion;
-    this.cambioSesionSource = new BehaviorSubject(ssn);
-    this.validarSesion();
-    this.cambioSesion$ = this.cambioSesionSource.asObservable();
-  }
-
-  public get cambioSesion(): Observable<Sesion> { return this.cambioSesion$; }
-  public get validandoSesion(): Observable<boolean> { return this.validandoSesion$; }
+  public cambioSesion$: Observable<Sesion>;
+  public validandoSesion$: Observable<boolean>;
 
   public get sesion(): Sesion {
     const ssnJSON: string = sessionStorage.getItem('sesion');
@@ -34,6 +22,25 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+  public set sesion(ssn: Sesion) {
+    if (!ssn) {
+      sessionStorage.removeItem('sesion');
+      this.cambioSesionSource.next(null);
+    } else if (this.isSesionValida(ssn)) {
+      const ssnJSON: string = JSON.stringify(ssn);
+      sessionStorage.setItem('sesion', ssnJSON);
+      this.cambioSesionSource.next(ssn);
+    }
+  }
+
+  constructor(
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+  ) {
+    const ssn = this.sesion;
+    this.cambioSesionSource = new BehaviorSubject(ssn);
+    this.validarSesion();
+    this.cambioSesion$ = this.cambioSesionSource.asObservable();
   }
 
   public puedeVerModulo(nombreModulo: string): boolean {
@@ -74,37 +81,25 @@ export class AuthService {
 
     const ssn = this.sesion;
     if (ssn) {
-      const obs: Observable<boolean> = this.authHttpSvc.validarSesion(ssn);
+      const obs: Observable<boolean> = this.authDataService.validarSesion(ssn);
       obs.pipe(
         finalize(() => { this.validandoSesionSource.next(false); })
       ).subscribe(
         (validada: boolean) => {
           if (validada) {
-            this.Sesion = ssn;
+            this.sesion = ssn;
           } else {
-            this.Sesion = null;
+            this.sesion = null;
           }
         },
         err => {
-          this.Sesion = null;
+          this.sesion = null;
         }
       );
       return obs;
     } else {
-      this.Sesion = ssn;
+      this.sesion = ssn;
       return false;
-    }
-  }
-
-
-  public set Sesion(ssn: Sesion) {
-    if (!ssn) {
-      sessionStorage.removeItem('sesion');
-      this.cambioSesionSource.next(null);
-    } else if (this.isSesionValida(ssn)) {
-      const ssnJSON: string = JSON.stringify(ssn);
-      sessionStorage.setItem('sesion', ssnJSON);
-      this.cambioSesionSource.next(ssn);
     }
   }
 

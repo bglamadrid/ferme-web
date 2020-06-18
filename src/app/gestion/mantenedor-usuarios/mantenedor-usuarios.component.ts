@@ -23,7 +23,7 @@ export class MantenedorUsuariosGestionComponent
   constructor(
     protected service: MantenedorUsuariosGestionService,
     protected dialogService: MatDialog,
-    protected snackBar: MatSnackBar
+    protected snackBarService: MatSnackBar
   ) {
     super();
   }
@@ -48,14 +48,14 @@ export class MantenedorUsuariosGestionComponent
     this.service.eliminarItems([usr]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Usuario \'' + usr.nombre + '\' eliminado.');
+          this.snackBarService.open('Usuario \'' + usr.nombre + '\' eliminado.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar el empleado.');
+          this.snackBarService.open('Hubo un problema al borrar el empleado.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

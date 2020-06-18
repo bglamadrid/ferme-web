@@ -23,7 +23,7 @@ extends MantenedorGestionAbstractComponent<Proveedor> {
   constructor(
     protected service: MantenedorProveedoresGestionService,
     protected dialogService: MatDialog,
-    protected snackBar: MatSnackBar
+    protected snackBarService: MatSnackBar
   ) {
     super();
   }
@@ -48,14 +48,14 @@ extends MantenedorGestionAbstractComponent<Proveedor> {
     this.service.eliminarItems([prov]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Proveedor \'' + prov.nombre + '\' eliminado.');
+          this.snackBarService.open('Proveedor \'' + prov.nombre + '\' eliminado.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar el empleado.');
+          this.snackBarService.open('Hubo un problema al borrar el empleado.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

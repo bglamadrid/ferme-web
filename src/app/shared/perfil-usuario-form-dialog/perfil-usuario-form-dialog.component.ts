@@ -27,9 +27,9 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PerfilUsuarioFormDialogData,
-    protected dialogRef: MatDialogRef<PerfilUsuarioFormDialogComponent<T>>,
-    protected snackBar: MatSnackBar,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected httpSvc: AuthDataService,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected dialog: MatDialogRef<PerfilUsuarioFormDialogComponent<T>>,
+    protected snackBarService: MatSnackBar,
   ) {
     this.cancelar = false;
     this.guardando = false;
@@ -40,18 +40,18 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
   protected guardarDatos(objetoDatos: T): void {
     this.guardando = true;
 
-    this.httpSvc.actualizarPerfil(objetoDatos).pipe(
+    this.authDataService.actualizarPerfil(objetoDatos).pipe(
       finalize(() => { this.guardando = false; })
     ).subscribe(
       () => {
         if (objetoDatos.idPersona) {
-          this.snackBar.open('Sus datos fueron registrados exitosamente');
+          this.snackBarService.open('Sus datos fueron registrados exitosamente');
         } else {
-          this.snackBar.open('Sus datos fueron actualizados exitosamente');
+          this.snackBarService.open('Sus datos fueron actualizados exitosamente');
         }
-        this.dialogRef.close(objetoDatos);
+        this.dialog.close(objetoDatos);
       }, () => {
-        this.snackBar.open('Error al guardar usuario.', 'OK', {duration: -1});
+        this.snackBarService.open('Error al guardar usuario.', 'OK', {duration: -1});
       }
     );
   }
@@ -59,7 +59,7 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
   public onClickAceptar(): void {
     const datosUsuario = this.formularioPersona.persona as T;
     if (!datosUsuario) {
-      this.snackBar.open('Hay campos sin rellenar', 'OK', { duration: -1 });
+      this.snackBarService.open('Hay campos sin rellenar', 'OK', { duration: -1 });
       return null;
     } else {
       datosUsuario.idPersona = this.data.persona.idPersona;
@@ -72,7 +72,7 @@ export class PerfilUsuarioFormDialogComponent<T extends Persona> {
       this.cancelar = true;
       setTimeout(() => { this.cancelar = false; }, TIEMPO_CONFIRMACION_SALIR);
     } else {
-      this.dialogRef.close(null);
+      this.dialog.close(null);
     }
   }
 

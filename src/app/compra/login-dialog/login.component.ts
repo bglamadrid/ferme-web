@@ -21,14 +21,14 @@ export class CompraLoginDialogComponent
   extends LoginComponent {
 
   constructor(
-    protected fb: FormBuilder,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected dialog: MatDialogRef<CompraLoginDialogComponent>,
+    protected formBuilder: FormBuilder,
     protected router: Router,
-    protected snackBar: MatSnackBar,
-    protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
-    protected dialogRef: MatDialogRef<CompraLoginDialogComponent>
+    protected snackBarService: MatSnackBar,
+    protected authService: AuthService
   ) {
-    super(fb, router, snackBar, authSvc, authHttpSvc);
+    super(formBuilder, router, snackBarService, authService, authDataService);
   }
 
   public onClickAceptar(): void {
@@ -39,27 +39,27 @@ export class CompraLoginDialogComponent
       clave: this.clave.value
     };
 
-    this.authHttpSvc.abrirSesion(usr).pipe(
+    this.authDataService.abrirSesion(usr).pipe(
       finalize(() => { this.cargando = false; })
     ).subscribe(
       (ssn: Sesion) => {
         if (!ssn || !ssn.hashSesion) {
-          this.snackBar.open('Credenciales invalidas.', 'OK', { duration: -1 });
+          this.snackBarService.open('Credenciales invalidas.', 'OK', { duration: -1 });
         } else {
-          this.authSvc.Sesion = ssn;
-          this.dialogRef.close();
-          this.snackBar.open('Ha iniciado sesion correctamente.');
+          this.authService.sesion = ssn;
+          this.dialog.close();
+          this.snackBarService.open('Ha iniciado sesion correctamente.');
         }
       },
       err => {
         console.log(err);
-        this.snackBar.open('Hubo un problema al autenticar.', 'OK', { duration: -1 });
+        this.snackBarService.open('Hubo un problema al autenticar.', 'OK', { duration: -1 });
       }
     );
   }
 
   public onClickCancelar(): void {
-    this.dialogRef.close();
+    this.dialog.close();
   }
 
 }

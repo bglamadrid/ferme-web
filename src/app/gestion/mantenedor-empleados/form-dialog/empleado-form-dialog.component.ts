@@ -37,33 +37,32 @@ export class EmpleadoFormDialogGestionComponent
   @ViewChild('personaForm', { static: true }) public personaForm: DatosPersonaFormComponent;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) dialogData: EmpleadoFormDialogGestionData,
-    protected appRef: ApplicationRef,
-    protected dialogRef: MatDialogRef<EmpleadoFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
-    @Inject(DATA_SERVICE_ALIASES.employees) protected httpSvc: EntityDataService<Empleado>,
+    @Inject(MAT_DIALOG_DATA) data: EmpleadoFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedDataService: SharedDataService,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected employeeDataService: EntityDataService<Empleado>,
+    protected dialog: MatDialogRef<EmpleadoFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder
   ) {
     this.cargando = false;
     this.guardando = false;
 
-    this.cargo = this.fb.control(undefined, Validators.required);
+    this.cargo = this.formBuilder.control(undefined, Validators.required);
 
 
-    const item: Empleado = (dialogData?.empleado) ? dialogData.empleado : new Empleado();
+    const item: Empleado = (data?.empleado) ? data.empleado : new Empleado();
     this.cargarEmpleado(item);
   }
 
   public get formularioCompleto(): FormGroup {
     const group = this.personaForm ? [this.cargo, this.personaForm.formGroup] : [this.cargo];
-    return this.fb.group(group);
+    return this.formBuilder.group(group);
   }
 
   public get esNuevo() { return this.empleado ? isNaN(this.empleado.id) : true; }
 
   ngOnInit() {
-    this.cargos$ = this.sharedSvc.readAllCargos();
+    this.cargos$ = this.sharedDataService.readAllCargos();
   }
 
   protected cargarEmpleado(emp: Empleado): void {
@@ -77,24 +76,24 @@ export class EmpleadoFormDialogGestionComponent
     this.formularioCompleto.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.create(emp).subscribe(
+    this.employeeDataService.create(emp).subscribe(
       (emp2: Empleado) => {
         // TODO: make sure emp2 is not actually emp
         if (emp2.id) {
           if (emp.id) {
-            this.snackBar.open('Empleado \'' + emp.nombre + '\' actualizado/a exitosamente.');
+            this.snackBarService.open('Empleado \'' + emp.nombre + '\' actualizado/a exitosamente.');
           } else {
-            this.snackBar.open('Empleado \'' + emp2.nombre + '\' registrado/a exitosamente.');
+            this.snackBarService.open('Empleado \'' + emp2.nombre + '\' registrado/a exitosamente.');
           }
-          this.dialogRef.close(emp2);
+          this.dialog.close(emp2);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.formularioCompleto.enable(REACTIVE_FORMS_ISOLATE);
           this.guardando = false;
         }
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         this.formularioCompleto.enable(REACTIVE_FORMS_ISOLATE);
         this.guardando = false;
       }
@@ -117,7 +116,7 @@ export class EmpleadoFormDialogGestionComponent
   }
 
   public onClickCancelar(): void {
-    this.dialogRef.close();
+    this.dialog.close();
   }
 
 }

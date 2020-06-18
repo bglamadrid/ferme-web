@@ -60,22 +60,22 @@ export class OrdenCompraFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) dialogData: OrdenCompraFormDialogGestionData,
-    protected self: MatDialogRef<OrdenCompraFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected httpSvc: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
-    @Inject(DATA_SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>,
-    @Inject(DATA_SERVICE_ALIASES.providers) protected prvHttpSvc: EntityDataService<Proveedor>,
-    protected dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) data: OrdenCompraFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected dataService: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected employeeDataService: EntityDataService<Empleado>,
+    @Inject(DATA_SERVICE_ALIASES.providers) protected providerDataService: EntityDataService<Proveedor>,
+    protected authService: AuthService,
+    protected dialog: MatDialogRef<OrdenCompraFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder,
+    protected dialogService: MatDialog
   ) {
     this.cargando = false;
     this.guardando = false;
 
     this.fechaSolicitud = (new Date()).toLocaleDateString();
 
-    this.ordenCompraForm = this.fb.group({
+    this.ordenCompraForm = this.formBuilder.group({
       empleado: [null, Validators.required],
       proveedor: [null, Validators.required]
     });
@@ -84,7 +84,7 @@ export class OrdenCompraFormDialogGestionComponent
     this.subtotalOrdenCompra = 0;
     this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'acciones' ];
 
-    const oc: OrdenCompra = (dialogData?.ordenCompra) ? dialogData.ordenCompra : new OrdenCompra();
+    const oc: OrdenCompra = (data?.ordenCompra) ? data.ordenCompra : new OrdenCompra();
     this.cargarOrdenCompra(oc);
   }
 
@@ -111,8 +111,8 @@ export class OrdenCompraFormDialogGestionComponent
   public get hayProductosSinCantidad() { return this.detallesOrdenCompra.some(dtl => dtl.cantidadProducto <= 0); }
 
   ngOnInit() {
-    this.proveedores$ = this.prvHttpSvc.readAll();
-    this.empleados$ = this.empHttpSvc.readAll();
+    this.proveedores$ = this.providerDataService.readAll();
+    this.empleados$ = this.employeeDataService.readAll();
   }
 
   protected cargarOrdenCompra(oc: OrdenCompra): void {
@@ -129,7 +129,7 @@ export class OrdenCompraFormDialogGestionComponent
       this.proveedor.setValue(oc.idProveedor, REACTIVE_FORMS_ISOLATE);
     }
 
-    this.httpSvc.readDetailsById(oc.id).pipe(
+    this.dataService.readDetailsById(oc.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ordenCompraForm.enable();
@@ -140,8 +140,8 @@ export class OrdenCompraFormDialogGestionComponent
         this.tablaDetalles.dataSource = of(detalles);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
-        this.self.close(null);
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.dialog.close(null);
       }
     );
   }
@@ -150,24 +150,24 @@ export class OrdenCompraFormDialogGestionComponent
     this.ordenCompraForm.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.create(vnt).subscribe(
+    this.dataService.create(vnt).subscribe(
       (vnt2: OrdenCompra) => {
         // TODO: make sure vnt2 is not actually vnt
         if (vnt2.id) {
           if (vnt.id) {
-            this.snackBar.open('Orden de compra \'' + vnt.id + '\' actualizada exitosamente.', 'OK', { duration: -1 });
+            this.snackBarService.open('Orden de compra \'' + vnt.id + '\' actualizada exitosamente.', 'OK', { duration: -1 });
           } else {
-            this.snackBar.open('Orden de compra \'' + vnt2.id + '\' registrada exitosamente.', 'OK', { duration: -1 });
+            this.snackBarService.open('Orden de compra \'' + vnt2.id + '\' registrada exitosamente.', 'OK', { duration: -1 });
           }
-          this.self.close(vnt2);
+          this.dialog.close(vnt2);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.guardando = false;
           this.ordenCompraForm.enable(REACTIVE_FORMS_ISOLATE);
         }
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         this.ordenCompraForm.enable(REACTIVE_FORMS_ISOLATE);
         this.guardando = false;
       }
@@ -175,7 +175,7 @@ export class OrdenCompraFormDialogGestionComponent
   }
 
   public onClickAgregarProductos(): void {
-    this.dialog.open(AgregarProductoDialogComponent, {
+    this.dialogService.open(AgregarProductoDialogComponent, {
       width: '70rem'
     })
       .beforeClosed().subscribe(
@@ -224,16 +224,16 @@ export class OrdenCompraFormDialogGestionComponent
 
   public onClickAceptar(): void {
     if (this.detallesOrdenCompra.length === 0) {
-      this.snackBar.open('Se requieren productos para realizar una orden de compra.', undefined, { duration: 6000 });
+      this.snackBarService.open('Se requieren productos para realizar una orden de compra.', undefined, { duration: 6000 });
     } else if (this.hayProductosSinCantidad) {
-      this.snackBar.open('Está solicitando 0 o menos unidades de un producto.', undefined, { duration: 8000 });
+      this.snackBarService.open('Está solicitando 0 o menos unidades de un producto.', undefined, { duration: 8000 });
     } else {
       this.guardarOrdenCompra(this.ordenCompra);
     }
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set OrdenCompra(emp: OrdenCompra) {

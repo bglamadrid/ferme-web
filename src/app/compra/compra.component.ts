@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
 import { CompraService } from 'src/app/compra/compra.service';
-import { ConfirmacionDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmacion.component';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { PerfilUsuarioFormDialogComponent, PerfilUsuarioFormDialogData } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
 import { AuthDataService } from 'src/data/auth.data.iservice';
@@ -34,12 +34,11 @@ export class CompraNavegadorComponent
   public mostrarResumen: boolean;
 
   constructor(
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected service: CompraService,
     protected authSvc: AuthService,
-    @Inject(DATA_SERVICE_ALIASES.auth) protected authHttpSvc: AuthDataService,
-    protected router: Router,
-    protected snackBar: MatSnackBar,
-    protected dialog: MatDialog,
-    protected compraSvc: CompraService
+    protected snackBarService: MatSnackBar,
+    protected dialogService: MatDialog
   ) {
     this.subtotalVentaActual = 0;
     this.mostrarResumen = false;
@@ -49,7 +48,7 @@ export class CompraNavegadorComponent
   public get usuarioNombre(): string { return this.authSvc.sesion ? this.authSvc.sesion.nombreUsuario : ''; }
 
   ngOnInit() {
-    this.detallesSub = this.compraSvc.detalles$.subscribe(d => { this.generarResumenCarritoEnCabecera(d); });
+    this.detallesSub = this.service.detalles$.subscribe(d => { this.generarResumenCarritoEnCabecera(d); });
   }
 
   ngOnDestroy() {
@@ -58,11 +57,11 @@ export class CompraNavegadorComponent
     }
 
     if (this.estaAutenticado) {
-      this.authHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
-        finalize(() => { this.authSvc.Sesion = null; })
+      this.authDataService.cerrarSesion(this.authSvc.sesion).pipe(
+        finalize(() => { this.authSvc.sesion = null; })
       ).subscribe(
         () => {
-          this.snackBar.open('Su sesión ha sido cerrada por seguridad.');
+          this.snackBarService.open('Su sesión ha sido cerrada por seguridad.');
         }
       );
     }
@@ -95,8 +94,8 @@ export class CompraNavegadorComponent
       mensaje: 'Si esta realizando una transaccion, perdera la informacion que haya guardado.'
     };
 
-    return this.dialog.open(
-      ConfirmacionDialogComponent,
+    return this.dialogService.open(
+      ConfirmationDialogComponent,
       {
         width: '24rem',
         data: dialogData
@@ -109,22 +108,22 @@ export class CompraNavegadorComponent
       width: '24rem',
       height: '24rem'
     };
-    this.dialog.open(CompraLoginDialogComponent, dConf);
+    this.dialogService.open(CompraLoginDialogComponent, dConf);
   }
 
   public onClickEditarUsuario(): void {
     const sesion = this.authSvc.sesion;
-    this.authHttpSvc.obtenerDatosPersonaSesion(sesion).subscribe(
+    this.authDataService.obtenerDatosPersonaSesion(sesion).subscribe(
       perfil => {
         const dialogData: PerfilUsuarioFormDialogData = { persona: perfil };
         const dConf = {
           width: '60rem',
           data: dialogData
         };
-        this.dialog.open(PerfilUsuarioFormDialogComponent, dConf);
+        this.dialogService.open(PerfilUsuarioFormDialogComponent, dConf);
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
@@ -133,15 +132,15 @@ export class CompraNavegadorComponent
     this.solicitarConfirmacionCerrarSesion().subscribe(
       confirmado => {
         if (confirmado) {
-          this.authHttpSvc.cerrarSesion(this.authSvc.sesion).pipe(
-            finalize(() => { this.authSvc.Sesion = null; })
+          this.authDataService.cerrarSesion(this.authSvc.sesion).pipe(
+            finalize(() => { this.authSvc.sesion = null; })
           ).subscribe(
             () => {
-              this.snackBar.open('Su sesión ha sido cerrada.');
+              this.snackBarService.open('Su sesión ha sido cerrada.');
             },
             err => {
               console.log(err);
-              this.snackBar.open('Hubo un error de comunicación con el servidor.');
+              this.snackBarService.open('Hubo un error de comunicación con el servidor.');
             }
           );
         }

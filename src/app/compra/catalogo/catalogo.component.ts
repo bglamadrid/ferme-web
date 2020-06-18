@@ -26,17 +26,17 @@ export class CompraCatalogoComponent implements OnInit {
   public productoForm: FormGroup;
 
   constructor(
-    @Inject(DATA_SERVICE_ALIASES.products) protected prodHttpSvc: EntityDataService<Producto>,
-    protected fb: FormBuilder,
-    protected snackBar: MatSnackBar,
-    protected compraSvc: CompraService,
+    @Inject(DATA_SERVICE_ALIASES.products) protected productDataService: EntityDataService<Producto>,
+    protected formBuilder: FormBuilder,
+    protected snackBarService: MatSnackBar,
+    protected service: CompraService,
   ) {
     this.cargando = true;
     this.productos = [];
     this.productosSource = new BehaviorSubject<Producto[]>([]);
     this.productos$ = this.productosSource.asObservable();
 
-    this.productoForm = this.fb.group({
+    this.productoForm = this.formBuilder.group({
       familia: [null],
       tipo: [{value: null, disabled: true}],
       nombre: ['']
@@ -60,9 +60,9 @@ export class CompraCatalogoComponent implements OnInit {
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
-      obs = this.prodHttpSvc.readFiltered(filtros);
+      obs = this.productDataService.readFiltered(filtros);
     } else {
-      obs = this.prodHttpSvc.readAll();
+      obs = this.productDataService.readAll();
     }
 
     obs.pipe(
@@ -72,13 +72,13 @@ export class CompraCatalogoComponent implements OnInit {
         this.productosSource.next(prods);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
 
   public onClickAgregarProducto(prod: Producto): void {
-    this.compraSvc.agregarProducto(prod);
+    this.service.agregarProducto(prod);
   }
 
 }

@@ -24,29 +24,29 @@ export interface AgregarProductoDialogData {
     './agregar-producto.component.css'
   ]
 })
-export class AgregarProductoDialogComponent implements OnInit {
+export class AgregarProductoDialogComponent
+  implements OnInit {
 
   public cargando: boolean;
   public hayProductos: boolean;
 
   @ViewChild('tablaProductosDisponibles', { static: true }) public tablaProductosDisponibles: MatTable<Producto>;
   @ViewChild('tablaProductosSeleccionados', { static: true }) public tablaProductosSeleccionados: MatTable<Producto>;
-  public columnasTabla: string[];
+  public columnasTabla: string[] = [ 'nombre', 'precio', 'acciones' ];
 
   protected productosAgregar: Producto[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: AgregarProductoDialogData,
-    protected self: MatDialogRef<AgregarProductoDialogComponent>,
-    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedSvc: SharedDataService,
-    @Inject(DATA_SERVICE_ALIASES.products) protected prodSvc: EntityDataService<Producto>,
-    protected fb: FormBuilder,
-    protected snackBar: MatSnackBar
+    @Inject(MAT_DIALOG_DATA) protected data: AgregarProductoDialogData,
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedDataService: SharedDataService,
+    @Inject(DATA_SERVICE_ALIASES.products) protected productDataService: EntityDataService<Producto>,
+    protected dialog: MatDialogRef<AgregarProductoDialogComponent>,
+    protected formBuilder: FormBuilder,
+    protected snackBarService: MatSnackBar
   ) {
     this.cargando = true;
 
     this.productosAgregar = [];
-    this.columnasTabla = [ 'nombre', 'precio', 'acciones' ];
 
     this.hayProductos = false;
 
@@ -68,9 +68,9 @@ export class AgregarProductoDialogComponent implements OnInit {
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
-      obs = this.prodSvc.readFiltered(filtros);
+      obs = this.productDataService.readFiltered(filtros);
     } else {
-      obs = this.prodSvc.readAll();
+      obs = this.productDataService.readAll();
     }
 
     obs.pipe(
@@ -81,7 +81,7 @@ export class AgregarProductoDialogComponent implements OnInit {
       },
       () => {
         this.tablaProductosDisponibles.dataSource = of([]);
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
@@ -103,11 +103,11 @@ export class AgregarProductoDialogComponent implements OnInit {
   }
 
   public onClickAceptar(): void {
-    this.self.close(this.productosAgregar);
+    this.dialog.close(this.productosAgregar);
   }
 
   public onClickCancelar(): void {
-    this.self.close([]);
+    this.dialog.close([]);
   }
 
 }

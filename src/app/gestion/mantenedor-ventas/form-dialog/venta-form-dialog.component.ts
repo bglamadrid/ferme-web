@@ -68,15 +68,15 @@ export class VentaFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) dialogData: VentaFormDialogGestionData,
-    protected self: MatDialogRef<VentaFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    @Inject(DATA_SERVICE_ALIASES.sales) protected httpSvc: CompositeEntityDataService<Venta, DetalleVenta>,
-    @Inject(DATA_SERVICE_ALIASES.clients) protected clHttpSvc: EntityDataService<Cliente>,
-    protected authSvc: AuthService,
-    protected dialog: MatDialog,
-    @Inject(DATA_SERVICE_ALIASES.employees) protected empHttpSvc: EntityDataService<Empleado>
+    @Inject(MAT_DIALOG_DATA) data: VentaFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.sales) protected saleDataService: CompositeEntityDataService<Venta, DetalleVenta>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected clientDataService: EntityDataService<Cliente>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected employeeDataService: EntityDataService<Empleado>,
+    protected dialog: MatDialogRef<VentaFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder,
+    protected authService: AuthService,
+    protected dialogService: MatDialog
   ) {
     this.cargando = false;
     this.guardando = false;
@@ -92,13 +92,13 @@ export class VentaFormDialogGestionComponent
     this.totalVenta$ = this.totalVentaSource.asObservable();
     this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'acciones' ];
 
-    this.ventaForm = this.fb.group({
+    this.ventaForm = this.formBuilder.group({
       tipo: [null, Validators.required],
       empleado: [null],
       cliente: [null, Validators.required]
     });
 
-    const item: Venta = (dialogData?.venta) ? dialogData.venta : new Venta();
+    const item: Venta = (data?.venta) ? data.venta : new Venta();
     this.cargarVenta(item);
   }
 
@@ -109,8 +109,8 @@ export class VentaFormDialogGestionComponent
   public get esNueva() { return isNaN(this.idVenta); }
 
   ngOnInit() {
-    this.clientes$ = this.clHttpSvc.readAll();
-    this.empleados$ = this.empHttpSvc.readAll();
+    this.clientes$ = this.clientDataService.readAll();
+    this.empleados$ = this.employeeDataService.readAll();
   }
 
   protected cargarVenta(vnt: Venta): void {
@@ -129,7 +129,7 @@ export class VentaFormDialogGestionComponent
 
     this.fechaVenta = vnt.fechaVenta;
 
-    this.httpSvc.readDetailsById(vnt.id).pipe(
+    this.saleDataService.readDetailsById(vnt.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ventaForm.enable();
@@ -139,7 +139,7 @@ export class VentaFormDialogGestionComponent
         this.actualizarDetalles(detalles);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
@@ -172,23 +172,23 @@ export class VentaFormDialogGestionComponent
     this.ventaForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.create(vt).subscribe(
+    this.saleDataService.create(vt).subscribe(
       (vt2: Venta) => {
         // TODO: make sure vt2 is not actually vt
         if (vt2.id) {
           if (vt.id) {
-            this.snackBar.open('Venta N° \'' + vt.id + '\' actualizada exitosamente.');
+            this.snackBarService.open('Venta N° \'' + vt.id + '\' actualizada exitosamente.');
           } else {
-            this.snackBar.open('Venta N° \'' + vt2.id + '\' registrada exitosamente.');
+            this.snackBarService.open('Venta N° \'' + vt2.id + '\' registrada exitosamente.');
           }
-          this.self.close(vt2);
+          this.dialog.close(vt2);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.ventaForm.enable(REACTIVE_FORMS_ISOLATE);
           this.guardando = false;
         }
       }, err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         this.ventaForm.enable(REACTIVE_FORMS_ISOLATE);
         this.guardando = false;
       }
@@ -196,7 +196,7 @@ export class VentaFormDialogGestionComponent
   }
 
   public onClickAgregarProductos(): void {
-    const dg = this.dialog.open(AgregarProductoDialogComponent, {
+    const dg = this.dialogService.open(AgregarProductoDialogComponent, {
       width: '70rem'
     });
 
@@ -256,7 +256,7 @@ export class VentaFormDialogGestionComponent
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set Venta(vnt: Venta) {
