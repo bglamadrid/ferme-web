@@ -5,18 +5,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA, MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
 import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-array-dialog/agregar-producto.component';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { VentasHttpService } from 'src/http-services/ventas-http.service';
-import { Cliente } from 'src/models/Cliente';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Empleado } from 'src/models/Empleado';
-import { Producto } from 'src/models/Producto';
-import { Venta } from 'src/models/Venta';
-import { AuthService } from 'src/services/auth.service';
+import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { crearDetalleVentaDesdeProducto } from 'src/app/shared/funciones';
+import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Cliente } from 'src/models/entities/Cliente';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Empleado } from 'src/models/entities/Empleado';
+import { Producto } from 'src/models/entities/Producto';
+import { Venta } from 'src/models/entities/Venta';
+import { AuthService } from 'src/app/auth.service';
 
 export interface VentaFormDialogGestionData {
   venta: Venta;
@@ -68,18 +68,19 @@ export class VentaFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: VentaFormDialogGestionData,
-    protected self: MatDialogRef<VentaFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    protected httpSvc: VentasHttpService,
-    protected empHttpSvc: EmpleadosHttpService,
-    protected clHttpSvc: ClientesHttpService,
-    protected authSvc: AuthService,
-    protected dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) data: VentaFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.sales) protected saleDataService: CompositeEntityDataService<Venta, DetalleVenta>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected clientDataService: EntityDataService<Cliente>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected employeeDataService: EntityDataService<Empleado>,
+    protected dialog: MatDialogRef<VentaFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder,
+    protected authService: AuthService,
+    protected dialogService: MatDialog
   ) {
-    this.cargando = true;
-    this.guardando = true;
+    this.cargando = false;
+    this.guardando = false;
+
     this.detallesVenta = [];
     this.detallesVentaSource = new BehaviorSubject([]);
     this.subtotalVentaSource = new BehaviorSubject(0);
@@ -91,20 +92,14 @@ export class VentaFormDialogGestionComponent
     this.totalVenta$ = this.totalVentaSource.asObservable();
     this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'acciones' ];
 
-    this.ventaForm = this.fb.group({
+    this.ventaForm = this.formBuilder.group({
       tipo: [null, Validators.required],
       empleado: [null],
       cliente: [null, Validators.required]
     });
 
-
-    if (this.dialogData && this.dialogData.venta) {
-      const vnt: Venta = this.dialogData.venta;
-      this.cargarVenta(vnt);
-    } else {
-      this.empleado.setValue(this.authSvc.sesion.idEmpleado);
-      this.cargando = false;
-    }
+    const item: Venta = (data?.venta) ? data.venta : new Venta();
+    this.cargarVenta(item);
   }
 
   public get tipo() { return this.ventaForm.get('tipo'); }
@@ -114,8 +109,8 @@ export class VentaFormDialogGestionComponent
   public get esNueva() { return isNaN(this.idVenta); }
 
   ngOnInit() {
-    this.clientes$ = this.clHttpSvc.listarClientes();
-    this.empleados$ = this.empHttpSvc.listarEmpleados();
+    this.clientes$ = this.clientDataService.readAll();
+    this.empleados$ = this.employeeDataService.readAll();
   }
 
   protected cargarVenta(vnt: Venta): void {
@@ -123,7 +118,7 @@ export class VentaFormDialogGestionComponent
     this.ventaForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.idVenta = vnt.idVenta;
+    this.idVenta = vnt.id;
 
     this.tipo.setValue(vnt.tipoVenta, REACTIVE_FORMS_ISOLATE);
     this.cliente.setValue(vnt.idCliente, REACTIVE_FORMS_ISOLATE);
@@ -134,7 +129,7 @@ export class VentaFormDialogGestionComponent
 
     this.fechaVenta = vnt.fechaVenta;
 
-    this.httpSvc.listarDetalles(vnt).pipe(
+    this.saleDataService.readDetailsById(vnt.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ventaForm.enable();
@@ -144,7 +139,7 @@ export class VentaFormDialogGestionComponent
         this.actualizarDetalles(detalles);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
@@ -173,27 +168,27 @@ export class VentaFormDialogGestionComponent
     this.detallesVentaSource.next(detalles);
   }
 
-  protected guardarVenta(vnt: Venta): void {
+  protected guardarVenta(vt: Venta): void {
     this.ventaForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.httpSvc.guardarVenta(vnt).subscribe(
-      (id: number) => {
-        if (id) {
-          if (vnt.idVenta) {
-            this.snackBar.open('Venta N° \'' + vnt.idVenta + '\' actualizada exitosamente.');
+    this.saleDataService.create(vt).subscribe(
+      (vt2: Venta) => {
+        // TODO: make sure vt2 is not actually vt
+        if (vt2.id) {
+          if (vt.id) {
+            this.snackBarService.open('Venta N° \'' + vt.id + '\' actualizada exitosamente.');
           } else {
-            this.snackBar.open('Venta N° \'' + id + '\' registrada exitosamente.');
+            this.snackBarService.open('Venta N° \'' + vt2.id + '\' registrada exitosamente.');
           }
-          vnt.idVenta = id;
-          this.self.close(vnt);
+          this.dialog.close(vt2);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.ventaForm.enable(REACTIVE_FORMS_ISOLATE);
           this.guardando = false;
         }
       }, err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         this.ventaForm.enable(REACTIVE_FORMS_ISOLATE);
         this.guardando = false;
       }
@@ -201,7 +196,7 @@ export class VentaFormDialogGestionComponent
   }
 
   public onClickAgregarProductos(): void {
-    const dg = this.dialog.open(AgregarProductoDialogComponent, {
+    const dg = this.dialogService.open(AgregarProductoDialogComponent, {
       width: '70rem'
     });
 
@@ -248,7 +243,7 @@ export class VentaFormDialogGestionComponent
 
   public onClickAceptar(): void {
     const nuevo: Venta = {
-      idVenta: this.idVenta ? this.idVenta : null,
+      id: this.idVenta ? this.idVenta : null,
       tipoVenta: this.tipo.value,
       fechaVenta: this.fechaVenta ? this.fechaVenta : null,
       idCliente: this.cliente.value,
@@ -261,7 +256,7 @@ export class VentaFormDialogGestionComponent
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set Venta(vnt: Venta) {

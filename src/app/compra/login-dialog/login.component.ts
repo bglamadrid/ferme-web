@@ -1,32 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { AuthService } from 'src/services/auth.service';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
-
-import { LoginComponent, Login } from 'src/app/login/login.component';
-import { Sesion } from 'src/models/Sesion';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth.service';
+import { Login, LoginComponent } from 'src/app/login/login.component';
+import { AuthDataService } from 'src/data/auth.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Sesion } from 'src/models/entities/Sesion';
+
+
 
 @Component({
   selector: 'app-compra-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class CompraLoginDialogComponent extends LoginComponent {
+export class CompraLoginDialogComponent
+  extends LoginComponent {
 
   constructor(
-    protected fb: FormBuilder,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected dialog: MatDialogRef<CompraLoginDialogComponent>,
+    protected formBuilder: FormBuilder,
     protected router: Router,
-    protected snackBar: MatSnackBar,
-    protected authSvc: AuthService,
-    protected authHttpSvc: AuthHttpService,
-    protected dialogRef: MatDialogRef<CompraLoginDialogComponent>
+    protected snackBarService: MatSnackBar,
+    protected authService: AuthService
   ) {
-    super(fb, router, snackBar, authSvc, authHttpSvc);
+    super(authDataService, formBuilder, router, snackBarService, authService);
   }
 
   public onClickAceptar(): void {
@@ -37,27 +39,27 @@ export class CompraLoginDialogComponent extends LoginComponent {
       clave: this.clave.value
     };
 
-    this.authHttpSvc.abrirSesion(usr).pipe(
+    this.authDataService.abrirSesion(usr).pipe(
       finalize(() => { this.cargando = false; })
     ).subscribe(
       (ssn: Sesion) => {
         if (!ssn || !ssn.hashSesion) {
-          this.snackBar.open('Credenciales invalidas.', 'OK', { duration: -1 });
+          this.snackBarService.open('Credenciales invalidas.', 'OK', { duration: -1 });
         } else {
-          this.authSvc.Sesion = ssn;
-          this.dialogRef.close();
-          this.snackBar.open('Ha iniciado sesion correctamente.');
+          this.authService.sesion = ssn;
+          this.dialog.close();
+          this.snackBarService.open('Ha iniciado sesion correctamente.');
         }
       },
       err => {
         console.log(err);
-        this.snackBar.open('Hubo un problema al autenticar.', 'OK', { duration: -1 });
+        this.snackBarService.open('Hubo un problema al autenticar.', 'OK', { duration: -1 });
       }
     );
   }
 
   public onClickCancelar(): void {
-    this.dialogRef.close();
+    this.dialog.close();
   }
 
 }

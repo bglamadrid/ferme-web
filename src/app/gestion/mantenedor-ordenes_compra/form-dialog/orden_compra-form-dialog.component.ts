@@ -5,17 +5,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { AuthService } from 'src/app/auth.service';
 import { AgregarProductoDialogComponent } from 'src/app/gestion/get-productos-array-dialog/agregar-producto.component';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { OrdenesCompraHttpService } from 'src/http-services/ordenes_compra-http.service';
-import { ProveedoresHttpService } from 'src/http-services/proveedores-http.service';
-import { DetalleOrdenCompra } from 'src/models/DetalleOrdenCompra';
-import { Empleado } from 'src/models/Empleado';
-import { OrdenCompra } from 'src/models/OrdenCompra';
-import { Producto } from 'src/models/Producto';
-import { Proveedor } from 'src/models/Proveedor';
-import { AuthService } from 'src/services/auth.service';
+import { MSJ_ERROR_COMM_SRV, REACTIVE_FORMS_ISOLATE, VENTA_TIPO_BOLETA, VENTA_TIPO_FACTURA } from 'src/app/shared/constantes';
+import { CompositeEntityDataService } from 'src/data/composite-entity.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { DetalleOrdenCompra } from 'src/models/entities/DetalleOrdenCompra';
+import { Empleado } from 'src/models/entities/Empleado';
+import { OrdenCompra } from 'src/models/entities/OrdenCompra';
+import { Producto } from 'src/models/entities/Producto';
+import { Proveedor } from 'src/models/entities/Proveedor';
 
 export interface OrdenCompraFormDialogGestionData {
   ordenCompra: OrdenCompra;
@@ -60,22 +60,22 @@ export class OrdenCompraFormDialogGestionComponent
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) protected dialogData: OrdenCompraFormDialogGestionData,
-    protected self: MatDialogRef<OrdenCompraFormDialogGestionComponent>,
-    protected snackBar: MatSnackBar,
-    protected fb: FormBuilder,
-    protected authSvc: AuthService,
-    protected httpSvc: OrdenesCompraHttpService,
-    protected empHttpSvc: EmpleadosHttpService,
-    protected prvHttpSvc: ProveedoresHttpService,
-    protected dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) data: OrdenCompraFormDialogGestionData,
+    @Inject(DATA_SERVICE_ALIASES.purchaseOrders) protected dataService: CompositeEntityDataService<OrdenCompra, DetalleOrdenCompra>,
+    @Inject(DATA_SERVICE_ALIASES.employees) protected employeeDataService: EntityDataService<Empleado>,
+    @Inject(DATA_SERVICE_ALIASES.providers) protected providerDataService: EntityDataService<Proveedor>,
+    protected authService: AuthService,
+    protected dialog: MatDialogRef<OrdenCompraFormDialogGestionComponent>,
+    protected snackBarService: MatSnackBar,
+    protected formBuilder: FormBuilder,
+    protected dialogService: MatDialog
   ) {
-    this.cargando = true;
+    this.cargando = false;
     this.guardando = false;
 
     this.fechaSolicitud = (new Date()).toLocaleDateString();
 
-    this.ordenCompraForm = this.fb.group({
+    this.ordenCompraForm = this.formBuilder.group({
       empleado: [null, Validators.required],
       proveedor: [null, Validators.required]
     });
@@ -84,13 +84,8 @@ export class OrdenCompraFormDialogGestionComponent
     this.subtotalOrdenCompra = 0;
     this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'acciones' ];
 
-    if (this.dialogData) {
-      const oc: OrdenCompra = this.dialogData.ordenCompra;
-      if (oc) { this.cargarOrdenCompra(oc); }
-    } else {
-      this.idEmpleadoUsuario = this.authSvc.sesion.idEmpleado;
-      this.cargando = false;
-    }
+    const oc: OrdenCompra = (data?.ordenCompra) ? data.ordenCompra : new OrdenCompra();
+    this.cargarOrdenCompra(oc);
   }
 
   public get empleado() { return this.ordenCompraForm.get('empleado'); }
@@ -101,7 +96,7 @@ export class OrdenCompraFormDialogGestionComponent
       return null;
     } else {
       return {
-        idOrdenCompra: this.idOrdenCompra ? this.idOrdenCompra : null,
+        id: this.idOrdenCompra ? this.idOrdenCompra : null,
         idEmpleado: this.empleado.value,
         estadoOrdenCompra: null,
         fechaSolicitudOrdenCompra: this.fechaSolicitud,
@@ -116,15 +111,15 @@ export class OrdenCompraFormDialogGestionComponent
   public get hayProductosSinCantidad() { return this.detallesOrdenCompra.some(dtl => dtl.cantidadProducto <= 0); }
 
   ngOnInit() {
-    this.proveedores$ = this.prvHttpSvc.listarProveedores();
-    this.empleados$ = this.empHttpSvc.listarEmpleados();
+    this.proveedores$ = this.providerDataService.readAll();
+    this.empleados$ = this.employeeDataService.readAll();
   }
 
   protected cargarOrdenCompra(oc: OrdenCompra): void {
     this.ordenCompraForm.disable(REACTIVE_FORMS_ISOLATE);
     this.cargando = true;
 
-    this.idOrdenCompra = oc.idOrdenCompra;
+    this.idOrdenCompra = oc.id;
 
     if (oc.idEmpleado) {
       this.empleado.setValue(oc.idEmpleado, REACTIVE_FORMS_ISOLATE);
@@ -134,7 +129,7 @@ export class OrdenCompraFormDialogGestionComponent
       this.proveedor.setValue(oc.idProveedor, REACTIVE_FORMS_ISOLATE);
     }
 
-    this.httpSvc.listarDetalles(oc).pipe(
+    this.dataService.readDetailsById(oc.id).pipe(
       finalize(() => {
         this.cargando = false;
         this.ordenCompraForm.enable();
@@ -145,8 +140,8 @@ export class OrdenCompraFormDialogGestionComponent
         this.tablaDetalles.dataSource = of(detalles);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
-        this.self.close(null);
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.dialog.close(null);
       }
     );
   }
@@ -155,24 +150,24 @@ export class OrdenCompraFormDialogGestionComponent
     this.ordenCompraForm.disable(REACTIVE_FORMS_ISOLATE);
     this.guardando = true;
 
-    this.httpSvc.guardarOrdenCompra(vnt).subscribe(
-      (id: number) => {
-        if (id) {
-          if (vnt.idOrdenCompra) {
-            this.snackBar.open('Orden de compra \'' + vnt.idOrdenCompra + '\' actualizada exitosamente.', 'OK', { duration: -1 });
+    this.dataService.create(vnt).subscribe(
+      (vnt2: OrdenCompra) => {
+        // TODO: make sure vnt2 is not actually vnt
+        if (vnt2.id) {
+          if (vnt.id) {
+            this.snackBarService.open('Orden de compra \'' + vnt.id + '\' actualizada exitosamente.', 'OK', { duration: -1 });
           } else {
-            this.snackBar.open('Orden de compra \'' + id + '\' registrada exitosamente.', 'OK', { duration: -1 });
+            this.snackBarService.open('Orden de compra \'' + vnt2.id + '\' registrada exitosamente.', 'OK', { duration: -1 });
           }
-          vnt.idOrdenCompra = id;
-          this.self.close(vnt);
+          this.dialog.close(vnt2);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
           this.guardando = false;
           this.ordenCompraForm.enable(REACTIVE_FORMS_ISOLATE);
         }
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         this.ordenCompraForm.enable(REACTIVE_FORMS_ISOLATE);
         this.guardando = false;
       }
@@ -180,7 +175,7 @@ export class OrdenCompraFormDialogGestionComponent
   }
 
   public onClickAgregarProductos(): void {
-    this.dialog.open(AgregarProductoDialogComponent, {
+    this.dialogService.open(AgregarProductoDialogComponent, {
       width: '70rem'
     })
       .beforeClosed().subscribe(
@@ -190,8 +185,8 @@ export class OrdenCompraFormDialogGestionComponent
             productos.forEach(
               (prod: Producto, i: number) => {
                 const dtl: DetalleOrdenCompra = new DetalleOrdenCompra();
-                dtl.idProducto = prod.idProducto;
-                dtl.nombreProducto = prod.nombreProducto;
+                dtl.idProducto = prod.id;
+                dtl.nombreProducto = prod.nombre;
                 dtl.precioProducto = prod.precioProducto;
                 dtl.cantidadProducto = 1;
 
@@ -229,16 +224,16 @@ export class OrdenCompraFormDialogGestionComponent
 
   public onClickAceptar(): void {
     if (this.detallesOrdenCompra.length === 0) {
-      this.snackBar.open('Se requieren productos para realizar una orden de compra.', undefined, { duration: 6000 });
+      this.snackBarService.open('Se requieren productos para realizar una orden de compra.', undefined, { duration: 6000 });
     } else if (this.hayProductosSinCantidad) {
-      this.snackBar.open('Está solicitando 0 o menos unidades de un producto.', undefined, { duration: 8000 });
+      this.snackBarService.open('Está solicitando 0 o menos unidades de un producto.', undefined, { duration: 8000 });
     } else {
       this.guardarOrdenCompra(this.ordenCompra);
     }
   }
 
   public onClickCancelar(): void {
-    this.self.close();
+    this.dialog.close();
   }
 
   @Input() public set OrdenCompra(emp: OrdenCompra) {

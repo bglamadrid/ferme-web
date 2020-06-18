@@ -1,64 +1,55 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, Subject } from 'rxjs';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { PerfilUsuarioFormDialogComponent } from 'src/app/shared/perfil-usuario-form-dialog/perfil-usuario-form-dialog.component';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
-import { VentasHttpService } from 'src/http-services/ventas-http.service';
-import { Cliente } from 'src/models/Cliente';
-import { DetalleVenta } from 'src/models/DetalleVenta';
-import { Venta } from 'src/models/Venta';
-import { AuthService } from 'src/services/auth.service';
-import { CompraService } from 'src/services/compra.service';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Cliente } from 'src/models/entities/Cliente';
+import { DetalleVenta } from 'src/models/entities/DetalleVenta';
+import { Venta } from 'src/models/entities/Venta';
+import { AuthService } from 'src/app/auth.service';
+import { CompraService } from 'src/app/compra/compra.service';
 
 @Component({
   selector: 'app-compra-resumen',
   templateUrl: './resumen.component.html',
   styleUrls: ['./resumen.component.css']
 })
-export class CompraResumenComponent implements OnInit, OnDestroy {
+export class CompraResumenComponent
+  implements OnInit, OnDestroy {
 
-  protected detallesVentaSource: BehaviorSubject<DetalleVenta[]>;
-  protected cantidadItemsSource: BehaviorSubject<number>;
-  protected subtotalVentaSource: BehaviorSubject<number>;
-  protected totalVentaSource: BehaviorSubject<number>;
+  protected detallesVentaSource: Subject<DetalleVenta[]> = new BehaviorSubject([]);
+  protected cantidadItemsSource: Subject<number> = new BehaviorSubject(0);
+  protected subtotalVentaSource: Subject<number> = new BehaviorSubject(0);
+  protected totalVentaSource: Subject<number> = new BehaviorSubject(0);
 
-  @ViewChild('tabla', { static: true }) public tabla: MatTable<DetalleVenta>;
-  public columnasTabla: string[];
+  public columnasTabla: string[] = [ 'producto', 'precio', 'cantidad', 'total', 'acciones' ];
 
   public fechaVenta: string;
-  public detallesVenta$: Observable<DetalleVenta[]>;
-  public subtotalVenta$: Observable<number>;
-  public totalVenta$: Observable<number>;
-  public cantidadItems$: Observable<number>;
+  public detallesVenta$: Observable<DetalleVenta[]> = this.detallesVentaSource.asObservable();
+  public cantidadItems$: Observable<number> = this.cantidadItemsSource.asObservable();
+  public subtotalVenta$: Observable<number> = this.subtotalVentaSource.asObservable();
+  public totalVenta$: Observable<number> = this.totalVentaSource.asObservable();
 
   protected detallesSub: Subscription;
 
   constructor(
+    @Inject(DATA_SERVICE_ALIASES.sales) protected saleDataService: EntityDataService<Venta>,
+    @Inject(DATA_SERVICE_ALIASES.clients) protected clientDataService: EntityDataService<Cliente>,
     protected router: Router,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar,
-    protected authSvc: AuthService,
-    protected compraSvc: CompraService,
-    protected vtaHttpSvc: VentasHttpService,
-    protected cliHttpSvc: ClientesHttpService
+    protected dialogService: MatDialog,
+    protected snackBarService: MatSnackBar,
+    protected authService: AuthService,
+    protected compraService: CompraService,
   ) {
-    this.detallesVentaSource = new BehaviorSubject([]);
-    this.cantidadItemsSource = new BehaviorSubject(0);
-    this.subtotalVentaSource = new BehaviorSubject(0);
-    this.totalVentaSource = new BehaviorSubject(0);
-    this.detallesVenta$ = this.detallesVentaSource.asObservable();
-    this.cantidadItems$ = this.cantidadItemsSource.asObservable();
-    this.subtotalVenta$ = this.subtotalVentaSource.asObservable();
-    this.totalVenta$ = this.totalVentaSource.asObservable();
-    this.columnasTabla = [ 'producto', 'precio', 'cantidad', 'total', 'acciones' ];
   }
 
   ngOnInit() {
-    this.detallesSub = this.compraSvc.detalles$.subscribe(d => { this.generarResumen(d); });
+    this.detallesSub = this.compraService.detalles$.subscribe(d => { this.generarResumen(d); });
   }
 
   ngOnDestroy() {
@@ -94,34 +85,35 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
   }
 
   public onClickIncrementarCantidadProducto(index: number): void {
-    this.compraSvc.incrementarUnidadesProducto(index);
+    this.compraService.incrementarUnidadesProducto(index);
   }
 
   public onClickReducirCantidadProducto(index: number): void {
-    this.compraSvc.reducirUnidadesProducto(index);
+    this.compraService.reducirUnidadesProducto(index);
   }
 
   public onClickQuitarProducto(index: number): void {
-    this.compraSvc.quitarProducto(index);
+    this.compraService.quitarProducto(index);
   }
 
-  protected ingresarVenta(vta: Venta): void {
-    this.vtaHttpSvc.guardarVenta(vta).subscribe(
-      (idVenta: number) => {
-        if (idVenta) {
-          this.snackBar.open(
-            '¡Gracias por su compra! Esta transacción es la N° ' + idVenta + '.',
+  protected ingresarVenta(vt: Venta): void {
+    this.saleDataService.create(vt).subscribe(
+      (vt2: Venta) => {
+        // TODO: make sure vt2 is not actually vt
+        if (vt2) {
+          this.snackBarService.open(
+            '¡Gracias por su compra! Esta transacción es la N° ' + vt2 + '.',
             'OK',
             {duration: undefined, panelClass: 'super-overlay'}
           );
-          this.compraSvc.reset();
+          this.compraService.reset();
           setTimeout(() => { this.router.navigateByUrl('/compra'); }, 5000);
         } else {
-          this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+          this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
@@ -129,23 +121,23 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
   public onClickAceptar(): void {
     let idCliente: number;
 
-    if (this.authSvc.sesion) {
-      const idSesionCliente = this.authSvc.sesion.idCliente;
+    if (this.authService.sesion) {
+      const idSesionCliente = this.authService.sesion.idCliente;
       if (idSesionCliente) {
         idCliente = idSesionCliente;
       }
     }
 
     if (idCliente) {
-      const nueva: Venta = this.compraSvc.generarVentaConCliente(idCliente);
+      const nueva: Venta = this.compraService.generarVentaConCliente(idCliente);
       this.ingresarVenta(nueva);
     } else {
-      const cliDialog = this.dialog.open(
+      const cliDialog = this.dialogService.open(
         PerfilUsuarioFormDialogComponent,
         { width: '40rem' }
       );
 
-      this.snackBar.open(
+      this.snackBarService.open(
         'Estimado cliente, no ha ingresado sesión.\n'
       + 'Por favor, ingrese sus datos personales para hacer efectiva la transacción.',
         'OK',
@@ -154,8 +146,8 @@ export class CompraResumenComponent implements OnInit, OnDestroy {
 
       cliDialog.afterClosed().subscribe(
         (cli: Cliente) => {
-          if (cli && cli.idCliente > 1) {
-            const vta: Venta = this.compraSvc.generarVentaConCliente(cli.idCliente);
+          if (cli && cli.id > 1) {
+            const vta: Venta = this.compraService.generarVentaConCliente(cli.id);
             this.ingresarVenta(vta);
           }
         }

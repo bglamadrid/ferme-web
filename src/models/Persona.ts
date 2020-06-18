@@ -1,10 +1,10 @@
-export class Persona {
-  public idPersona: number;
-  public nombreCompletoPersona: string;
-  public rutPersona: string;
-  public direccionPersona: string;
-  public emailPersona: string;
-  public fonoPersona1: number;
-  public fonoPersona2: number;
-  public fonoPersona3: number;
+export interface Persona {
+  idPersona: number;
+  nombrePersona?: string;
+  rutPersona?: string;
+  direccionPersona?: string;
+  emailPersona?: string;
+  fonoPersona1?: number;
+  fonoPersona2?: number;
+  fonoPersona3?: number;
 }

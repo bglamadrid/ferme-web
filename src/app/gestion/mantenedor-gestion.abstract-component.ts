@@ -1,108 +1,51 @@
+import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-import { RootHttpService } from 'src/http-services/root-http.service';
-import { ListadoGestionComponent } from './listado-gestion.abstract-component';
-import { AfterViewInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { delay, finalize, map, tap } from 'rxjs/operators';
+import { MantenedorGestionAbstractService } from './mantenedor-gestion.abstract-service';
+import { AbstractEntity } from 'src/models/AbstractEntity';
 
-export abstract class MantenedorGestionComponent<T>
-  implements AfterViewInit {
+export abstract class MantenedorGestionAbstractComponent<T extends AbstractEntity>
+  implements OnInit {
 
-  protected ocupadoSource: BehaviorSubject<boolean>;
-  protected itemsSource: BehaviorSubject<T[]>;
+  protected abstract service: MantenedorGestionAbstractService<T>;
+  protected abstract dialogService: MatDialog;
+  public abstract columnasTabla: string[];
 
-  protected httpSvc: RootHttpService;
-  protected dialog: MatDialog;
-  protected snackBar: MatSnackBar;
-
-
-  public cargandoItems: boolean;
+  public cargandoItems$: Observable<boolean>;
   public ocupado$: Observable<boolean>;
   public items$: Observable<T[]>;
 
-  public listado: ListadoGestionComponent<T>;
+  ngOnInit() {
+    this.cargandoItems$ = this.service.cargandoItems$.pipe();
+    this.ocupado$ = this.service.focusedItems$.pipe(map(items => items?.length > 0));
+    this.items$ = this.service.items$.pipe();
 
-  constructor() {
-    this.cargandoItems = true;
-    this.ocupadoSource = new BehaviorSubject(true);
-    this.ocupado$ = this.ocupadoSource.asObservable();
-
-
-    this.itemsSource = new BehaviorSubject([]);
-    this.items$ = this.itemsSource.asObservable();
-
-    this.ocupadoSource.next(false);
-  }
-
-  ngAfterViewInit() {
     this.onCargar();
   }
 
-  protected terminarCargaItems(): void {
-    this.cargandoItems = false;
-    this.ocupadoSource.next(false);
-  }
+  public abstract abrirDialogoEdicion(item: T): Observable<T>;
 
-  protected terminarEdicion(): void {
-    this.ocupadoSource.next(false);
-  }
-
-  public cargarItems(): Observable<T[]> {
-    throw Error('Operación no soportada.');
-  }
-
-  public abrirDialogoEdicion(item: T): Observable<T> {
-    throw Error('Operación no soportada.');
-  }
-
-  protected iniciarCargaItems(): Observable<T[]> {
-    this.cargandoItems = true;
-    return this.cargarItems();
-  }
-
-  protected intentarEdicion(item: T): Observable<T> {
-    this.ocupadoSource.next(true);
-    return this.abrirDialogoEdicion(item);
+  protected editar(item: T): Observable<T> {
+    this.service.focusedItems = [item];
+    return this.abrirDialogoEdicion(item).pipe(
+      finalize(() => {
+        this.onCargar();
+        this.service.focusedItems = [];
+      })
+    );
   }
 
   public onCargar(): void {
-    this.iniciarCargaItems().pipe(
-      finalize(() => { this.terminarCargaItems(); })
-    ).subscribe(
-      (items: T[]) => {
-        this.itemsSource.next(items);
-      },
-      () => {
-        this.itemsSource.next([]);
-      }
-    );
+    this.service.recargarItems();
   }
 
   public onClickEditar(item: T): void {
-    this.intentarEdicion(item).pipe(
-      finalize(() => { this.terminarEdicion(); })
-    ).subscribe(
-      (nuevo: T) => {
-        if (nuevo) { this.onCargar(); }
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    this.editar(item).subscribe();
   }
 
   public onClickAgregar(): void {
-    this.intentarEdicion(undefined).pipe(
-      finalize(() => { this.terminarEdicion(); })
-    ).subscribe(
-      (nuevo: T) => {
-        if (nuevo) { this.onCargar(); }
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    this.editar(undefined).subscribe();
   }
 
   public onClickBorrar(item: T): void {

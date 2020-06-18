@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription, Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { FamiliaProducto } from 'src/models/FamiliaProducto';
-import { TipoProducto } from 'src/models/TipoProducto';
-import { GestionSharedHttpService } from 'src/http-services/gestion-shared-http.service';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { SharedDataService } from 'src/data/shared.data.iservice';
+import { FamiliaProducto } from 'src/models/entities/FamiliaProducto';
+import { TipoProducto } from 'src/models/entities/TipoProducto';
 
 export interface FiltrosProductos {
   nombre?: string;
@@ -34,12 +35,12 @@ export class FiltrosProductosPanelComponent
   public tipos$: Observable<TipoProducto[]>;
 
   constructor(
-    protected fb: FormBuilder,
-    protected sharedSvc: GestionSharedHttpService
+    @Inject(DATA_SERVICE_ALIASES.shared) protected sharedDataService: SharedDataService,
+    protected formBuilder: FormBuilder
   ) {
     this.filtrosChange = new EventEmitter<FiltrosProductos>();
 
-    this.productoForm = this.fb.group({
+    this.productoForm = this.formBuilder.group({
       familia: [null],
       tipo: [{value: null, disabled: true}],
       nombre: ['']
@@ -51,7 +52,7 @@ export class FiltrosProductosPanelComponent
   public get nombre() { return this.productoForm.get('nombre'); }
 
   ngOnInit() {
-    this.familias$ = this.sharedSvc.familiasProducto();
+    this.familias$ = this.sharedDataService.readAllFamiliasProducto();
 
     this._changeFamiliasSub = this.familia.valueChanges.subscribe(() => { this.onChangeFamilia(); });
     this._changeTipoSub = this.tipo.valueChanges.subscribe(() => { this.emitirFiltros(); });
@@ -98,12 +99,12 @@ export class FiltrosProductosPanelComponent
       const idFamilia: number = Number(this.familia.value);
       if (!isNaN(idFamilia)) {
         this.emitirFiltros();
-        this.sharedSvc.tiposProductoByFamilia(idFamilia).subscribe(
+        this.sharedDataService.readAllTiposProductoByFamiliaId(idFamilia).subscribe(
           (tipos: TipoProducto[]) => {
             if (tipos && tipos.length > 0) {
               this.tipos$ = of(tipos);
               this.tipo.enable();
-              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.idTipoProducto === idTipoProductoSeleccionado)) {
+              if (idTipoProductoSeleccionado && !tipos.some(tp => tp.id === idTipoProductoSeleccionado)) {
                 this.tipo.reset();
               }
             } else {

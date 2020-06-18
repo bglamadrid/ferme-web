@@ -9,11 +9,11 @@
   <div class="catalogo" [hidden]="cargando">
     <mat-card *ngFor="let producto of (productos$ | async)">
       <mat-card-header>
-        <mat-card-title>{{ producto.nombreProducto }}</mat-card-title>
+        <mat-card-title>{{ producto.nombre }}</mat-card-title>
         <mat-card-subtitle>{{ producto.codigoProducto }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        {{ producto.descripcionProducto }}
+        {{ producto.descripcion }}
       </mat-card-content>
       <mat-card-actions>
         <span>Precio: ${{ producto.precioProducto }}</span>

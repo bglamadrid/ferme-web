@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-
-import { AuthService } from 'src/services/auth.service';
-import { AuthHttpService } from 'src/http-services/auth-http.service';
-import { Sesion } from 'src/models/Sesion';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth.service';
+import { AuthDataService } from 'src/data/auth.data.iservice';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { Sesion } from 'src/models/entities/Sesion';
 import { MSJ_ERROR_COMM_SRV } from '../shared/constantes';
+
 
 export interface Login {
   usuario: string;
@@ -29,16 +30,16 @@ export class LoginComponent {
   public esconderClave: boolean;
 
   constructor(
-    protected fb: FormBuilder,
+    @Inject(DATA_SERVICE_ALIASES.auth) protected authDataService: AuthDataService,
+    protected formBuilder: FormBuilder,
     protected router: Router,
-    protected snackBar: MatSnackBar,
-    protected authSvc: AuthService,
-    protected authHttpSvc: AuthHttpService
+    protected snackBarService: MatSnackBar,
+    protected authService: AuthService
   ) {
     this.cargando = true;
     this.esconderClave = true;
 
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       usuario: ['', Validators.required],
       clave: ['', Validators.required]
     });
@@ -59,21 +60,21 @@ export class LoginComponent {
       clave: this.clave.value
     };
 
-    this.authHttpSvc.abrirSesion(usr).pipe(
+    this.authDataService.abrirSesion(usr).pipe(
       finalize(() => { this.cargando = false; })
     ).subscribe(
       (ssn: Sesion) => {
         if (!ssn || !ssn.hashSesion) {
-          this.snackBar.open('Credenciales invalidas.', 'OK', { duration: -1 });
+          this.snackBarService.open('Credenciales invalidas.', 'OK', { duration: -1 });
         } else if (!ssn.idEmpleado) {
-          this.snackBar.open('Su cuenta no posee privilegios suficientes para ingresar.', 'OK', { duration: -1 });
+          this.snackBarService.open('Su cuenta no posee privilegios suficientes para ingresar.', 'OK', { duration: -1 });
         } else {
-          this.authSvc.Sesion = ssn;
+          this.authService.sesion = ssn;
           this.router.navigateByUrl('/gestion');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }

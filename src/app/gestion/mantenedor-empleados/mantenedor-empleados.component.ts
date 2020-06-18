@@ -1,17 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { EmpleadosHttpService } from 'src/http-services/empleados-http.service';
-import { Empleado } from 'src/models/Empleado';
-import {
-  EmpleadoFormDialogGestionComponent,
-  EmpleadoFormDialogGestionData
-} from './form-dialog/empleado-form-dialog.component';
-import { ListadoEmpleadosGestionComponent } from './listado/listado-empleados.component';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
+import { Empleado } from 'src/models/entities/Empleado';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
+import { EmpleadoFormDialogGestionComponent, EmpleadoFormDialogGestionData } from './form-dialog/empleado-form-dialog.component';
+import { MantenedorEmpleadosGestionService } from './mantenedor-empleados.service';
 
 @Component({
   selector: 'app-mantenedor-empleados-gestion',
@@ -21,20 +16,16 @@ import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-compo
   ]
 })
 export class MantenedorEmpleadosGestionComponent
-  extends MantenedorGestionComponent<Empleado> {
+  extends MantenedorGestionAbstractComponent<Empleado> {
 
-  @ViewChild('listado', { static: true }) public listado: ListadoEmpleadosGestionComponent;
+  public columnasTabla: string[] = [ 'nombre', 'rut', 'acciones' ];
 
   constructor(
-    protected httpSvc: EmpleadosHttpService,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar
+    protected service: MantenedorEmpleadosGestionService,
+    protected dialogService: MatDialog,
+    protected snackBarService: MatSnackBar
   ) {
     super();
-  }
-
-  public cargarItems(): Observable<Empleado[]> {
-    return this.httpSvc.listarEmpleados();
   }
 
   public abrirDialogoEdicion(item: Empleado): Observable<Empleado> {
@@ -48,26 +39,23 @@ export class MantenedorEmpleadosGestionComponent
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(EmpleadoFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(EmpleadoFormDialogGestionComponent, dialogConfig);
 
-    return from(dialog.afterClosed());
+    return dialog.afterClosed();
   }
 
   public onClickBorrar(emp: Empleado) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.borrarEmpleado(emp.idEmpleado).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([emp]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Empleado \'' + emp.nombreCompletoPersona + '\' eliminado.');
+          this.snackBarService.open('Empleado \'' + emp.nombre + '\' eliminado.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar el empleado.');
+          this.snackBarService.open('Hubo un problema al borrar el empleado.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

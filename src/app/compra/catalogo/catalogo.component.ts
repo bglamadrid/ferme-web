@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { CompraService } from 'src/app/compra/compra.service';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
 import { FiltrosProductos } from 'src/app/shared/filtros-productos-panel/filtros-productos-panel.component';
-import { ProductosHttpService } from 'src/http-services/productos-http.service';
-import { Producto } from 'src/models/Producto';
-import { CompraService } from 'src/services/compra.service';
+import { DATA_SERVICE_ALIASES } from 'src/data/data.service-aliases';
+import { EntityDataService } from 'src/data/entity.data.iservice';
+import { Producto } from 'src/models/entities/Producto';
 
 @Component({
   selector: 'app-compra-catalogo',
@@ -25,17 +26,17 @@ export class CompraCatalogoComponent implements OnInit {
   public productoForm: FormGroup;
 
   constructor(
-    protected prodHttpSvc: ProductosHttpService,
-    protected fb: FormBuilder,
-    protected snackBar: MatSnackBar,
-    protected compraSvc: CompraService,
+    @Inject(DATA_SERVICE_ALIASES.products) protected productDataService: EntityDataService<Producto>,
+    protected formBuilder: FormBuilder,
+    protected snackBarService: MatSnackBar,
+    protected service: CompraService,
   ) {
     this.cargando = true;
     this.productos = [];
     this.productosSource = new BehaviorSubject<Producto[]>([]);
     this.productos$ = this.productosSource.asObservable();
 
-    this.productoForm = this.fb.group({
+    this.productoForm = this.formBuilder.group({
       familia: [null],
       tipo: [{value: null, disabled: true}],
       nombre: ['']
@@ -59,9 +60,9 @@ export class CompraCatalogoComponent implements OnInit {
     let obs: Observable<Producto[]>;
 
     if (filtros !== {}) {
-      obs = this.prodHttpSvc.listarProductosFiltrados(filtros);
+      obs = this.productDataService.readFiltered(filtros);
     } else {
-      obs = this.prodHttpSvc.listarProductos();
+      obs = this.productDataService.readAll();
     }
 
     obs.pipe(
@@ -71,13 +72,13 @@ export class CompraCatalogoComponent implements OnInit {
         this.productosSource.next(prods);
       },
       err => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
       }
     );
   }
 
   public onClickAgregarProducto(prod: Producto): void {
-    this.compraSvc.agregarProducto(prod);
+    this.service.agregarProducto(prod);
   }
 
 }

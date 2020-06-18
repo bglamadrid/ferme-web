@@ -1,17 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { ProveedoresHttpService } from 'src/http-services/proveedores-http.service';
-import { Proveedor } from 'src/models/Proveedor';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
-import {
-  ProveedorFormDialogGestionComponent,
-  ProveedorFormDialogGestionData
-} from './form-dialog/proveedor-form-dialog.component';
-import { ListadoProveedoresGestionComponent } from './listado/listado-proveedores.component';
+import { Proveedor } from 'src/models/entities/Proveedor';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
+import { ProveedorFormDialogGestionComponent, ProveedorFormDialogGestionData } from './form-dialog/proveedor-form-dialog.component';
+import { MantenedorProveedoresGestionService } from './mantenedor-proveedores.service';
 
 @Component({
   selector: 'app-mantenedor-proveedores-gestion',
@@ -21,22 +16,17 @@ import { ListadoProveedoresGestionComponent } from './listado/listado-proveedore
   ]
 })
 export class MantenedorProveedoresGestionComponent
-extends MantenedorGestionComponent<Proveedor> {
+extends MantenedorGestionAbstractComponent<Proveedor> {
 
-  @ViewChild('listado', { static: true }) public listado: ListadoProveedoresGestionComponent;
+  public columnasTabla: string[] = [ 'nombre', 'rut', 'acciones' ];
 
   constructor(
-    protected httpSvc: ProveedoresHttpService,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar
+    protected service: MantenedorProveedoresGestionService,
+    protected dialogService: MatDialog,
+    protected snackBarService: MatSnackBar
   ) {
     super();
   }
-
-  public cargarItems(): Observable<Proveedor[]> {
-    return this.httpSvc.listarProveedores();
-  }
-
 
   public abrirDialogoEdicion(item: Proveedor): Observable<Proveedor> {
 
@@ -49,26 +39,23 @@ extends MantenedorGestionComponent<Proveedor> {
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(ProveedorFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(ProveedorFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(prov: Proveedor) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.borrarProveedor(prov.idProveedor).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([prov]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Proveedor \'' + prov.nombreCompletoPersona + '\' eliminado.');
+          this.snackBarService.open('Proveedor \'' + prov.nombre + '\' eliminado.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar el empleado.');
+          this.snackBarService.open('Hubo un problema al borrar el empleado.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

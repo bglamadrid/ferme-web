@@ -1,17 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { MSJ_ERROR_COMM_SRV } from 'src/app/shared/constantes';
-import { UsuariosHttpService } from 'src/http-services/usuarios-http.service';
-import { Usuario } from 'src/models/Usuario';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
-import {
-  UsuarioFormDialogGestionComponent,
-  UsuarioFormDialogGestionData
-} from './form-dialog/usuario-form-dialog.component';
-import { ListadoUsuariosGestionComponent } from './listado/listado-usuarios.component';
+import { Usuario } from 'src/models/entities/Usuario';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
+import { UsuarioFormDialogGestionComponent, UsuarioFormDialogGestionData } from './form-dialog/usuario-form-dialog.component';
+import { MantenedorUsuariosGestionService } from './mantenedor-usuarios.service';
 
 @Component({
   selector: 'app-mantenedor-usuarios-gestion',
@@ -21,20 +16,16 @@ import { ListadoUsuariosGestionComponent } from './listado/listado-usuarios.comp
   ]
 })
 export class MantenedorUsuariosGestionComponent
-  extends MantenedorGestionComponent<Usuario> {
+  extends MantenedorGestionAbstractComponent<Usuario> {
 
-  @ViewChild('listado', { static: true }) public listado: ListadoUsuariosGestionComponent;
+  public columnasTabla: string[] = [ 'nombre', 'fechaCreacion', 'nombreCompleto', 'rut', 'acciones' ];
 
   constructor(
-    protected httpSvc: UsuariosHttpService,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar
+    protected service: MantenedorUsuariosGestionService,
+    protected dialogService: MatDialog,
+    protected snackBarService: MatSnackBar
   ) {
     super();
-  }
-
-  public cargarItems(): Observable<Usuario[]> {
-    return this.httpSvc.listarUsuarios();
   }
 
   public abrirDialogoEdicion(item: Usuario): Observable<Usuario> {
@@ -48,26 +39,23 @@ export class MantenedorUsuariosGestionComponent
       dialogConfig.data = dialogData;
     }
 
-    const dialog = this.dialog.open(UsuarioFormDialogGestionComponent, dialogConfig);
+    const dialog = this.dialogService.open(UsuarioFormDialogGestionComponent, dialogConfig);
 
     return from(dialog.afterClosed());
   }
 
   public onClickBorrar(usr: Usuario) {
-    this.ocupadoSource.next(true);
-    this.httpSvc.borrarUsuario(usr.idUsuario).pipe(
-      finalize(() => { this.ocupadoSource.next(false); })
-    ).subscribe(
+    this.service.eliminarItems([usr]).pipe(r => r[0]).subscribe(
       (exito: boolean) => {
         if (exito) {
-          this.snackBar.open('Usuario \'' + usr.nombreCompletoPersona + '\' eliminado.');
+          this.snackBarService.open('Usuario \'' + usr.nombre + '\' eliminado.');
           this.onCargar();
         } else {
-          this.snackBar.open('Hubo un problema al borrar el empleado.');
+          this.snackBarService.open('Hubo un problema al borrar el empleado.');
         }
       },
       () => {
-        this.snackBar.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
+        this.snackBarService.open(MSJ_ERROR_COMM_SRV, 'OK', { duration: -1 });
        }
     );
   }

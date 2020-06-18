@@ -25,9 +25,9 @@ export class DatosPersonaFormComponent {
   }
 
   constructor(
-    protected fb: FormBuilder
+    protected formBuilder: FormBuilder
   ) {
-    this.formGroup = this.fb.group({
+    this.formGroup = this.formBuilder.group({
       nombre: ['', Validators.required],
       rut: ['', Validators.required],
       direccion: [''],
@@ -53,7 +53,7 @@ export class DatosPersonaFormComponent {
     } else {
       return {
         idPersona: null,
-        nombreCompletoPersona: this.nombre.value,
+        nombrePersona: this.nombre.value,
         rutPersona: this.rut.value,
         direccionPersona: this.direccion.value,
         emailPersona: this.email.value,
@@ -70,7 +70,7 @@ export class DatosPersonaFormComponent {
 
   @Input() public set Persona(prs: Persona) {
 
-    this.nombre.setValue(prs.nombreCompletoPersona, REACTIVE_FORMS_ISOLATE);
+    this.nombre.setValue(prs.nombrePersona, REACTIVE_FORMS_ISOLATE);
     this.rut.setValue(prs.rutPersona, REACTIVE_FORMS_ISOLATE);
 
     if (prs.direccionPersona) {

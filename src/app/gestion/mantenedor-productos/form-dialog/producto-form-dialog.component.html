@@ -16,16 +16,16 @@
 
       <mat-form-field style="grid-area: c">
         <mat-select placeholder="Familia de Producto" formControlName="familia">
-          <mat-option *ngFor="let familia of (familias$ | async)" [value]="familia.idFamiliaProducto">
-            {{ familia.descripcionFamiliaProducto }}
+          <mat-option *ngFor="let familia of (familias$ | async)" [value]="familia.id">
+            {{ familia.descripcion }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field style="grid-area: d">
         <mat-select placeholder="Tipo de Producto" formControlName="tipo">
-          <mat-option *ngFor="let tipo of (tipos$ | async)" [value]="tipo.idTipoProducto">
-            {{ tipo.nombreTipoProducto }}
+          <mat-option *ngFor="let tipo of (tipos$ | async)" [value]="tipo.id">
+            {{ tipo.descripcion }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -48,7 +48,7 @@
 
     </form>
   </div>
-  
+
 </mat-dialog-content>
 <mat-dialog-actions align="center">
 

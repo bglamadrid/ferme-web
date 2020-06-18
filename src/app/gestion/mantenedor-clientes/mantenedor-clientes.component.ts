@@ -1,11 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { ClientesHttpService } from 'src/http-services/clientes-http.service';
-import { Cliente } from 'src/models/Cliente';
-import { MantenedorGestionComponent } from '../mantenedor-gestion.abstract-component';
-import { ListadoClientesGestionComponent } from './listado/listado-clientes.component';
+import { Cliente } from 'src/models/entities/Cliente';
+import { MantenedorGestionAbstractComponent } from '../mantenedor-gestion.abstract-component';
+import { MantenedorClientesGestionService } from './mantenedor-clientes.service';
 
 @Component({
   selector: 'app-mantenedor-clientes-gestion',
@@ -15,21 +13,19 @@ import { ListadoClientesGestionComponent } from './listado/listado-clientes.comp
   ]
 })
 export class MantenedorClientesGestionComponent
-  extends MantenedorGestionComponent<Cliente> {
+  extends MantenedorGestionAbstractComponent<Cliente> {
 
-  @ViewChild('listado', { static: true }) public listado: ListadoClientesGestionComponent;
+  public columnasTabla: string[] = [ 'nombre', 'rut' ];
 
   constructor(
-    protected httpSvc: ClientesHttpService,
-    protected dialog: MatDialog,
-    protected snackBar: MatSnackBar
+    protected service: MantenedorClientesGestionService,
+    protected dialogService: MatDialog
   ) {
     super();
-
   }
 
-  public cargarItems(): Observable<Cliente[]> {
-    return this.httpSvc.listarClientes();
+  public abrirDialogoEdicion(item: Cliente): Observable<Cliente> {
+    throw new Error('Method not implemented.');
   }
 
 }

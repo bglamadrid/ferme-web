@@ -4,15 +4,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { AppRoutingModule } from 'src/routing/app-routing.module';
-import { AuthGuard } from 'src/routing/auth.guard';
-import { FallbackRoutingModule } from 'src/routing/special-routing.module';
+import { AppRoutingModule } from 'src/app/app.routing.module';
+import { AuthGuard } from 'src/app/auth.guard';
+import { FallbackRoutingModule } from 'src/app/app.routing.fallback.module';
 import { AppComponent } from './app.component';
 import { CompraModule } from './compra/compra.module';
 import { GestionModule } from './gestion/gestion.module';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
+import { HttpDataModule } from 'src/data/http/http-data.module';
+import { LocalMemoryDataModule } from 'src/data/local-memory/local-memory-data.module';
 
 const DEBUG_ROUTES = false;
 
@@ -28,7 +30,8 @@ const DEBUG_ROUTES = false;
     AppRoutingModule,
     GestionModule,
     CompraModule,
-    FallbackRoutingModule
+    FallbackRoutingModule,
+    LocalMemoryDataModule
   ],
   providers: [
     AuthGuard

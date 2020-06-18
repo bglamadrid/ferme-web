@@ -1,0 +1,53 @@
+.cabecera {
+  display: flex;
+  align-content: center;
+  background: maroon;
+  border-bottom: 1px #e0e0e06b solid;
+}
+
+.cabecera * {
+  color: white;
+}
+
+.cabecera>* {
+  display: flex;
+}
+
+.action {
+  flex: 0 0 5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+.action * {
+  font-size: 2.25rem;
+}
+
+.alternar-navegacion.action {
+  padding: 0 0.9rem 1rem 0;
+}
+
+.logo {
+  flex: 0 0 11rem;
+  background-color: darkred;
+  padding: 0 1.5rem 0 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo>img {
+  height: 2.75rem;
+  width: 2.75rem;
+}
+
+.contenido {
+  flex: 1 1 auto;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.abrir-menu.action {
+  padding: 0 0.7rem 1rem 0;
+}

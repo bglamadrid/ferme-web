@@ -22,7 +22,7 @@
       <mat-form-field style="grid-area: c">
         <mat-select placeholder="Vendedor" formControlName="empleado">
           <mat-option *ngFor="let empleado of (empleados$ | async)" [value]="empleado.idEmpleado">
-            {{ empleado.nombreCompletoPersona }}
+            {{ empleado.nombrePersona }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -30,7 +30,7 @@
       <mat-form-field style="grid-area: d">
         <mat-select placeholder="Cliente" formControlName="cliente">
           <mat-option *ngFor="let cliente of (clientes$ | async)" [value]="cliente.idCliente">
-            {{ cliente.nombreCompletoPersona }}
+            {{ cliente.nombrePersona }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -48,7 +48,7 @@
               <ng-container matColumnDef="producto">
                 <th mat-header-cell *matHeaderCellDef> Nombre </th>
                 <td mat-cell *matCellDef="let detalle" class="left">
-                  {{ detalle.nombreProducto }}
+                  {{ detalle.nombre }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="precio">
