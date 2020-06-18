@@ -8,14 +8,14 @@ export abstract class MantenedorGestionAbstractService<T extends AbstractEntity>
 
   protected abstract dataService: EntityDataService<T>;
 
-  protected currentFocusedItems: T[];
-  protected focusedItemsSource: Subject<T[]> = new BehaviorSubject([]);
+  protected currentFocusedItems: T[] = null;
+  protected focusedItemsSource: Subject<T[]> = new BehaviorSubject(null);
   protected itemsSource: Subject<T[]> = new Subject();
   protected cargandoItemsSource: Subject<boolean> = new BehaviorSubject(false);
 
   public focusedItems$: Observable<T[]> = this.focusedItemsSource.asObservable();
-  public cargandoItems$: Observable<boolean> = this.cargandoItemsSource.asObservable();
   public items$: Observable<T[]> = this.itemsSource.asObservable();
+  public cargandoItems$: Observable<boolean> = this.cargandoItemsSource.asObservable();
 
   public get focusedItems(): T[] {
     return this.currentFocusedItems;

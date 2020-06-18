@@ -18,7 +18,7 @@ export abstract class MantenedorGestionAbstractComponent<T extends AbstractEntit
 
   ngOnInit() {
     this.cargandoItems$ = this.service.cargandoItems$.pipe();
-    this.ocupado$ = this.service.focusedItems$.pipe(map(items => items.length === 0));
+    this.ocupado$ = this.service.focusedItems$.pipe(map(items => items?.length > 0));
     this.items$ = this.service.items$.pipe();
 
     this.onCargar();
@@ -27,8 +27,12 @@ export abstract class MantenedorGestionAbstractComponent<T extends AbstractEntit
   public abstract abrirDialogoEdicion(item: T): Observable<T>;
 
   protected editar(item: T): Observable<T> {
+    this.service.focusedItems = [item];
     return this.abrirDialogoEdicion(item).pipe(
-      finalize(() => { this.onCargar(); })
+      finalize(() => {
+        this.onCargar();
+        this.service.focusedItems = [];
+      })
     );
   }
 
