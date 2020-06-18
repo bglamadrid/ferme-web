@@ -28,7 +28,7 @@ export class CompraLoginDialogComponent
     protected snackBarService: MatSnackBar,
     protected authService: AuthService
   ) {
-    super(formBuilder, router, snackBarService, authService, authDataService);
+    super(authDataService, formBuilder, router, snackBarService, authService);
   }
 
   public onClickAceptar(): void {
